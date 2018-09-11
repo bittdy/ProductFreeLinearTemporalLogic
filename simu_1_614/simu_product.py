@@ -9,29 +9,59 @@ class ProdAut(DiGraph):
 	def __init__(self, ts, buchi, alpha=100):
 		DiGraph.__init__(self, ts=ts, buchi=buchi, alpha=alpha, initial=set(), accept=set(), type='ProdAut')
 
-	def build_full(self):
-		static_edge = []
+	def build_full(self,couple_task_symbols):
+		self.static_edge = []
 		for f_ts_node in self.graph['ts'].nodes():
 			for f_buchi_node in self.graph['buchi'].nodes():
 				f_prod_node = self.composition(f_ts_node, f_buchi_node)
-                                #print 'f_prod_node' , (f_ts_node, f_buchi_node)
+				#print('f_prod_node' , (f_ts_node, f_buchi_node))
 				for t_ts_node in self.graph['ts'].successors(f_ts_node):
 					for t_buchi_node in self.graph['buchi'].successors(f_buchi_node):
 							t_prod_node = self.composition(t_ts_node, t_buchi_node)
-                                                        #print 't_prod_node' , (t_ts_node, t_buchi_node)
-							label = self.graph['ts'].node[f_ts_node]['label']
+							#print('t_prod_node' , (t_ts_node, t_buchi_node))
+							label = self.graph['ts'].node[t_ts_node]['label']
+							#print(label)                        
 							cost = self.graph['ts'][f_ts_node][t_ts_node]['weight']
-							truth, dist = check_label_for_buchi_edge(self.graph['buchi'], label, f_buchi_node, t_buchi_node)
+#							print(cost)  
+							truth, dist, violate_list = check_label_for_buchi_edge(self.graph['buchi'], label, f_buchi_node, t_buchi_node)
+							if f_ts_node == (2, 0, 1) or t_ts_node == (2, 0, 1):
+								print('nodes:',(f_prod_node,t_prod_node))
+								print('violate_list:',violate_list)
+							#print(dist)  
 							total_weight = cost + self.graph['alpha']*dist
-                                                        #print 'label,truth,total_weight', label,truth,total_weight
+							#print(total_weight)
 							if truth:
-								self.add_edge(f_prod_node, t_prod_node, weight=total_weight)
+								self.add_edge(f_prod_node, t_prod_node, weight=total_weight, label = 'individual')
+								#print("add a normal edge:",f_prod_node,t_prod_node,total_weight)
+								#print("cost:",cost," dist:",dist)
 							else:
-								static_edge.append([f_prod_node, t_prod_node, label])
-		return static_edge
-                                                                #print 'add edge', (f_prod_node, t_prod_node)
+								#check if the violate fts in couple task symbol
+								maybe_couple = 0
+#									#zan shi shan qu zi xun huan 
+#								if f_prod_node[0] == t_prod_node[0]:
+#									continue
+								for item in violate_list:
+									if item not in couple_task_symbols:
+										maybe_couple = 0
+										break
+									elif item in couple_task_symbols:
+										maybe_couple = 1
+								if maybe_couple == 1:
+										self.add_edge(f_prod_node, t_prod_node, weight=total_weight, label = 'couple')
+								#print("static_cost:",cost," static_dist:",dist)
+		
+#		for item in self.static_edge:
+##			if item[0][0] == item[1][0]:
+##				continue   # fang zhi chuxian zi zhuanhuan , qie zhuang tai wei accept, ze bu hui tiao chu
+##			if item[0][1] == 'accept_S1' or item[1][1] == 'accept_S1':
+##				continue   # fang zhi chuxian zi zhuanhuan , qie zhuang tai wei accept, ze bu hui tiao chu
+#			if 'rq' in item[2]:   
+#				#shuo ming you request
+#				self.add_edge(item[0],item[1],weight = item[3],label = 'rq_1')#zhi hou dui ying de renwu gei bu tong de xv hao
+				#print("add a static edge:",item[0],item[1],item[3])
+        #print 'add edge', (f_prod_node, t_prod_node)
        # print('full product constructed with %d states and %s transitions' %(len(self.nodes()), len(self.edges())))                                                            
-
+       
 	def composition(self, ts_node, buchi_node):
 		prod_node = (ts_node, buchi_node)
 		if not self.has_node(prod_node):

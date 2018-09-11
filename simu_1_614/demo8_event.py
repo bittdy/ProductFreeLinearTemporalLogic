@@ -137,7 +137,7 @@ robot_motion_1 = robot_motion_2 = robot_motion
 
 #agent_task_1 = '[](goods->Xdepot)&&[](depot->Xgoods)&&[](!b)&&[](!door||open)&&[]<>goods&&[]<>depot'
 #agent_task_1 = '[](goods-><>depot)&&[](depot-><>goods)&&[](!b)&&[](!door||open)&&[]<>goods&&[]<>depot'
-agent_task_1 = '[]<>depot&&[]<>goods&&[](!b)'
+agent_task_1 = '[]<>depot&&[]<>goods&&[](!b)&&[](goods-><>depot)&&[](depot-><>goods)'
 agent_task_2 = '[]<>open'
 
 '''
@@ -169,6 +169,13 @@ buchi_2 = buchi_from_ltl(agent_task_2,'hard_buchi')
 
 pro_1 = ProdAut(robot_motion,buchi_1)
 pro_1_static_list = pro_1.build_full()
+
+print("product bian")
+for item in pro_1.edges():
+    print(item)
+print("static bina")
+for item in pro_1_static_list:
+    print(item)
 
 pro_2 = ProdAut(robot_motion,buchi_2)
 pro_2_static_list = pro_2.build_full()

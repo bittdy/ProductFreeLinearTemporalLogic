@@ -17,7 +17,7 @@ def dijkstra_plan_networkX(product, beta=10):
 	# minimal circles
 #	print(product.graph['accept'])
 	for prod_target in product.graph['accept']:
-
+		#print(prod_target)
 		#print 'prod_target', prod_target
 		# accepting state in self-loop
 		if prod_target in product.predecessors(prod_target):
@@ -28,31 +28,42 @@ def dijkstra_plan_networkX(product, beta=10):
 		else:
 			cycle = {}
 			loop_pre, loop_dist = dijkstra_predecessor_and_distance(product, prod_target)
+			#print("loop_pre:",loop_pre)
+			#print("loop_dist:",loop_dist)
 #			print('loop_pre')
 #			print(loop_pre)
 #			print('loop_dist')
 #			print(loop_dist)
 		for target_pred in product.predecessors(prod_target):
+			#print(target_pred)
 #			print('target_pred')
 #			print(target_pred)
 			if target_pred in loop_dist:
 				cycle[target_pred] = product.edges[target_pred,prod_target]["weight"] + loop_dist[target_pred]
+				#print(cycle)
 #			print('cycle')
 #			print(cycle)
 		if cycle:
 			opti_pred = min(cycle, key = cycle.get)
+			#print(opti_pred)
 			suffix = compute_path_from_pre(loop_pre, opti_pred)
 			loop[prod_target] = (cycle[opti_pred], suffix)
-			print('suffix:',suffix)
+			#print('suffix:',suffix)
 	# shortest line
 	for prod_init in product.graph['initial']:
+		#print(prod_init)
 		line = {}
 		line_pre, line_dist = dijkstra_predecessor_and_distance(product, prod_init)
+		#print('line_pre',line_pre)
+		#print('line_pre',line_dist)
 		for target in loop:
+			#print(target)
 			if target in line_dist:
 				line[target] = line_dist[target]+beta*loop[target][0]
+		print(line)
 		if line:
 			opti_targ = min(line, key = line.get)
+			#print(opti_targ)
 			prefix = compute_path_from_pre(line_pre, opti_targ)
 			precost = line_dist[opti_targ]
 			runs[(prod_init, opti_targ)] = (prefix, precost, loop[opti_targ][1], loop[opti_targ][0])
@@ -61,7 +72,7 @@ def dijkstra_plan_networkX(product, beta=10):
 		prefix, precost, suffix, sufcost = min(runs.values(), key = lambda p: p[1] + beta*p[3])
 		run = ProdAut_Run(product, prefix, precost, suffix, sufcost, precost+beta*sufcost)
 		print ('==================')
-		print ('Dijkstra_plan_networkX done within %.2fs: precost %.2f, sufcost %.2f' %(time.time()-start, precost, sufcost))
+		print ('Dijkstra_plan_networkX done within %.10fs: precost %.10f, sufcost %.10f' %(time.time()-start, precost, sufcost))
 		return run, time.time()-start
 		#print '\n==================\n'
 	print ('==================')
@@ -97,7 +108,7 @@ def dijkstra_plan_optimal(product, beta=10, start_set=None):
 	 	prefix, precost, suffix, sufcost = min(runs.values(), key = lambda p: p[1] + beta*p[3])
 	 	run = ProdAut_Run(product, prefix, precost, suffix, sufcost, precost+beta*sufcost)
 	 	#print '\n==================\n'
-	 	print ('optimal_dijkstra_olf done within %.2fs: precost %.2f, sufcost %.2f' %(time.time()-start, precost, sufcost))
+	 	print ('optimal_dijkstra_olf done within %.10fs: precost %.10f, sufcost %.10f' %(time.time()-start, precost, sufcost))
 	 	return run, time.time()-start
 	print ('no accepting run found in optimal planning!')
 
@@ -127,7 +138,7 @@ def dijkstra_plan_bounded(product, time_limit=3, beta=10):
 				if runs:
 				 	prefix, precost, suffix, sufcost = min(runs.values(), key = lambda p: p[1] + beta*p[3])
 				 	run = ProdAut_Run(product, prefix, precost, suffix, sufcost, precost+beta*sufcost)
-				 	print ('optimal_dijkstra done within %.2fs: precost %.2f, sufcost %.2f' %(time.time()-start, precost, sufcost))
+				 	print ('optimal_dijkstra done within %.10fs: precost %.10f, sufcost %.10f' %(time.time()-start, precost, sufcost))
 				 	return run, time.time()-start
 	print ('no accepting run found in optimal planning!')
 	

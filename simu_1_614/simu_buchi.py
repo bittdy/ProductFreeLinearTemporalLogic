@@ -2,7 +2,7 @@
 
 from ltl2ba import run_ltl2ba
 from promela import parse as parse, find_states, find_symbols
-from boolean_formulas.parser import parse as parse_guard
+from boolean_formulas.simu_parse import parse as parse_guard
 from itertools import product as cartesian_product
 
 from networkx.classes.digraph import DiGraph
@@ -78,7 +78,10 @@ def check_duo_attr(DuoBA, node):
 def check_label_for_buchi_edge(buchi, label, f_buchi_node, t_buchi_node):
     buchi_type = buchi.graph['type']
     if buchi_type == 'hard_buchi':
-        truth = buchi.edges[f_buchi_node, t_buchi_node]['guard'].check(label)
+        truth,vio_list = buchi.edges[f_buchi_node, t_buchi_node]['guard'].check(label)
+        #print(type(buchi.edges[f_buchi_node, t_buchi_node]['guard']))
+        #print(buchi.edges[f_buchi_node, t_buchi_node]['guard'])
+        #dist = buchi.edges[f_buchi_node, t_buchi_node]['guard'].distance(label)
         dist = 0
     if buchi_type == 'soft_buchi':
         truth = True
@@ -89,4 +92,4 @@ def check_label_for_buchi_edge(buchi, label, f_buchi_node, t_buchi_node):
             dist = buchi.edges[f_buchi_node, t_buchi_node]['softguard'].distance(label)
         else:
             dist = 1000
-    return truth, dist
+    return truth, dist, vio_list
