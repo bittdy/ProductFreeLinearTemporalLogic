@@ -49,21 +49,30 @@ open1 = patches.Ellipse(xy=(0,4),width=0.3,height=0.3,color='gray',fill='True')
 open2 = patches.Ellipse(xy=(4,2),width=0.3,height=0.3,color='gray',fill='True')
 ax1.add_artist(open1)
 ax1.add_artist(open2)
-#def update(i):
-#    label = 'timestep {0}'.format(i)
-#    print(label)
-#    # 更新直线和x轴（用一个新的x轴的标签）。
-#    # 用元组（Tuple）的形式返回在这一帧要被重新绘图的物体
-#    line.set_ydata(x - 5 + i)  # 这里是重点，更新y轴的数据
-#    ax.set_xlabel(label)    # 这里是重点，更新x轴的标签
-#    return repaint, ax
-#
-#
+
+req_list = []
+rep_list = []
+con_list = []
+
+def update(i):
+    label = 'timestep {0}'.format(i)
+    #确定机器人新位置
+    agent1.center = (agent1.center[0]+i/100,agent1.center[1])
+    agent1.center = (agent1.center[0]+i/100,agent1.center[1])
+    agent1.center = (agent1.center[0]+i/100,agent1.center[1])
+    #确定门，货物等物品状态
+    
+    #确定三个通信list中元素的添加与删除
+    
+    ax1.set_xlabel(label)    # 这里是重点，更新x轴的标签
+    return agent1, ax1
+
+
 #def movement(): #放到一个类里面去
 #    #确定每个机器人点的运动，并判断是否需要发出req，rep，con信号
-#
-#
-## FuncAnimation 会在每一帧都调用“update” 函数。
-## 在这里设置一个10帧的动画，每帧之间间隔200毫秒
-#anim = FuncAnimation(fig, update, frames=np.arange(0, 10), interval=200)
-#
+
+
+# FuncAnimation 会在每一帧都调用“update” 函数。
+# 在这里设置一个10帧的动画，每帧之间间隔200毫秒
+anim = FuncAnimation(fig1, update, frames=np.arange(0, 1000), interval=200)
+
