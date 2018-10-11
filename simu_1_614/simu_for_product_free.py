@@ -11,6 +11,7 @@ Created on Wed Oct 10 21:22:43 2018
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from matplotlib.lines import Line2D
 from matplotlib.animation import FuncAnimation  # 动图的核心函数
 #构建机器人运动序列
 
@@ -24,15 +25,30 @@ ax1.set_ylim(bottom = -0.5,top = 4.5)
 ax1.add_patch(patches.Rectangle((0.5,0.5),1,3))
 ax1.add_patch(patches.Rectangle((2.5,0.5),1,3))
 ax1.add_patch(patches.Rectangle((3.5,2.5),1,1))
+ax1.add_patch(patches.Rectangle((3.7,3.7),0.6,0.6))
 xyrange = np.arange(5)+0.5
 for i in xyrange:
     ax1.axhline(y = i,linestyle = '--')
     ax1.axvline(x = i,linestyle = '--')
 ##圆构成的机器人
-
-##文字
-##门，开关，货物，仓库
-#
+agent1 = patches.Ellipse(xy=(2,0.3),width=0.3,height=0.3,color='r',fill='True')
+agent2 = patches.Ellipse(xy=(1.7,0),width=0.3,height=0.3,color='r',fill='True')
+agent3 = patches.Ellipse(xy=(2.3,0),width=0.3,height=0.3,color='r',fill='True')
+ax1.add_artist(agent1)
+ax1.add_artist(agent2)
+ax1.add_artist(agent3)
+#文字，在之后的动画中的那一帧加
+#门
+door = Line2D((3,3),(3.53,4.5),linewidth='5',color='gray')
+ax1.add_line(door)
+#货物
+good = patches.Ellipse(xy=(2,2),width=0.15,height=0.15,color='green',fill='True')
+ax1.add_artist(good)
+#开关
+open1 = patches.Ellipse(xy=(0,4),width=0.3,height=0.3,color='gray',fill='True')
+open2 = patches.Ellipse(xy=(4,2),width=0.3,height=0.3,color='gray',fill='True')
+ax1.add_artist(open1)
+ax1.add_artist(open2)
 #def update(i):
 #    label = 'timestep {0}'.format(i)
 #    print(label)
