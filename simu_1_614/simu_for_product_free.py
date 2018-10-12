@@ -95,7 +95,7 @@ def movement(): #放到一个类里面去
     else:
         agent1_incre = [0,0]
     
-    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and len(rep_list)!=2):#agent2可以继续前进
+    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and 'rep1' not in rep_list):#agent2可以继续前进
         if agent2.center[0] < agents_path[1][goal_point_index[1]][0]:
             agent2_incre[0] = 0.01
         elif agent2.center[0] > agents_path[1][goal_point_index[1]][0]:
@@ -111,7 +111,7 @@ def movement(): #放到一个类里面去
     else:
         agent2_incre = [0,0]
         
-    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and len(rep_list)!=2):#agent3可以继续前进
+    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and 'rep2' not in rep_list):#agent3可以继续前进
         if agent3.center[0] < agents_path[2][goal_point_index[2]][0]:
             agent3_incre[0] = 0.01
         elif agent3.center[0] > agents_path[2][goal_point_index[2]][0]:
@@ -128,7 +128,7 @@ def movement(): #放到一个类里面去
         agent3_incre = [0,0]
     
     
-    if dist(agent1.center,agents_path[0][goal_point_index[0]])<0.01 and goal_point_index[0]+1<len(agents_path[0]):
+    if dist(agent1.center,agents_path[0][goal_point_index[0]])<0.03 and goal_point_index[0]+1<len(agents_path[0]):
         goal_point_index[0] = goal_point_index[0]+1
     if dist(agent2.center,agents_path[1][goal_point_index[1]])<0.01 and goal_point_index[1]+1<len(agents_path[1]):
         goal_point_index[1] = goal_point_index[1]+1
@@ -149,10 +149,12 @@ def update(i):
         door.set_linewidth('0')
     else:
         door.set_linewidth('5')
+        
     if dist(agent1.center,good.center)<0.03:
         good.center = agent1.center
-    elif dist(agent1.center,(4,4))<0.03:
-        good.set_color = 'r'
+    
+    if dist(agent1.center,[4,4])<0.1:
+        good.set_color('red')
         
     if dist(agent2.center,open1.center)<0.02:
         open1.set_color('yellow')
