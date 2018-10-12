@@ -19,38 +19,47 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.lines import Line2D
-from matplotlib.animation import FuncAnimation  # 动图的核心函数
-#定义每个机器人的速度
-agent1_vel = 1
-agent2_vel = 2
-agent3_vel = 3
+from matplotlib.animation import FuncAnimation 
+
 #构建机器人运动序列
-agents_path = [[(2,0.3),(2,1),(2,2),(2,3),(2,4),(3,4,'req'),(4,4)],
-               [(1.7,0),(0,0),(0,1),(0,2),(0,3),(0,4,'rep1'),(0,3)],
-               [(2.3,0),(3,0),(4,0),(4,1),(4,2,'rep2'),(4,1)]]
-goal_point_index = [1,1,1]
+agents_path = [[ [(4,0),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6)], [(4,7),(4,8),(4,9),(4,10),(4,11),(5,11,'req'),(6,11),(7,11,'req'),(6,11),(5,11),(4,11),(4,10),(4,9),(4,8),(4,7)] ], #agent1-2 goods depot
+               [ [], [] ],
+               [ [], [] ], #agent2-7 open1
+               [ [], [] ],
+               [ [], [] ],
+               [ [], [] ],
+               [ [], [] ],
+               [ [], [] ],
+               [ [], [] ], #agent8-13 open2
+               [ [], [] ],
+               [ [], [] ],
+               [ [], [] ],
+               [ [], [] ],
+               [ [], [] ]]
+goal_point_index = [1 for i in range(0,len(agents_path))]
 #创建画布
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111, aspect='equal')
-ax1.set_xlim(left = -0.5,right = 4.5)
-ax1.set_ylim(bottom = -0.5,top = 4.5)
+ax1.set_xlim(left = -0.5,right = 8.5)
+ax1.set_ylim(bottom = -0.5,top = 11.5)
 # 画出维持不变的实验环境以及要变的那些对象的初始位置
 #矩形构成的试验环境，蓝色为障碍物，白色为正常区域
-ax1.add_patch(patches.Rectangle((0.5,0.5),1,3))
-ax1.add_patch(patches.Rectangle((2.5,0.5),1,3))
-ax1.add_patch(patches.Rectangle((3.5,2.5),1,1))
-ax1.add_patch(patches.Rectangle((3.7,3.7),0.6,0.6))
-xyrange = np.arange(5)+0.5
+ax1.add_patch(patches.Rectangle((0.5,1.5),1,7))
+ax1.add_patch(patches.Rectangle((2.5,0.5),1,10))
+ax1.add_patch(patches.Rectangle((4.5,0.5),1,10))
+ax1.add_patch(patches.Rectangle((5.5,9.5),3,1))
+ax1.add_patch(patches.Rectangle((6.5,1.5),1,5))
+ax1.add_patch(patches.Rectangle((6.7,10.7),0.6,0.6))
+xyrange = np.arange(11)+0.5
 for i in xyrange:
     ax1.axhline(y = i,linestyle = '--')
     ax1.axvline(x = i,linestyle = '--')
 ##圆构成的机器人
-agent1 = patches.Ellipse(xy=(2,0.3),width=0.3,height=0.3,color='r',fill='True')
-agent2 = patches.Ellipse(xy=(1.7,0),width=0.3,height=0.3,color='r',fill='True')
-agent3 = patches.Ellipse(xy=(2.3,0),width=0.3,height=0.3,color='r',fill='True')
-ax1.add_artist(agent1)
-ax1.add_artist(agent2)
-ax1.add_artist(agent3)
+agents_list = []
+for i in range(0,len(agents_path)):
+    agent = patches.Ellipse(xy=(2,0.3),width=0.3,height=0.3,color='r',fill='True')
+    ax1.add_artist(agent)
+    agents_list.append(agent)
 #文字，在之后的动画中的那一帧加
 #门
 door = Line2D((3,3),(3.53,4.5),linewidth='5',color='gray')
