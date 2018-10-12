@@ -18,9 +18,9 @@ agent1_vel = 1
 agent2_vel = 2
 agent3_vel = 3
 #构建机器人运动序列
-agents_path = [[(2,0.3),(2,1),(2,2),(2,3),(2,4,'req'),(3,4),(4,4)],
-               [(1.7,0),(0,0),(0,1),(0,2),(0,3),(0,4,'rep1')],
-               [(2.3,0),(3,0),(4,0),(4,1),(4,2,'rep2')]]
+agents_path = [[(2,0.3),(2,1),(2,2),(2,3),(2,4),(3,4,'req'),(4,4)],
+               [(1.7,0),(0,0),(0,1),(0,2),(0,3),(0,4,'rep1'),(0,3)],
+               [(2.3,0),(3,0),(4,0),(4,1),(4,2,'rep2'),(4,1)]]
 goal_point_index = [1,1,1]
 #创建画布
 fig1 = plt.figure()
@@ -68,11 +68,11 @@ def movement(): #放到一个类里面去
     #确定每个机器人点的运动，并判断是否需要发出req，rep，con信号
     if len(agents_path[0][goal_point_index[0]])==3 and len(req_list)==0:
         req_list.append('req')
-    if len(agents_path[1][goal_point_index[1]])==3 and 'rep1' not in rep_list:
+    if len(agents_path[1][goal_point_index[1]])==3 and 'rep1' not in rep_list and dist(agent2.center,agents_path[1][goal_point_index[1]])<0.01:
         rep_list.append('rep1')
-    if len(agents_path[2][goal_point_index[2]])==3 and 'rep2' not in rep_list:
+    if len(agents_path[2][goal_point_index[2]])==3 and 'rep2' not in rep_list and dist(agent3.center,agents_path[2][goal_point_index[2]])<0.01:
         rep_list.append('rep2')
-    if dist(agent1.center,(3,3))>0.5 and len(con_list)==0:
+    if dist(agent1.center,(4,4))<0.5 and len(con_list)==0:
         con_list.append('con')
         
     agent1_incre = [0,0]
@@ -81,21 +81,21 @@ def movement(): #放到一个类里面去
     
     if len(req_list)==0 or (len(req_list)!=0 and len(rep_list)==2):#agent1可以继续前进
         if agent1.center[0] < agents_path[0][goal_point_index[0]][0]:
-            agent1_incre[0] = 0.01
+            agent1_incre[0] = 0.02
         elif agent1.center[0] > agents_path[0][goal_point_index[0]][0]:
-            agent1_incre[0] = -0.01
+            agent1_incre[0] = -0.02
         else:
             agent1_incre[0] = 0
         if agent1.center[1] < agents_path[0][goal_point_index[0]][1]:
-            agent1_incre[1] = 0.01
+            agent1_incre[1] = 0.02
         elif agent1.center[1] > agents_path[0][goal_point_index[0]][1]:
-            agent1_incre[1] = -0.01
+            agent1_incre[1] = -0.02
         else:
             agent1_incre[1] = 0
     else:
         agent1_incre = [0,0]
     
-    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0):#agent2可以继续前进
+    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and len(rep_list)!=2):#agent2可以继续前进
         if agent2.center[0] < agents_path[1][goal_point_index[1]][0]:
             agent2_incre[0] = 0.01
         elif agent2.center[0] > agents_path[1][goal_point_index[1]][0]:
@@ -111,7 +111,7 @@ def movement(): #放到一个类里面去
     else:
         agent2_incre = [0,0]
         
-    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0):#agent3可以继续前进
+    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and len(rep_list)!=2):#agent3可以继续前进
         if agent3.center[0] < agents_path[2][goal_point_index[2]][0]:
             agent3_incre[0] = 0.01
         elif agent3.center[0] > agents_path[2][goal_point_index[2]][0]:
@@ -145,31 +145,30 @@ def update(i):
     agent2.center = (agent2.center[0]+agent_incre[1][0],agent2.center[1]+agent_incre[1][1])
     agent3.center = (agent3.center[0]+agent_incre[2][0],agent3.center[1]+agent_incre[2][1])
     #确定门，货物等物品状态
-    if dist(agent2.center,open1.center)<0.01 and dist(agent3.center,open2.center)<0.01:
-        door.set_color('white')
+    if dist(agent2.center,open1.center)<0.02 and dist(agent3.center,open2.center)<0.02:
+        door.set_linewidth('0')
     else:
-        door.set_color('gray')
-        
-    if dist(agent1.center,good.center)<0.01:
+        door.set_linewidth('5')
+    if dist(agent1.center,good.center)<0.03:
         good.center = agent1.center
-    elif dist(agent1.center,(4,4))<0.01:
-        good.center = (2,2)
+    elif dist(agent1.center,(4,4))<0.03:
+        good.set_color = 'r'
         
-    if dist(agent2.center,open1.center)<0.01:
+    if dist(agent2.center,open1.center)<0.02:
         open1.set_color('yellow')
     else:
         open1.set_color('gray')  
         
-    if dist(agent3.center,open2.center)<0.01:
+    if dist(agent3.center,open2.center)<0.02:
         open2.set_color('yellow')
     else:
         open2.set_color('gray')   
     
-    repaint = (agent1,agent2,agent3,door,good,open1,open2)
-    ax1.set_xlabel(label)    # 这里是重点，更新x轴的标签
+    repaint = (door,agent1,agent2,agent3,good,open1,open2)
+    ax1.set_xlabel(label)    
     return repaint, ax1
 
 # FuncAnimation 会在每一帧都调用“update” 函数。
 # 在这里设置一个10帧的动画，每帧之间间隔200毫秒
-anim = FuncAnimation(fig1, update, frames=np.arange(0, 1000), interval=200)
+anim = FuncAnimation(fig1, update, frames=np.arange(0, 1000), interval=20)
 
