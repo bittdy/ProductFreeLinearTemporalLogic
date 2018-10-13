@@ -70,93 +70,105 @@ for i in range(0,len(agents_path)):
 door = Line2D((6,6),(10.53,11.5),linewidth='5',color='gray')
 ax1.add_line(door)
 ##货物
-#good = patches.Ellipse(xy=(2,2),width=0.15,height=0.15,color='green',fill='True')
-#ax1.add_artist(good)
+good = patches.Ellipse(xy=(4,7),width=0.15,height=0.15,color='green',fill='True')
+ax1.add_artist(good)
 ##开关
-#open1 = patches.Ellipse(xy=(0,4),width=0.3,height=0.3,color='gray',fill='True')
-#open2 = patches.Ellipse(xy=(4,2),width=0.3,height=0.3,color='gray',fill='True')
-#ax1.add_artist(open1)
-#ax1.add_artist(open2)
-#
-#req_list = []
-#rep_list = []
-#con_list = []
-#
-#def dist(pose1,pose2):
-#    return ((pose1[0]-pose2[0])**2+(pose1[1]-pose2[1])**2)**0.5
-#
-#def movement(): #放到一个类里面去
-#    #确定每个机器人点的运动，并判断是否需要发出req，rep，con信号
-#    if len(agents_path[0][goal_point_index[0]])==3 and len(req_list)==0:
-#        req_list.append('req')
-#    if len(agents_path[1][goal_point_index[1]])==3 and 'rep1' not in rep_list and dist(agent2.center,agents_path[1][goal_point_index[1]])<0.01:
-#        rep_list.append('rep1')
-#    if len(agents_path[2][goal_point_index[2]])==3 and 'rep2' not in rep_list and dist(agent3.center,agents_path[2][goal_point_index[2]])<0.01:
-#        rep_list.append('rep2')
-#    if dist(agent1.center,(4,4))<0.5 and len(con_list)==0:
-#        con_list.append('con')
-#        
-#    agent1_incre = [0,0]
-#    agent2_incre = [0,0]  
-#    agent3_incre = [0,0]  
-#    
-#    if len(req_list)==0 or (len(req_list)!=0 and len(rep_list)==2):#agent1可以继续前进
-#        if agent1.center[0] < agents_path[0][goal_point_index[0]][0]:
-#            agent1_incre[0] = 0.02
-#        elif agent1.center[0] > agents_path[0][goal_point_index[0]][0]:
-#            agent1_incre[0] = -0.02
-#        else:
-#            agent1_incre[0] = 0
-#        if agent1.center[1] < agents_path[0][goal_point_index[0]][1]:
-#            agent1_incre[1] = 0.02
-#        elif agent1.center[1] > agents_path[0][goal_point_index[0]][1]:
-#            agent1_incre[1] = -0.02
-#        else:
-#            agent1_incre[1] = 0
-#    else:
-#        agent1_incre = [0,0]
-#    
-#    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and 'rep1' not in rep_list):#agent2可以继续前进
-#        if agent2.center[0] < agents_path[1][goal_point_index[1]][0]:
-#            agent2_incre[0] = 0.01
-#        elif agent2.center[0] > agents_path[1][goal_point_index[1]][0]:
-#            agent2_incre[0] = -0.01
-#        else:
-#            agent2_incre[0] = 0
-#        if agent2.center[1] < agents_path[1][goal_point_index[1]][1]:
-#            agent2_incre[1] = 0.01
-#        elif agent2.center[1] > agents_path[1][goal_point_index[1]][1]:
-#            agent2_incre[1] = -0.01
-#        else:
-#            agent2_incre[1] = 0
-#    else:
-#        agent2_incre = [0,0]
-#        
-#    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and 'rep2' not in rep_list):#agent3可以继续前进
-#        if agent3.center[0] < agents_path[2][goal_point_index[2]][0]:
-#            agent3_incre[0] = 0.01
-#        elif agent3.center[0] > agents_path[2][goal_point_index[2]][0]:
-#            agent3_incre[0] = -0.01
-#        else:
-#            agent3_incre[0] = 0
-#        if agent3.center[1] < agents_path[2][goal_point_index[2]][1]:
-#            agent3_incre[1] = 0.01
-#        elif agent3.center[1] > agents_path[2][goal_point_index[2]][1]:
-#            agent3_incre[1] = -0.01
-#        else:
-#            agent3_incre[1] = 0
-#    else:
-#        agent3_incre = [0,0]
-#    
-#    
-#    if dist(agent1.center,agents_path[0][goal_point_index[0]])<0.03 and goal_point_index[0]+1<len(agents_path[0]):
-#        goal_point_index[0] = goal_point_index[0]+1
-#    if dist(agent2.center,agents_path[1][goal_point_index[1]])<0.01 and goal_point_index[1]+1<len(agents_path[1]):
-#        goal_point_index[1] = goal_point_index[1]+1
-#    if dist(agent3.center,agents_path[2][goal_point_index[2]])<0.01 and goal_point_index[2]+1<len(agents_path[2]):
-#        goal_point_index[2] = goal_point_index[2]+1
-#        
-#    return [agent1_incre,agent2_incre,agent3_incre]
+open1 = patches.Ellipse(xy=(1,11),width=0.3,height=0.3,color='gray',fill='True')
+open2 = patches.Ellipse(xy=(7,9),width=0.3,height=0.3,color='gray',fill='True')
+ax1.add_artist(open1)
+ax1.add_artist(open2)
+
+req_list = []
+rep_list = []
+con_list = []
+
+def dist(pose1,pose2):
+    return ((pose1[0]-pose2[0])**2+(pose1[1]-pose2[1])**2)**0.5
+
+def movement(): #放到一个类里面去
+    #确定每个机器人点的运动，并判断是否需要发出req，rep，con信号
+    for i in range(0,len(agents_list)):
+        
+        #添加req，rep，con的机制
+        
+        #确定谁去rep的机制
+        
+        #rep，req后的动作控制
+        
+        #防回头
+        
+        #防长时间占用
+        
+    if len(agents_path[0][goal_point_index[0]])==3 and len(req_list)==0:
+        req_list.append('req')
+    if len(agents_path[1][goal_point_index[1]])==3 and 'rep1' not in rep_list and dist(agent2.center,agents_path[1][goal_point_index[1]])<0.01:
+        rep_list.append('rep1')
+    if len(agents_path[2][goal_point_index[2]])==3 and 'rep2' not in rep_list and dist(agent3.center,agents_path[2][goal_point_index[2]])<0.01:
+        rep_list.append('rep2')
+    if dist(agent1.center,(4,4))<0.5 and len(con_list)==0:
+        con_list.append('con')
+        
+    agent1_incre = [0,0]
+    agent2_incre = [0,0]  
+    agent3_incre = [0,0]  
+    
+    if len(req_list)==0 or (len(req_list)!=0 and len(rep_list)==2):#agent1可以继续前进
+        if agent1.center[0] < agents_path[0][goal_point_index[0]][0]:
+            agent1_incre[0] = 0.02
+        elif agent1.center[0] > agents_path[0][goal_point_index[0]][0]:
+            agent1_incre[0] = -0.02
+        else:
+            agent1_incre[0] = 0
+        if agent1.center[1] < agents_path[0][goal_point_index[0]][1]:
+            agent1_incre[1] = 0.02
+        elif agent1.center[1] > agents_path[0][goal_point_index[0]][1]:
+            agent1_incre[1] = -0.02
+        else:
+            agent1_incre[1] = 0
+    else:
+        agent1_incre = [0,0]
+    
+    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and 'rep1' not in rep_list):#agent2可以继续前进
+        if agent2.center[0] < agents_path[1][goal_point_index[1]][0]:
+            agent2_incre[0] = 0.01
+        elif agent2.center[0] > agents_path[1][goal_point_index[1]][0]:
+            agent2_incre[0] = -0.01
+        else:
+            agent2_incre[0] = 0
+        if agent2.center[1] < agents_path[1][goal_point_index[1]][1]:
+            agent2_incre[1] = 0.01
+        elif agent2.center[1] > agents_path[1][goal_point_index[1]][1]:
+            agent2_incre[1] = -0.01
+        else:
+            agent2_incre[1] = 0
+    else:
+        agent2_incre = [0,0]
+        
+    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and 'rep2' not in rep_list):#agent3可以继续前进
+        if agent3.center[0] < agents_path[2][goal_point_index[2]][0]:
+            agent3_incre[0] = 0.01
+        elif agent3.center[0] > agents_path[2][goal_point_index[2]][0]:
+            agent3_incre[0] = -0.01
+        else:
+            agent3_incre[0] = 0
+        if agent3.center[1] < agents_path[2][goal_point_index[2]][1]:
+            agent3_incre[1] = 0.01
+        elif agent3.center[1] > agents_path[2][goal_point_index[2]][1]:
+            agent3_incre[1] = -0.01
+        else:
+            agent3_incre[1] = 0
+    else:
+        agent3_incre = [0,0]
+    
+    
+    if dist(agent1.center,agents_path[0][goal_point_index[0]])<0.03 and goal_point_index[0]+1<len(agents_path[0]):
+        goal_point_index[0] = goal_point_index[0]+1
+    if dist(agent2.center,agents_path[1][goal_point_index[1]])<0.01 and goal_point_index[1]+1<len(agents_path[1]):
+        goal_point_index[1] = goal_point_index[1]+1
+    if dist(agent3.center,agents_path[2][goal_point_index[2]])<0.01 and goal_point_index[2]+1<len(agents_path[2]):
+        goal_point_index[2] = goal_point_index[2]+1
+        
+    return [agent1_incre,agent2_incre,agent3_incre]
 #
 #def update(i):
 #    label = 'timestep {0}'.format(i)
