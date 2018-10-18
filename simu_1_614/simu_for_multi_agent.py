@@ -88,6 +88,8 @@ def movement(): #放到一个类里面去
     #确定每个机器人点的运动，并判断是否需要发出req，rep，con信号
     #最早的请求时间
     Tm = float('inf')
+    event = ''
+    raise_agent = -1
     for i in range(0,agents_split[0]+1):
         #限定机器人视野为3，找第一个request，加入到所有机器人的消息队列中
         current_goal = goal_point_index[i]
@@ -105,6 +107,8 @@ def movement(): #放到一个类里面去
                 else:
                     if (j+1)/agent_velocity[i]*20<Tm:
                         Tm = (j+1)/agent_velocity[i]*20
+                        event = agents_path[i][current_goal][2]
+                        raise_agent = i
                     for item in comm_dict:
                         if item['agent_state'] == 'lock':
                             continue
@@ -127,9 +131,9 @@ def movement(): #放到一个类里面去
 #                        item['estimate_time'].append(j+1)
 #                    break
                     
-    #确定谁去reply
-    min_rep_dis = float('inf')
-    min_rep_ind = -1   
+    #确定谁去reply，机器人集群1
+    min_rep_dis1 = float('inf')
+    min_rep_ind1 = -1   
     for i in range(agents_split[0]+1,agents_split[1]+1):
         #检查是否有还未相应的request
         has_req = 0
@@ -147,21 +151,121 @@ def movement(): #放到一个类里面去
                 continue
             #计算代价
             rep_dis = abs(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11)-Tm)+10*(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11))
-            if rep_dis < min_rep_dis:
-                min_rep_dis = rep_dis
-                min_rep_ind = i
+            if rep_dis < min_rep_dis1:
+                min_rep_dis1 = rep_dis
+                min_rep_ind1 = i
                 
     #锁定该机器人，删除request，改变goal——position，寄存当前goalposition
-    
-    
-        #添加req，rep，con的机制
+    comm_dict[min_rep_ind1]['agent_state'] = 'lock'
+    goal_point_index[min_rep_ind1] = (1,11)
+    for i in range(agents_split[0]+1,agents_split[1]+1): 
+        #先在响应的机器人中保留req信息，方便rep时向指定机器人发送消息，在rep时再删掉对应的req
+        if i==min_rep_ind1:
+            continue
+        _index = comm_dict[i]['raise_agent'].index(raise_agent)
+        comm_dict[i]['raise_agent'].pop(_index)
+        comm_dict[i]['raise_event'].pop(_index)
+        comm_dict[i]['request_position'].pop(_index)
+        comm_dict[i]['estimate_time'].pop(_index)
         
         
-        #多个req能否一个rep解决
+    #机器人集群2
+    min_rep_dis2 = float('inf')
+    min_rep_ind2 = -1 
+    for i in range(agents_split[1]+1,agents_split[2]+1):
+        #检查是否有还未相应的request
+        has_req = 0
+        for item in comm_dict[i]['raise_event']:
+            if item[0:3] == 'req':
+                has_req = 1
+                break
+        if has_req == 1:
+            break
+        
+    if has_req == 1:
+        for i in range(agents_split[0]+1,agents_split[1]+1):
+            #锁定状态的机器人不能reply
+            if comm_dict[i]['agent_state'] == 'lock':
+                continue
+            #计算代价
+            rep_dis = abs(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11)-Tm)+10*(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11))
+            if rep_dis < min_rep_dis2:
+                min_rep_dis2 = rep_dis
+                min_rep_ind2 = i
+                
+    #锁定该机器人，删除request，改变goal——position，寄存当前goalposition
+    comm_dict[min_rep_ind2]['agent_state'] = 'lock'
+    goal_point_index[min_rep_ind2] = (7,9)
+    for i in range(agents_split[0]+1,agents_split[1]+1): 
+        #先在响应的机器人中保留req信息，方便rep时向指定机器人发送消息，在rep时再删掉对应的req
+        if i==min_rep_ind2:
+            continue
+        _index = comm_dict[i]['raise_event'].index(event)
+        comm_dict[i]['raise_agent'].pop(_index)
+        comm_dict[i]['raise_event'].pop(_index)
+        comm_dict[i]['request_position'].pop(_index)
+        comm_dict[i]['estimate_time'].pop(_index)
+        
+    #如果到达open点，向指定的机器人发送rep，同时删除本身所存的req信息，有两个以上req同时时这里要重写
+    if dist(agents_list[min_rep_ind1].center,(1,11))<0.001:
+        comm_dict[raise_agent]['raise_event'].append('rep_1')
+        comm_dict[raise_agent]['raise_agent'].append(min_rep_ind1)
+        comm_dict[raise_agent]['request_position'].append((1,11))
+        comm_dict[raise_agent]['estimate_time'].append(0)
+        
+        _index = comm_dict[min_rep_ind1]['raise_agent'].index(raise_agent)
+        comm_dict[min_rep_ind1]['raise_event'].pop(_index)
+        comm_dict[min_rep_ind1]['raise_agent'].pop(_index)
+        comm_dict[min_rep_ind1]['request_position'].pop(_index)
+        comm_dict[min_rep_ind1]['estimate_time'].pop(_index)
+        
+    if dist(agents_list[min_rep_ind2].center,(7,9))<0.001:
+        comm_dict[raise_agent]['raise_event'].append('rep_2')
+        comm_dict[raise_agent]['raise_agent'].append(min_rep_ind2)
+        comm_dict[raise_agent]['request_position'].append((7,9))
+        comm_dict[raise_agent]['estimate_time'].append(0)
+        
+        _index = comm_dict[min_rep_ind1]['raise_agent'].index(raise_agent)
+        comm_dict[min_rep_ind1]['raise_event'].pop(_index)
+        comm_dict[min_rep_ind1]['raise_agent'].pop(_index)
+        comm_dict[min_rep_ind1]['request_position'].pop(_index)
+        comm_dict[min_rep_ind1]['estimate_time'].pop(_index)
+        
+    #如果机器人con，删掉自身所存的req和rep，恢复机器人目标点，解除lock，要匹配是哪个req
+    for p in range(0,2):
+        if dist(agents_list[p].center,(7,11))<0.001:
+            cop_req = 'req_1'
+        elif dist(agents_list[p].center,(5,11))<0.001:
+            cop_req = 'req_2'
+        _index = comm_dict[p]['raise_event'].index(cop_req)
+        comm_dict[p]['raise_event'].pop(_index)
+        comm_dict[p]['raise_agent'].pop(_index)
+        comm_dict[p]['request_position'].pop(_index)
+        comm_dict[p]['estimate_time'].pop(_index)
+        
+        _index = comm_dict[p]['raise_event'].index('rep_1')
+        comm_dict[comm_dict[p]['raise_agent'][_index]]['agent_state'] = 'normal'
+        goal_point_index[comm_dict[p]['raise_agent'][_index]] = agents_path[comm_dict[p]['raise_agent'][_index]].index((1,9))
+        comm_dict[p]['raise_event'].pop(_index)
+        comm_dict[p]['raise_agent'].pop(_index)
+        comm_dict[p]['request_position'].pop(_index)
+        comm_dict[p]['estimate_time'].pop(_index)   
+
+        
+        _index = comm_dict[p]['raise_event'].index('rep_2')
+        comm_dict[comm_dict[p]['raise_agent'][_index]]['agent_state'] = 'normal'
+        goal_point_index[comm_dict[p]['raise_agent'][_index]] = agents_path[comm_dict[p]['raise_agent'][_index]].index((7,7))
+        comm_dict[p]['raise_event'].pop(_index)
+        comm_dict[p]['raise_agent'].pop(_index)
+        comm_dict[p]['request_position'].pop(_index)
+        comm_dict[p]['estimate_time'].pop(_index)      
         
         
-        #rep，req后的动作控制
-        
+        #rep，req后的动作控制，判断是元组还是整数
+    for m in range(0,2):
+        #可以走向下一个点
+        if len(agents_path[m][goal_point_index[m]])!=4 or (len(agents_path[m][goal_point_index[m]])==4 and 'rep_1' in comm_dict[m]['raise_event'] and 'rep_2' in comm_dict[m]['raise_event']):
+            
         
         #防长时间占用
         
