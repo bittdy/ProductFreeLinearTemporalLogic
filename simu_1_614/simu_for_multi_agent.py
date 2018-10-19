@@ -42,6 +42,7 @@ agents_path = [[ 9,(4,0),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(4,7),(4,8),(4,9),(
                [ 2,(8,4),(8,5),(8,6),(8,7),(7,7),(6,7),(6,6),(6,5),(6,4),(6,3),(7,3),(8,3),(8,4) ],
                [ 2,(8,6),(8,7),(7,7),(6,7),(6,6),(6,5),(6,4),(6,3),(7,3),(8,3),(8,4),(8,5),(8,6) ]]
 goal_point_index = [2 for i in range(0,len(agents_path))]
+agents_incre = [[0,0] for i in range(0,len(agents_path))]
 #创建画布
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111, aspect='equal')
@@ -83,7 +84,26 @@ comm_dict = [{'agent_state':'normal','raise_agent':[],'raise_event':[],'request_
 def dist(pose1,pose2):
     return ((pose1[0]-pose2[0])**2+(pose1[1]-pose2[1])**2)**0.5
 
-
+def get_incre(pose1,pose2):
+    agent_incre = [0,0]
+    go_next = 0
+    if pose1[0]-pose2[0]>0.001:
+        agent_incre = [-0.02,0]
+        return agent_incre,go_next
+    elif pose1[0]-pose2[0]<-0.001:
+        agent_incre = [0.02,0]
+        return agent_incre,go_next
+    elif pose1[1]-pose2[1]>0.001:
+        agent_incre = [0,-0.02]
+        return agent_incre,go_next
+    elif pose1[1]-pose2[1]<-0.001:
+        agent_incre = [0,0.02]
+        return agent_incre,go_next
+    else:
+        agent_incre = [0,0]
+        go_next = 1
+        return agent_incre,go_next
+    
 def movement(): #放到一个类里面去
     #确定每个机器人点的运动，并判断是否需要发出req，rep，con信号
     #最早的请求时间
@@ -261,92 +281,36 @@ def movement(): #放到一个类里面去
         comm_dict[p]['estimate_time'].pop(_index)      
         
         
-        #rep，req后的动作控制，判断是元组还是整数
+        #rep，req后的动作控制，要判断目标点是元组还是整数
     for m in range(0,2):
         #可以走向下一个点
         if len(agents_path[m][goal_point_index[m]])!=4 or (len(agents_path[m][goal_point_index[m]])==4 and 'rep_1' in comm_dict[m]['raise_event'] and 'rep_2' in comm_dict[m]['raise_event']):
-            
+            agents_incre[m],go_next = get_incre(agents_list[m],agents_path[m][goal_point_index[m]])
+            if go_next == 1:
+                goal_point_index[m] = goal_point_index[m] + 1
+                if goal_point_index[m] == len(agents_path[m]):
+                    goal_point_index[m] = agents_path[m][0]
+        else:
+            agents_incre[m] = [0,0]
         
-        #防长时间占用
-        
-    if len(agents_path[0][goal_point_index[0]])==3 and len(req_list)==0:
-        req_list.append('req')
-    if len(agents_path[1][goal_point_index[1]])==3 and 'rep1' not in rep_list and dist(agent2.center,agents_path[1][goal_point_index[1]])<0.01:
-        rep_list.append('rep1')
-    if len(agents_path[2][goal_point_index[2]])==3 and 'rep2' not in rep_list and dist(agent3.center,agents_path[2][goal_point_index[2]])<0.01:
-        rep_list.append('rep2')
-    if dist(agent1.center,(4,4))<0.5 and len(con_list)==0:
-        con_list.append('con')
-        
-    agent1_incre = [0,0]
-    agent2_incre = [0,0]  
-    agent3_incre = [0,0]  
-    
-    if len(req_list)==0 or (len(req_list)!=0 and len(rep_list)==2):#agent1可以继续前进
-        if agent1.center[0] < agents_path[0][goal_point_index[0]][0]:
-            agent1_incre[0] = 0.02
-        elif agent1.center[0] > agents_path[0][goal_point_index[0]][0]:
-            agent1_incre[0] = -0.02
+    for n in range(2,len(agents_path)):
+        if type(goal_point_index[n])=='tuple':
+            agents_incre[n],go_next = get_incre(agents_list[n],goal_point_index[n])
         else:
-            agent1_incre[0] = 0
-        if agent1.center[1] < agents_path[0][goal_point_index[0]][1]:
-            agent1_incre[1] = 0.02
-        elif agent1.center[1] > agents_path[0][goal_point_index[0]][1]:
-            agent1_incre[1] = -0.02
-        else:
-            agent1_incre[1] = 0
-    else:
-        agent1_incre = [0,0]
-    
-    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and 'rep1' not in rep_list):#agent2可以继续前进
-        if agent2.center[0] < agents_path[1][goal_point_index[1]][0]:
-            agent2_incre[0] = 0.01
-        elif agent2.center[0] > agents_path[1][goal_point_index[1]][0]:
-            agent2_incre[0] = -0.01
-        else:
-            agent2_incre[0] = 0
-        if agent2.center[1] < agents_path[1][goal_point_index[1]][1]:
-            agent2_incre[1] = 0.01
-        elif agent2.center[1] > agents_path[1][goal_point_index[1]][1]:
-            agent2_incre[1] = -0.01
-        else:
-            agent2_incre[1] = 0
-    else:
-        agent2_incre = [0,0]
-        
-    if len(req_list)==0 or (len(req_list)!=0 and len(con_list)!=0) or (len(req_list)!=0 and 'rep2' not in rep_list):#agent3可以继续前进
-        if agent3.center[0] < agents_path[2][goal_point_index[2]][0]:
-            agent3_incre[0] = 0.01
-        elif agent3.center[0] > agents_path[2][goal_point_index[2]][0]:
-            agent3_incre[0] = -0.01
-        else:
-            agent3_incre[0] = 0
-        if agent3.center[1] < agents_path[2][goal_point_index[2]][1]:
-            agent3_incre[1] = 0.01
-        elif agent3.center[1] > agents_path[2][goal_point_index[2]][1]:
-            agent3_incre[1] = -0.01
-        else:
-            agent3_incre[1] = 0
-    else:
-        agent3_incre = [0,0]
-    
-    
-    if dist(agent1.center,agents_path[0][goal_point_index[0]])<0.03 and goal_point_index[0]+1<len(agents_path[0]):
-        goal_point_index[0] = goal_point_index[0]+1
-    if dist(agent2.center,agents_path[1][goal_point_index[1]])<0.01 and goal_point_index[1]+1<len(agents_path[1]):
-        goal_point_index[1] = goal_point_index[1]+1
-    if dist(agent3.center,agents_path[2][goal_point_index[2]])<0.01 and goal_point_index[2]+1<len(agents_path[2]):
-        goal_point_index[2] = goal_point_index[2]+1
-        
-    return [agent1_incre,agent2_incre,agent3_incre]
+            agents_incre[n],go_next = get_incre(agents_list[n],agents_path[n][goal_point_index[n]])
+            if go_next == 1:
+                goal_point_index[n] = goal_point_index[n] + 1
+                if goal_point_index[n] == len(agents_path[n]):
+                    goal_point_index[n] = agents_path[n][0]
+
+    return agents_incre
 
 def update(i):
     label = 'timestep {0}'.format(i)
     #确定机器人新位置
-    agent_incre = movement()
-    agent1.center = (agent1.center[0]+agent_incre[0][0],agent1.center[1]+agent_incre[0][1])
-    agent2.center = (agent2.center[0]+agent_incre[1][0],agent2.center[1]+agent_incre[1][1])
-    agent3.center = (agent3.center[0]+agent_incre[2][0],agent3.center[1]+agent_incre[2][1])
+    agents_incre = movement()
+    for p in range(0,len(agents_list)):
+        agents_list[p].center = (agents_list[p].center[0]+agents_incre[p][0],agents_list[p].center[1]+agents_incre[p][1])
     #确定门，货物等物品状态
     if dist(agent2.center,open1.center)<0.02 and dist(agent3.center,open2.center)<0.02:
         door.set_linewidth('0')
