@@ -312,28 +312,39 @@ def update(i):
     for p in range(0,len(agents_list)):
         agents_list[p].center = (agents_list[p].center[0]+agents_incre[p][0],agents_list[p].center[1]+agents_incre[p][1])
     #确定门，货物等物品状态
-    if dist(agent2.center,open1.center)<0.02 and dist(agent3.center,open2.center)<0.02:
+    open1_on = 0
+    open2_on = 0
+    for t in range(agents_split[0]+1,agents_split[1]+1):    
+        if dist(agents_list[t].center,open1.center)<0.001:
+            open1.set_color('yellow')
+            open1_on = 1
+        else:
+            open1.set_color('gray')
+            open1_on = 0
+    
+    for t in range(agents_split[1]+1,agents_split[2]+1):    
+        if dist(agents_list[t].center,open2.center)<0.001:
+            open2.set_color('yellow')
+            open2_on = 1
+        else:
+            open2.set_color('gray')
+            open2_on = 0
+            
+    if open1_on == 1 and open2_on == 1:
         door.set_linewidth('0')
     else:
         door.set_linewidth('5')
-        
-    if dist(agent1.center,good.center)<0.03:
-        good.center = agent1.center
     
-    if dist(agent1.center,[4,4])<0.1:
-        good.set_color('red')
-        
-    if dist(agent2.center,open1.center)<0.02:
-        open1.set_color('yellow')
-    else:
-        open1.set_color('gray')  
-        
-    if dist(agent3.center,open2.center)<0.02:
-        open2.set_color('yellow')
-    else:
-        open2.set_color('gray')   
+    #for t in range(0,2)
+     #   if dist(agent1.center,good.center)<0.03:
+      #      good.center = agent1.center
     
-    repaint = (door,agent1,agent2,agent3,good,open1,open2)
+    #if dist(agent1.center,[4,4])<0.1:
+     #   good.set_color('red')
+        
+ 
+    
+    repaint = (door,agents_list,open1,open2)
     ax1.set_xlabel(label)    
     return repaint, ax1
 
