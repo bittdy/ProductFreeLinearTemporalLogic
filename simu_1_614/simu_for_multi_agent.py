@@ -182,6 +182,8 @@ def movement(): #放到一个类里面去
         #先在响应的机器人中保留req信息，方便rep时向指定机器人发送消息，在rep时再删掉对应的req
         if i==min_rep_ind1:
             continue
+        if raise_agent == -1:
+            break
         _index = comm_dict[i]['raise_agent'].index(raise_agent)
         comm_dict[i]['raise_agent'].pop(_index)
         comm_dict[i]['raise_event'].pop(_index)
@@ -218,6 +220,8 @@ def movement(): #放到一个类里面去
     goal_point_index[min_rep_ind2] = (7,9)
     for i in range(agents_split[0]+1,agents_split[1]+1): 
         #先在响应的机器人中保留req信息，方便rep时向指定机器人发送消息，在rep时再删掉对应的req
+        if event == '':
+            break
         if i==min_rep_ind2:
             continue
         _index = comm_dict[i]['raise_event'].index(event)
@@ -253,10 +257,13 @@ def movement(): #放到一个类里面去
         
     #如果机器人con，删掉自身所存的req和rep，恢复机器人目标点，解除lock，要匹配是哪个req
     for p in range(0,2):
+        cop_req = ''
         if dist(agents_list[p].center,(7,11))<0.001:
             cop_req = 'req_1'
         elif dist(agents_list[p].center,(5,11))<0.001:
             cop_req = 'req_2'
+        if cop_req == '':
+            continue
         _index = comm_dict[p]['raise_event'].index(cop_req)
         comm_dict[p]['raise_event'].pop(_index)
         comm_dict[p]['raise_agent'].pop(_index)
@@ -285,7 +292,7 @@ def movement(): #放到一个类里面去
     for m in range(0,2):
         #可以走向下一个点
         if len(agents_path[m][goal_point_index[m]])!=4 or (len(agents_path[m][goal_point_index[m]])==4 and 'rep_1' in comm_dict[m]['raise_event'] and 'rep_2' in comm_dict[m]['raise_event']):
-            agents_incre[m],go_next = get_incre(agents_list[m],agents_path[m][goal_point_index[m]])
+            agents_incre[m],go_next = get_incre(agents_list[m].center,agents_path[m][goal_point_index[m]])
             if go_next == 1:
                 goal_point_index[m] = goal_point_index[m] + 1
                 if goal_point_index[m] == len(agents_path[m]):
@@ -294,10 +301,10 @@ def movement(): #放到一个类里面去
             agents_incre[m] = [0,0]
         
     for n in range(2,len(agents_path)):
-        if type(goal_point_index[n])=='tuple':
-            agents_incre[n],go_next = get_incre(agents_list[n],goal_point_index[n])
+        if isinstance(goal_point_index[n],tuple):
+            agents_incre[n],go_next = get_incre(agents_list[n].center,goal_point_index[n])
         else:
-            agents_incre[n],go_next = get_incre(agents_list[n],agents_path[n][goal_point_index[n]])
+            agents_incre[n],go_next = get_incre(agents_list[n].center,agents_path[n][goal_point_index[n]])
             if go_next == 1:
                 goal_point_index[n] = goal_point_index[n] + 1
                 if goal_point_index[n] == len(agents_path[n]):
