@@ -42,6 +42,7 @@ agents_path = [[ 9,(4,0),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(4,7),(4,8),(4,9),(
                [ 2,(8,4),(8,5),(8,6),(8,7),(7,7),(6,7),(6,6),(6,5),(6,4),(6,3),(7,3),(8,3),(8,4) ],
                [ 2,(8,6),(8,7),(7,7),(6,7),(6,6),(6,5),(6,4),(6,3),(7,3),(8,3),(8,4),(8,5),(8,6) ]]
 goal_point_index = [2 for i in range(0,len(agents_path))]
+current_point_index = [1 for i in range(0,len(agents_path))]
 agents_incre = [[0,0] for i in range(0,len(agents_path))]
 #创建画布
 fig1 = plt.figure()
@@ -87,17 +88,17 @@ def dist(pose1,pose2):
 def get_incre(pose1,pose2):
     agent_incre = [0,0]
     go_next = 0
-    if pose1[0]-pose2[0]>0.001:
-        agent_incre = [-0.02,0]
-        return agent_incre,go_next
-    elif pose1[0]-pose2[0]<-0.001:
-        agent_incre = [0.02,0]
-        return agent_incre,go_next
-    elif pose1[1]-pose2[1]>0.001:
+    if pose1[1]-pose2[1]>0.001:
         agent_incre = [0,-0.02]
         return agent_incre,go_next
     elif pose1[1]-pose2[1]<-0.001:
         agent_incre = [0,0.02]
+        return agent_incre,go_next
+    elif pose1[0]-pose2[0]>0.001:
+        agent_incre = [-0.02,0]
+        return agent_incre,go_next
+    elif pose1[0]-pose2[0]<-0.001:
+        agent_incre = [0.02,0]
         return agent_incre,go_next
     else:
         agent_incre = [0,0]
@@ -115,7 +116,7 @@ def movement(): #放到一个类里面去
         current_goal = goal_point_index[i]
         horizen = 3
         for j in range(0,horizen):
-            current_goal = current_goal + 1
+            current_goal = goal_point_index[i] + j
             #如果超过路径长度，重置为后缀第一个路径点
             if current_goal == len(agents_path[i]):
                 current_goal = agents_path[i][0]
@@ -129,13 +130,20 @@ def movement(): #放到一个类里面去
                         Tm = (j+1)/agent_velocity[i]*20
                         event = agents_path[i][current_goal][2]
                         raise_agent = i
-                    for item in comm_dict:
-                        if item['agent_state'] == 'lock':
+                    #加入到本机器人消息队列
+                    comm_dict[i]['raise_agent'].append(i)
+                    comm_dict[i]['raise_event'].append(agents_path[i][current_goal][2])
+                    comm_dict[i]['request_position'].append(agents_path[i][current_goal][3])
+                    comm_dict[i]['estimate_time'].append((j+1)/agent_velocity[i]*20) #单位为ms
+                    #加入到协作机器人消息队列
+                    for t in range(2,len(comm_dict)):
+                        if comm_dict[t]['agent_state'] == 'lock':
                             continue
-                        item['raise_agent'].append(i)
-                        item['raise_event'].append(agents_path[i][current_goal][2])
-                        item['request_position'].append(agents_path[i][current_goal][3])
-                        item['estimate_time'].append((j+1)/agent_velocity[i]*20) #单位为ms
+                        comm_dict[t]['raise_agent'].append(i)
+                        comm_dict[t]['raise_event'].append(agents_path[i][current_goal][2])
+                        comm_dict[t]['request_position'].append(agents_path[i][current_goal][3])
+                        #estimate_time的计算可能有问题
+                        comm_dict[t]['estimate_time'].append((j+1)/agent_velocity[i]*20) #单位为ms
                     break
 #confirm事件之后再加
 #            elif len(agents_path[i][current_goal]) == 3:#有confirm event raise
@@ -157,6 +165,8 @@ def movement(): #放到一个类里面去
     for i in range(agents_split[0]+1,agents_split[1]+1):
         #检查是否有还未相应的request
         has_req = 0
+        if comm_dict[i]['agent_state'] == 'lock':
+            continue
         for item in comm_dict[i]['raise_event']:
             if item[0:3] == 'req':
                 has_req = 1
@@ -170,7 +180,7 @@ def movement(): #放到一个类里面去
             if comm_dict[i]['agent_state'] == 'lock':
                 continue
             #计算代价
-            rep_dis = abs(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11)-Tm)+10*(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11))
+            rep_dis = abs(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11)-Tm)+1000*(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11))
             if rep_dis < min_rep_dis1:
                 min_rep_dis1 = rep_dis
                 min_rep_ind1 = i
@@ -184,6 +194,8 @@ def movement(): #放到一个类里面去
             continue
         if raise_agent == -1:
             break
+        if comm_dict[i]['agent_state'] == 'lock':
+            continue
         _index = comm_dict[i]['raise_agent'].index(raise_agent)
         comm_dict[i]['raise_agent'].pop(_index)
         comm_dict[i]['raise_event'].pop(_index)
@@ -197,6 +209,8 @@ def movement(): #放到一个类里面去
     for i in range(agents_split[1]+1,agents_split[2]+1):
         #检查是否有还未相应的request
         has_req = 0
+        if comm_dict[i]['agent_state'] == 'lock':
+            continue
         for item in comm_dict[i]['raise_event']:
             if item[0:3] == 'req':
                 has_req = 1
@@ -205,12 +219,12 @@ def movement(): #放到一个类里面去
             break
         
     if has_req == 1:
-        for i in range(agents_split[0]+1,agents_split[1]+1):
+        for i in range(agents_split[1]+1,agents_split[2]+1):
             #锁定状态的机器人不能reply
             if comm_dict[i]['agent_state'] == 'lock':
                 continue
             #计算代价
-            rep_dis = abs(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11)-Tm)+10*(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11))
+            rep_dis = abs(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11)-Tm)+1000*(abs(agents_list[i].center[0]-1)+abs(agents_list[i].center[1]-11))
             if rep_dis < min_rep_dis2:
                 min_rep_dis2 = rep_dis
                 min_rep_ind2 = i
@@ -218,13 +232,15 @@ def movement(): #放到一个类里面去
     #锁定该机器人，删除request，改变goal——position，寄存当前goalposition
     comm_dict[min_rep_ind2]['agent_state'] = 'lock'
     goal_point_index[min_rep_ind2] = (7,9)
-    for i in range(agents_split[0]+1,agents_split[1]+1): 
+    for i in range(agents_split[1]+1,agents_split[2]+1): 
         #先在响应的机器人中保留req信息，方便rep时向指定机器人发送消息，在rep时再删掉对应的req
         if event == '':
             break
         if i==min_rep_ind2:
             continue
-        _index = comm_dict[i]['raise_event'].index(event)
+        if comm_dict[i]['agent_state'] == 'lock':
+            continue
+        _index = comm_dict[i]['raise_agent'].index(raise_agent)
         comm_dict[i]['raise_agent'].pop(_index)
         comm_dict[i]['raise_event'].pop(_index)
         comm_dict[i]['request_position'].pop(_index)
@@ -258,9 +274,9 @@ def movement(): #放到一个类里面去
     #如果机器人con，删掉自身所存的req和rep，恢复机器人目标点，解除lock，要匹配是哪个req
     for p in range(0,2):
         cop_req = ''
-        if dist(agents_list[p].center,(7,11))<0.001:
+        if dist(agents_list[p].center,(7,11))<0.001 and 'req_1' in comm_dict[p]['raise_event']:
             cop_req = 'req_1'
-        elif dist(agents_list[p].center,(5,11))<0.001:
+        elif dist(agents_list[p].center,(5,11))<0.001 and 'req_2' in comm_dict[p]['raise_event']:
             cop_req = 'req_2'
         if cop_req == '':
             continue
@@ -291,9 +307,10 @@ def movement(): #放到一个类里面去
         #rep，req后的动作控制，要判断目标点是元组还是整数
     for m in range(0,2):
         #可以走向下一个点
-        if len(agents_path[m][goal_point_index[m]])!=4 or (len(agents_path[m][goal_point_index[m]])==4 and 'rep_1' in comm_dict[m]['raise_event'] and 'rep_2' in comm_dict[m]['raise_event']):
+        if len(agents_path[m][current_point_index[m]])!=4 or (len(agents_path[m][current_point_index[m]])==4 and 'rep_1' in comm_dict[m]['raise_event'] and 'rep_2' in comm_dict[m]['raise_event']):
             agents_incre[m],go_next = get_incre(agents_list[m].center,agents_path[m][goal_point_index[m]])
             if go_next == 1:
+                current_point_index[m] = goal_point_index[m]
                 goal_point_index[m] = goal_point_index[m] + 1
                 if goal_point_index[m] == len(agents_path[m]):
                     goal_point_index[m] = agents_path[m][0]
@@ -355,6 +372,13 @@ def update(i):
     ax1.set_xlabel(label)    
     return repaint, ax1
 
-# FuncAnimation 会在每一帧都调用“update” 函数。
-# 在这里设置一个10帧的动画，每帧之间间隔200毫秒
+ #FuncAnimation 会在每一帧都调用“update” 函数。
+ #在这里设置一个10帧的动画，每帧之间间隔200毫秒
 anim = FuncAnimation(fig1, update, frames=np.arange(0, 1000), interval=20)
+    
+#if __name__ == '__main__':
+#    i = 0
+#    while(1):
+#        update(i)
+#        #print(i)
+#        i = i+1
