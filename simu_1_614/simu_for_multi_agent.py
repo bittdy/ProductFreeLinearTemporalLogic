@@ -18,6 +18,7 @@ Created on Wed Oct 10 21:22:43 2018
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from matplotlib.pyplot import savefig
 from matplotlib.lines import Line2D
 from matplotlib.animation import FuncAnimation 
 #仿真参数为间隔20ms
@@ -184,10 +185,11 @@ def movement(): #放到一个类里面去
             if rep_dis < min_rep_dis1:
                 min_rep_dis1 = rep_dis
                 min_rep_ind1 = i
-                
-    #锁定该机器人，删除request，改变goal——position，寄存当前goalposition
-    comm_dict[min_rep_ind1]['agent_state'] = 'lock'
-    goal_point_index[min_rep_ind1] = (1,11)
+            #锁定该机器人，删除request，改变goal——position，寄存当前goalposition
+        if min_rep_ind1 != -1:
+            comm_dict[min_rep_ind1]['agent_state'] = 'lock'
+            goal_point_index[min_rep_ind1] = (1,11)       
+
     for i in range(agents_split[0]+1,agents_split[1]+1): 
         #先在响应的机器人中保留req信息，方便rep时向指定机器人发送消息，在rep时再删掉对应的req
         if i==min_rep_ind1:
@@ -228,10 +230,10 @@ def movement(): #放到一个类里面去
             if rep_dis < min_rep_dis2:
                 min_rep_dis2 = rep_dis
                 min_rep_ind2 = i
-                
-    #锁定该机器人，删除request，改变goal——position，寄存当前goalposition
-    comm_dict[min_rep_ind2]['agent_state'] = 'lock'
-    goal_point_index[min_rep_ind2] = (7,9)
+        if min_rep_ind2 != -1:        
+            #锁定该机器人，删除request，改变goal——position，寄存当前goalposition
+            comm_dict[min_rep_ind2]['agent_state'] = 'lock'
+            goal_point_index[min_rep_ind2] = (7,9)
     for i in range(agents_split[1]+1,agents_split[2]+1): 
         #先在响应的机器人中保留req信息，方便rep时向指定机器人发送消息，在rep时再删掉对应的req
         if event == '':
@@ -246,30 +248,43 @@ def movement(): #放到一个类里面去
         comm_dict[i]['request_position'].pop(_index)
         comm_dict[i]['estimate_time'].pop(_index)
         
+    #检测是否有机器人在开门处，并记录该机器人序号
+    reply_1 = -1
+    reply_2 = -1
+    for tt in range(agents_split[0]+1,agents_split[1]+1):    
+        if dist(agents_list[tt].center,open1.center)<0.001:
+            reply_1 = tt
+            break
+    
+    for tt in range(agents_split[1]+1,agents_split[2]+1):    
+        if dist(agents_list[tt].center,open2.center)<0.001:
+            reply_2 = tt
+            break
+    
     #如果到达open点，向指定的机器人发送rep，同时删除本身所存的req信息，有两个以上req同时时这里要重写
-    if dist(agents_list[min_rep_ind1].center,(1,11))<0.001:
+    if reply_1 != -1:
         comm_dict[raise_agent]['raise_event'].append('rep_1')
-        comm_dict[raise_agent]['raise_agent'].append(min_rep_ind1)
+        comm_dict[raise_agent]['raise_agent'].append(reply_1)
         comm_dict[raise_agent]['request_position'].append((1,11))
         comm_dict[raise_agent]['estimate_time'].append(0)
         
-        _index = comm_dict[min_rep_ind1]['raise_agent'].index(raise_agent)
-        comm_dict[min_rep_ind1]['raise_event'].pop(_index)
-        comm_dict[min_rep_ind1]['raise_agent'].pop(_index)
-        comm_dict[min_rep_ind1]['request_position'].pop(_index)
-        comm_dict[min_rep_ind1]['estimate_time'].pop(_index)
-        
-    if dist(agents_list[min_rep_ind2].center,(7,9))<0.001:
+        _index = comm_dict[reply_1]['raise_agent'].index(raise_agent)
+        comm_dict[reply_1]['raise_event'].pop(_index)
+        comm_dict[reply_1]['raise_agent'].pop(_index)
+        comm_dict[reply_1]['request_position'].pop(_index)
+        comm_dict[reply_1]['estimate_time'].pop(_index)
+
+    if reply_2 != -1:      
         comm_dict[raise_agent]['raise_event'].append('rep_2')
-        comm_dict[raise_agent]['raise_agent'].append(min_rep_ind2)
+        comm_dict[raise_agent]['raise_agent'].append(reply_2)
         comm_dict[raise_agent]['request_position'].append((7,9))
         comm_dict[raise_agent]['estimate_time'].append(0)
         
-        _index = comm_dict[min_rep_ind1]['raise_agent'].index(raise_agent)
-        comm_dict[min_rep_ind1]['raise_event'].pop(_index)
-        comm_dict[min_rep_ind1]['raise_agent'].pop(_index)
-        comm_dict[min_rep_ind1]['request_position'].pop(_index)
-        comm_dict[min_rep_ind1]['estimate_time'].pop(_index)
+        _index = comm_dict[reply_2]['raise_agent'].index(raise_agent)
+        comm_dict[reply_2]['raise_event'].pop(_index)
+        comm_dict[reply_2]['raise_agent'].pop(_index)
+        comm_dict[reply_2]['request_position'].pop(_index)
+        comm_dict[reply_2]['estimate_time'].pop(_index)
         
     #如果机器人con，删掉自身所存的req和rep，恢复机器人目标点，解除lock，要匹配是哪个req
     for p in range(0,2):
@@ -326,6 +341,7 @@ def movement(): #放到一个类里面去
                 goal_point_index[n] = goal_point_index[n] + 1
                 if goal_point_index[n] == len(agents_path[n]):
                     goal_point_index[n] = agents_path[n][0]
+    #print(comm_dict)
 
     return agents_incre
 
@@ -339,9 +355,11 @@ def update(i):
     open1_on = 0
     open2_on = 0
     for t in range(agents_split[0]+1,agents_split[1]+1):    
+        print(dist(agents_list[t].center,open1.center))
         if dist(agents_list[t].center,open1.center)<0.001:
             open1.set_color('yellow')
             open1_on = 1
+            break
         else:
             open1.set_color('gray')
             open1_on = 0
@@ -350,6 +368,7 @@ def update(i):
         if dist(agents_list[t].center,open2.center)<0.001:
             open2.set_color('yellow')
             open2_on = 1
+            break
         else:
             open2.set_color('gray')
             open2_on = 0
@@ -379,6 +398,8 @@ anim = FuncAnimation(fig1, update, frames=np.arange(0, 1000), interval=20)
 #if __name__ == '__main__':
 #    i = 0
 #    while(1):
+#        print(i)
 #        update(i)
+#        savefig('D:/debug/'+str(i)+'.jpg')
 #        #print(i)
 #        i = i+1
