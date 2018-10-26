@@ -260,33 +260,46 @@ def movement(): #放到一个类里面去
         if dist(agents_list[tt].center,open2.center)<0.001:
             reply_2 = tt
             break
+        
+    #检测是否有机器人在req处，记录req机器人标号
+    requ = []
+    requ_event = []
+    for ll in range(0,2):
+        if dist(agents_list[ll].center,(5,11))<0.001 and not (ll in requ and 'req_1' in requ_event):
+            requ.append(ll)
+            requ_event.append('req_1')
+        elif dist(agents_list[ll].center,(7,11))<0.001 and not (ll in requ and 'req_2' in requ_event):
+            requ.append(ll)
+            requ_event.append('req_2')
     
     #如果到达open点，向指定的机器人发送rep，同时删除本身所存的req信息，有两个以上req同时时这里要重写
     if reply_1 != -1:
-        comm_dict[raise_agent]['raise_event'].append('rep_1')
-        comm_dict[raise_agent]['raise_agent'].append(reply_1)
-        comm_dict[raise_agent]['request_position'].append((1,11))
-        comm_dict[raise_agent]['estimate_time'].append(0)
-        
-        _index = comm_dict[reply_1]['raise_agent'].index(raise_agent)
-        comm_dict[reply_1]['raise_event'].pop(_index)
-        comm_dict[reply_1]['raise_agent'].pop(_index)
-        comm_dict[reply_1]['request_position'].pop(_index)
-        comm_dict[reply_1]['estimate_time'].pop(_index)
+        for c in range(0,len(requ)):
+            comm_dict[requ[c]]['raise_event'].append('rep_1')
+            comm_dict[requ[c]]['raise_agent'].append(reply_1)
+            comm_dict[requ[c]]['request_position'].append((1,11))
+            comm_dict[requ[c]]['estimate_time'].append(0)
+            
+            _index = comm_dict[reply_1]['raise_agent'].index(requ[c])
+            comm_dict[reply_1]['raise_event'].pop(_index)
+            comm_dict[reply_1]['raise_agent'].pop(_index)
+            comm_dict[reply_1]['request_position'].pop(_index)
+            comm_dict[reply_1]['estimate_time'].pop(_index)
 
     if reply_2 != -1:      
-        comm_dict[raise_agent]['raise_event'].append('rep_2')
-        comm_dict[raise_agent]['raise_agent'].append(reply_2)
-        comm_dict[raise_agent]['request_position'].append((7,9))
-        comm_dict[raise_agent]['estimate_time'].append(0)
+        for c in range(0,len(requ)):
+            comm_dict[requ[c]]['raise_event'].append('rep_2')
+            comm_dict[requ[c]]['raise_agent'].append(reply_2)
+            comm_dict[requ[c]]['request_position'].append((7,9))
+            comm_dict[requ[c]]['estimate_time'].append(0)
         
-        _index = comm_dict[reply_2]['raise_agent'].index(raise_agent)
-        comm_dict[reply_2]['raise_event'].pop(_index)
-        comm_dict[reply_2]['raise_agent'].pop(_index)
-        comm_dict[reply_2]['request_position'].pop(_index)
-        comm_dict[reply_2]['estimate_time'].pop(_index)
+            _index = comm_dict[reply_2]['raise_agent'].index(requ[c])
+            comm_dict[reply_2]['raise_event'].pop(_index)
+            comm_dict[reply_2]['raise_agent'].pop(_index)
+            comm_dict[reply_2]['request_position'].pop(_index)
+            comm_dict[reply_2]['estimate_time'].pop(_index)
         
-    #如果机器人con，删掉自身所存的req和rep，恢复机器人目标点，解除lock，要匹配是哪个req
+    #如果机器人con，删掉自身所存的req和rep，恢复协作机器人目标点，解除lock，要匹配是哪个req
     for p in range(0,2):
         cop_req = ''
         if dist(agents_list[p].center,(7,11))<0.001 and 'req_1' in comm_dict[p]['raise_event']:
