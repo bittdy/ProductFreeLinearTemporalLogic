@@ -160,6 +160,11 @@ def movement(): #放到一个类里面去
 #                        item['estimate_time'].append(j+1)
 #                    break
                     
+                
+    #若有多个request，Tm相隔很近，直接给lock的机器人，同时lock机器人变为normal的条件也要变，是所有对应的req都没有了才能变
+    
+    
+    
     #确定谁去reply，机器人集群1
     min_rep_dis1 = float('inf')
     min_rep_ind1 = -1   
@@ -275,29 +280,33 @@ def movement(): #放到一个类里面去
     #如果到达open点，向指定的机器人发送rep，同时删除本身所存的req信息，有两个以上req同时时这里要重写
     if reply_1 != -1:
         for c in range(0,len(requ)):
-            comm_dict[requ[c]]['raise_event'].append('rep_1')
-            comm_dict[requ[c]]['raise_agent'].append(reply_1)
-            comm_dict[requ[c]]['request_position'].append((1,11))
-            comm_dict[requ[c]]['estimate_time'].append(0)
-            
-            _index = comm_dict[reply_1]['raise_agent'].index(requ[c])
-            comm_dict[reply_1]['raise_event'].pop(_index)
-            comm_dict[reply_1]['raise_agent'].pop(_index)
-            comm_dict[reply_1]['request_position'].pop(_index)
-            comm_dict[reply_1]['estimate_time'].pop(_index)
+            #判断是否已经在第一次到达时处理过消息
+            if not (reply_1 in comm_dict[requ[c]]['raise_agent'] and 'rep_1' in comm_dict[requ[c]]['raise_event'] and comm_dict[requ[c]]['raise_agent'].index(reply_1) == comm_dict[requ[c]]['raise_event'].index('rep_1')):
+                comm_dict[requ[c]]['raise_event'].append('rep_1')
+                comm_dict[requ[c]]['raise_agent'].append(reply_1)
+                comm_dict[requ[c]]['request_position'].append((1,11))
+                comm_dict[requ[c]]['estimate_time'].append(0)
+                
+                _index = comm_dict[reply_1]['raise_agent'].index(requ[c])
+                comm_dict[reply_1]['raise_event'].pop(_index)
+                comm_dict[reply_1]['raise_agent'].pop(_index)
+                comm_dict[reply_1]['request_position'].pop(_index)
+                comm_dict[reply_1]['estimate_time'].pop(_index)
 
     if reply_2 != -1:      
         for c in range(0,len(requ)):
-            comm_dict[requ[c]]['raise_event'].append('rep_2')
-            comm_dict[requ[c]]['raise_agent'].append(reply_2)
-            comm_dict[requ[c]]['request_position'].append((7,9))
-            comm_dict[requ[c]]['estimate_time'].append(0)
-        
-            _index = comm_dict[reply_2]['raise_agent'].index(requ[c])
-            comm_dict[reply_2]['raise_event'].pop(_index)
-            comm_dict[reply_2]['raise_agent'].pop(_index)
-            comm_dict[reply_2]['request_position'].pop(_index)
-            comm_dict[reply_2]['estimate_time'].pop(_index)
+            #判断是否已经在第一次到达时处理过消息
+            if not (reply_2 in comm_dict[requ[c]]['raise_agent'] and 'rep_2' in comm_dict[requ[c]]['raise_event'] and comm_dict[requ[c]]['raise_agent'].index(reply_2) == comm_dict[requ[c]]['raise_event'].index('rep_2')):
+                comm_dict[requ[c]]['raise_event'].append('rep_2')
+                comm_dict[requ[c]]['raise_agent'].append(reply_2)
+                comm_dict[requ[c]]['request_position'].append((7,9))
+                comm_dict[requ[c]]['estimate_time'].append(0)
+            
+                _index = comm_dict[reply_2]['raise_agent'].index(requ[c])
+                comm_dict[reply_2]['raise_event'].pop(_index)
+                comm_dict[reply_2]['raise_agent'].pop(_index)
+                comm_dict[reply_2]['request_position'].pop(_index)
+                comm_dict[reply_2]['estimate_time'].pop(_index)
         
     #如果机器人con，删掉自身所存的req和rep，恢复协作机器人目标点，解除lock，要匹配是哪个req
     for p in range(0,2):
