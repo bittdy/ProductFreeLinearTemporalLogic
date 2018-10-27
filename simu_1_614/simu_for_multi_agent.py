@@ -112,6 +112,7 @@ def movement(): #放到一个类里面去
     Tm = float('inf')
     event = ''
     raise_agent = -1
+
     for i in range(0,agents_split[0]+1):
         #限定机器人视野为3，找第一个request，加入到所有机器人的消息队列中
         current_goal = goal_point_index[i]
@@ -136,16 +137,30 @@ def movement(): #放到一个类里面去
                     comm_dict[i]['raise_event'].append(agents_path[i][current_goal][2])
                     comm_dict[i]['request_position'].append(agents_path[i][current_goal][3])
                     comm_dict[i]['estimate_time'].append((j+1)/agent_velocity[i]*20) #单位为ms
-                    #加入到协作机器人消息队列
-                    for t in range(2,len(comm_dict)):
-                        if comm_dict[t]['agent_state'] == 'lock':
-                            continue
-                        comm_dict[t]['raise_agent'].append(i)
-                        comm_dict[t]['raise_event'].append(agents_path[i][current_goal][2])
-                        comm_dict[t]['request_position'].append(agents_path[i][current_goal][3])
-                        #estimate_time的计算可能有问题
-                        comm_dict[t]['estimate_time'].append((j+1)/agent_velocity[i]*20) #单位为ms
-                    break
+                    #加入到协作机器人消息队列，如果已经有机器人lock则直接加入到该机器人中
+                    lock_agent = []
+                    for nn in range(2,len(comm_dict)):
+                        if comm_dict[nn]['agent_state'] == 'lock':
+                            lock_agent.append(nn)
+                    #没有lock机器人，全部加入消息队列
+                    if len(lock_agent) == 0:
+                        for t in range(2,len(comm_dict)):
+#                            if comm_dict[t]['agent_state'] == 'lock':
+#                                continue
+                            comm_dict[t]['raise_agent'].append(i)
+                            comm_dict[t]['raise_event'].append(agents_path[i][current_goal][2])
+                            comm_dict[t]['request_position'].append(agents_path[i][current_goal][3])
+                            #estimate_time的计算可能有问题
+                            comm_dict[t]['estimate_time'].append((j+1)/agent_velocity[i]*20) #单位为ms
+                        break
+                    else:
+                        for item in lock_agent:
+                            comm_dict[item]['raise_agent'].append(i)
+                            comm_dict[item]['raise_event'].append(agents_path[i][current_goal][2])
+                            comm_dict[item]['request_position'].append(agents_path[i][current_goal][3])
+                            #estimate_time的计算可能有问题
+                            comm_dict[item]['estimate_time'].append((j+1)/agent_velocity[i]*20) #单位为ms
+                        break
 #confirm事件之后再加
 #            elif len(agents_path[i][current_goal]) == 3:#有confirm event raise
 #                #若消息队列中已经存在相应的event代号，直接break，但是应该返回index并更新对应的估计时间，这里先不更新了
@@ -203,11 +218,12 @@ def movement(): #放到一个类里面去
             break
         if comm_dict[i]['agent_state'] == 'lock':
             continue
-        _index = comm_dict[i]['raise_agent'].index(raise_agent)
-        comm_dict[i]['raise_agent'].pop(_index)
-        comm_dict[i]['raise_event'].pop(_index)
-        comm_dict[i]['request_position'].pop(_index)
-        comm_dict[i]['estimate_time'].pop(_index)
+        if raise_agent in comm_dict[i]['raise_agent']:
+            _index = comm_dict[i]['raise_agent'].index(raise_agent)
+            comm_dict[i]['raise_agent'].pop(_index)
+            comm_dict[i]['raise_event'].pop(_index)
+            comm_dict[i]['request_position'].pop(_index)
+            comm_dict[i]['estimate_time'].pop(_index)
         
         
     #机器人集群2
@@ -247,11 +263,12 @@ def movement(): #放到一个类里面去
             continue
         if comm_dict[i]['agent_state'] == 'lock':
             continue
-        _index = comm_dict[i]['raise_agent'].index(raise_agent)
-        comm_dict[i]['raise_agent'].pop(_index)
-        comm_dict[i]['raise_event'].pop(_index)
-        comm_dict[i]['request_position'].pop(_index)
-        comm_dict[i]['estimate_time'].pop(_index)
+        if raise_agent in comm_dict[i]['raise_agent']:
+            _index = comm_dict[i]['raise_agent'].index(raise_agent)
+            comm_dict[i]['raise_agent'].pop(_index)
+            comm_dict[i]['raise_event'].pop(_index)
+            comm_dict[i]['request_position'].pop(_index)
+            comm_dict[i]['estimate_time'].pop(_index)
         
     #检测是否有机器人在开门处，并记录该机器人序号
     reply_1 = -1
