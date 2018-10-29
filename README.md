@@ -1,5 +1,8 @@
 # ProductFreeLinearTemporalLogic
 >Now don't need to product all the Buchi automata of multi-agent
+
+## experimental environment
+![avatar](https://github.com/bittdy/ProductFreeLinearTemporalLogic/blob/master/environment.png)
 ## decouple of product automata
 >Through specifying couple task, we can distinguish the couple edges
 
