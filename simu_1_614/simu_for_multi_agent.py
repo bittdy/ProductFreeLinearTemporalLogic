@@ -120,7 +120,7 @@ def movement(): #放到一个类里面去
         for j in range(0,horizen):
             current_goal = goal_point_index[i] + j
             #如果超过路径长度，重置为后缀第一个路径点
-            if current_goal == len(agents_path[i]):
+            if current_goal >= len(agents_path[i]):
                 current_goal = agents_path[i][0]
             if len(agents_path[i][current_goal]) > 3: #有request event raise
                 #若消息队列中已经存在相应的event代号，直接break，但是应该返回index并更新对应的估计时间，这里先不更新了
@@ -458,13 +458,13 @@ def update(i):
 
  #FuncAnimation 会在每一帧都调用“update” 函数。
  #在这里设置一个10帧的动画，每帧之间间隔200毫秒
-#anim = FuncAnimation(fig1, update, frames=np.arange(0, 10000), interval=20)
+anim = FuncAnimation(fig1, update, frames=np.arange(0, 10000), interval=20)
     
-if __name__ == '__main__':
-    i = 0
-    while(1):
-        print(i)
-        update(i)
-        savefig('D:/debug/'+str(i)+'.jpg')
-        #print(i)
-        i = i+1
+#if __name__ == '__main__':
+#    i = 0
+#    while(1):
+#        print(i)
+#        update(i)
+#        savefig('D:/debug/'+str(i)+'.jpg')
+#        #print(i)
+#        i = i+1
