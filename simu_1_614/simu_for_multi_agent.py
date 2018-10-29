@@ -24,12 +24,12 @@ from matplotlib.animation import FuncAnimation
 #仿真参数为间隔20ms
 interval = 20
 #机器人速度
-agent_velocity = [0.03,0.01,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02]
+agent_velocity = [0.02,0.04,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02]
 #机器人分组
 agents_split = [1,7,13]
 #构建机器人运动序列
-agents_path = [[ 9,(4,0),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(4,7),(4,8),(4,9),(4,10),(4,11),(5,11,'req_1',[(1,11),(7,9)]),(6,11),(7,11,'con_1'),(8,11),(7,11,'req_2',[(1,11),(7,9)]),(6,11),(5,11,'con_2'),(4,11),(4,10),(4,9),(4,8),(4,7) ], #agent1-2 goods depot
-               [ 2,(8,11),(7,11,'req_2',[(1,11),(7,9)]),(6,11),(5,11,'con_2'),(4,11),(4,10),(4,9),(4,8),(4,7),(4,8),(4,9),(4,10),(4,11),(5,11,'req_1',[(1,11),(7,9)]),(6,11),(7,11,'con_1'),(8,11) ],
+agents_path = [[ 5,(4,0),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(4,7),(4,8),(4,9),(4,10),(4,11),(5,11,'req_1',[(1,11),(7,9)]),(6,11),(7,11,'con_1'),(8,11),(7,11,'req_2',[(1,11),(7,9)]),(6,11),(5,11,'con_2'),(4,11),(4,10),(4,9),(4,8),(4,7),(4,6),(4,5),(4,4),(4,3) ], #agent1-2 goods depot
+               [ 2,(8,11),(7,11,'req_2',[(1,11),(7,9)]),(6,11),(5,11,'con_2'),(4,11),(4,10),(4,9),(4,8),(4,7),(4,6),(4,5),(4,4),(4,3),(4,4),(4,5),(4,6),(4,7),(4,8),(4,9),(4,10),(4,11),(5,11,'req_1',[(1,11),(7,9)]),(6,11),(7,11,'con_1'),(8,11) ],
                [ 2,(1,9),(0,9),(0,8),(0,7),(0,6),(0,5),(0,4),(0,3),(0,2),(1,2),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(1,9) ], #agent2-7 open1
                [ 2,(0,7),(0,6),(0,5),(0,4),(0,3),(0,2),(1,2),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(1,9),(0,9),(0,8),(0,7) ],
                [ 2,(0,4),(0,3),(0,2),(1,2),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(1,9),(0,9),(0,8),(0,7),(0,6),(0,5),(0,4) ],
@@ -73,7 +73,7 @@ for i in range(0,len(agents_path)):
 door = Line2D((6,6),(10.53,11.5),linewidth='5',color='gray')
 ax1.add_line(door)
 ##货物
-good = patches.Ellipse(xy=(4,7),width=0.15,height=0.15,color='green',fill='True')
+good = patches.Ellipse(xy=(4,3),width=0.15,height=0.15,color='green',fill='True')
 ax1.add_artist(good)
 ##开关
 open1 = patches.Ellipse(xy=(1,11),width=0.3,height=0.3,color='gray',fill='True')
@@ -86,20 +86,20 @@ comm_dict = [{'agent_state':'normal','raise_agent':[],'raise_event':[],'request_
 def dist(pose1,pose2):
     return ((pose1[0]-pose2[0])**2+(pose1[1]-pose2[1])**2)**0.5
 
-def get_incre(pose1,pose2):
+def get_incre(pose1,pose2,index):
     agent_incre = [0,0]
     go_next = 0
     if pose1[1]-pose2[1]>0.001:
-        agent_incre = [0,-0.02]
+        agent_incre = [0,-(agent_velocity[index])]
         return agent_incre,go_next
     elif pose1[1]-pose2[1]<-0.001:
-        agent_incre = [0,0.02]
+        agent_incre = [0,agent_velocity[index]]
         return agent_incre,go_next
     elif pose1[0]-pose2[0]>0.001:
-        agent_incre = [-0.02,0]
+        agent_incre = [-(agent_velocity[index]),0]
         return agent_incre,go_next
     elif pose1[0]-pose2[0]<-0.001:
-        agent_incre = [0.02,0]
+        agent_incre = [agent_velocity[index],0]
         return agent_incre,go_next
     else:
         agent_incre = [0,0]
@@ -299,7 +299,7 @@ def movement(): #放到一个类里面去
     if reply_1 != -1:
         for c in range(0,len(requ)):
             #判断是否已经在第一次到达时处理过消息
-            if not (reply_1 in comm_dict[requ[c]]['raise_agent'] and 'rep_1' in comm_dict[requ[c]]['raise_event'] and comm_dict[requ[c]]['raise_agent'].index(reply_1) == comm_dict[requ[c]]['raise_event'].index('rep_1')):
+            if len(comm_dict[requ[c]]['raise_event'])!= 0 and not (reply_1 in comm_dict[requ[c]]['raise_agent'] and 'rep_1' in comm_dict[requ[c]]['raise_event'] and comm_dict[requ[c]]['raise_agent'].index(reply_1) == comm_dict[requ[c]]['raise_event'].index('rep_1')):
                 comm_dict[requ[c]]['raise_event'].append('rep_1')
                 comm_dict[requ[c]]['raise_agent'].append(reply_1)
                 comm_dict[requ[c]]['request_position'].append((1,11))
@@ -314,7 +314,7 @@ def movement(): #放到一个类里面去
     if reply_2 != -1:      
         for c in range(0,len(requ)):
             #判断是否已经在第一次到达时处理过消息
-            if not (reply_2 in comm_dict[requ[c]]['raise_agent'] and 'rep_2' in comm_dict[requ[c]]['raise_event'] and comm_dict[requ[c]]['raise_agent'].index(reply_2) == comm_dict[requ[c]]['raise_event'].index('rep_2')):
+            if len(comm_dict[requ[c]]['raise_event'])!= 0 and not (reply_2 in comm_dict[requ[c]]['raise_agent'] and 'rep_2' in comm_dict[requ[c]]['raise_event'] and comm_dict[requ[c]]['raise_agent'].index(reply_2) == comm_dict[requ[c]]['raise_event'].index('rep_2')):
                 comm_dict[requ[c]]['raise_event'].append('rep_2')
                 comm_dict[requ[c]]['raise_agent'].append(reply_2)
                 comm_dict[requ[c]]['request_position'].append((7,9))
@@ -342,6 +342,13 @@ def movement(): #放到一个类里面去
         comm_dict[p]['raise_agent'].pop(_index)
         comm_dict[p]['request_position'].pop(_index)
         comm_dict[p]['estimate_time'].pop(_index)
+        
+#        if p not in comm_dict[p]['raise_agent']:
+#            #本机已无req，清空所有
+#        comm_dict[p]['raise_event'].pop(_index)
+#        comm_dict[p]['raise_agent'].pop(_index)
+#        comm_dict[p]['request_position'].pop(_index)
+#        comm_dict[p]['estimate_time'].pop(_index)
         
         if reply_2 != -1:
             cop_index = comm_dict[reply_1]['raise_event'].index(cop_req)
@@ -388,7 +395,7 @@ def movement(): #放到一个类里面去
     for m in range(0,2):
         #可以走向下一个点
         if len(agents_path[m][current_point_index[m]])!=4 or (len(agents_path[m][current_point_index[m]])==4 and 'rep_1' in comm_dict[m]['raise_event'] and 'rep_2' in comm_dict[m]['raise_event']):
-            agents_incre[m],go_next = get_incre(agents_list[m].center,agents_path[m][goal_point_index[m]])
+            agents_incre[m],go_next = get_incre(agents_list[m].center,agents_path[m][goal_point_index[m]],m)
             if go_next == 1:
                 current_point_index[m] = goal_point_index[m]
                 goal_point_index[m] = goal_point_index[m] + 1
@@ -399,9 +406,9 @@ def movement(): #放到一个类里面去
         
     for n in range(2,len(agents_path)):
         if isinstance(goal_point_index[n],tuple):
-            agents_incre[n],go_next = get_incre(agents_list[n].center,goal_point_index[n])
+            agents_incre[n],go_next = get_incre(agents_list[n].center,goal_point_index[n],n)
         else:
-            agents_incre[n],go_next = get_incre(agents_list[n].center,agents_path[n][goal_point_index[n]])
+            agents_incre[n],go_next = get_incre(agents_list[n].center,agents_path[n][goal_point_index[n]],n)
             if go_next == 1:
                 goal_point_index[n] = goal_point_index[n] + 1
                 if goal_point_index[n] == len(agents_path[n]):
@@ -416,11 +423,11 @@ def update(i):
     agents_incre = movement()
     for p in range(0,len(agents_list)):
         agents_list[p].center = (agents_list[p].center[0]+agents_incre[p][0],agents_list[p].center[1]+agents_incre[p][1])
+    print(agents_list[0].center)
     #确定门，货物等物品状态
     open1_on = 0
     open2_on = 0
     for t in range(agents_split[0]+1,agents_split[1]+1):    
-        print(dist(agents_list[t].center,open1.center))
         if dist(agents_list[t].center,open1.center)<0.001:
             open1.set_color('yellow')
             open1_on = 1
