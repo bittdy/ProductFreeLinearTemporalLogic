@@ -295,6 +295,7 @@ def movement(): #放到一个类里面去
             requ_event.append('req_2')
     
     #如果到达open点，向指定的机器人发送rep，同时删除本身所存的req信息，有两个以上req同时时这里要重写
+    #不要在这里删除req信息，在con之后再删
     if reply_1 != -1:
         for c in range(0,len(requ)):
             #判断是否已经在第一次到达时处理过消息
@@ -304,11 +305,11 @@ def movement(): #放到一个类里面去
                 comm_dict[requ[c]]['request_position'].append((1,11))
                 comm_dict[requ[c]]['estimate_time'].append(0)
                 
-                _index = comm_dict[reply_1]['raise_agent'].index(requ[c])
-                comm_dict[reply_1]['raise_event'].pop(_index)
-                comm_dict[reply_1]['raise_agent'].pop(_index)
-                comm_dict[reply_1]['request_position'].pop(_index)
-                comm_dict[reply_1]['estimate_time'].pop(_index)
+#                _index = comm_dict[reply_1]['raise_agent'].index(requ[c])
+#                comm_dict[reply_1]['raise_event'].pop(_index)
+#                comm_dict[reply_1]['raise_agent'].pop(_index)
+#                comm_dict[reply_1]['request_position'].pop(_index)
+#                comm_dict[reply_1]['estimate_time'].pop(_index)
 
     if reply_2 != -1:      
         for c in range(0,len(requ)):
@@ -319,13 +320,15 @@ def movement(): #放到一个类里面去
                 comm_dict[requ[c]]['request_position'].append((7,9))
                 comm_dict[requ[c]]['estimate_time'].append(0)
             
-                _index = comm_dict[reply_2]['raise_agent'].index(requ[c])
-                comm_dict[reply_2]['raise_event'].pop(_index)
-                comm_dict[reply_2]['raise_agent'].pop(_index)
-                comm_dict[reply_2]['request_position'].pop(_index)
-                comm_dict[reply_2]['estimate_time'].pop(_index)
+#                _index = comm_dict[reply_2]['raise_agent'].index(requ[c])
+#                comm_dict[reply_2]['raise_event'].pop(_index)
+#                comm_dict[reply_2]['raise_agent'].pop(_index)
+#                comm_dict[reply_2]['request_position'].pop(_index)
+#                comm_dict[reply_2]['estimate_time'].pop(_index)
         
     #如果机器人con，删掉自身所存的req和rep，恢复协作机器人目标点，解除lock，要匹配是哪个req
+    #恢复协作机器人目标点要加一步检测，是否没有req了
+    
     for p in range(0,2):
         cop_req = ''
         if dist(agents_list[p].center,(7,11))<0.001 and 'req_1' in comm_dict[p]['raise_event']:
@@ -340,9 +343,27 @@ def movement(): #放到一个类里面去
         comm_dict[p]['request_position'].pop(_index)
         comm_dict[p]['estimate_time'].pop(_index)
         
+        if reply_2 != -1:
+            cop_index = comm_dict[reply_1]['raise_event'].index(cop_req)
+            comm_dict[reply_1]['raise_event'].pop(cop_index)
+            comm_dict[reply_1]['raise_agent'].pop(cop_index)
+            comm_dict[reply_1]['request_position'].pop(cop_index)
+            comm_dict[reply_1]['estimate_time'].pop(cop_index)
+            
+        if reply_2 != -1:
+            cop_index = comm_dict[reply_2]['raise_event'].index(cop_req)
+            comm_dict[reply_2]['raise_event'].pop(cop_index)
+            comm_dict[reply_2]['raise_agent'].pop(cop_index)
+            comm_dict[reply_2]['request_position'].pop(cop_index)
+            comm_dict[reply_2]['estimate_time'].pop(cop_index)
+        
         _index = comm_dict[p]['raise_event'].index('rep_1')
-        comm_dict[comm_dict[p]['raise_agent'][_index]]['agent_state'] = 'normal'
-        goal_point_index[comm_dict[p]['raise_agent'][_index]] = agents_path[comm_dict[p]['raise_agent'][_index]].index((1,9))
+#        if len(comm_dict[comm_dict[p]['raise_agent'][_index]]['raise_event']) == 0:
+#            comm_dict[comm_dict[p]['raise_agent'][_index]]['agent_state'] = 'normal'
+#            goal_point_index[comm_dict[p]['raise_agent'][_index]] = agents_path[comm_dict[p]['raise_agent'][_index]].index((1,9))
+        if len(comm_dict[reply_1]['raise_event']) == 0:
+            comm_dict[reply_1]['agent_state'] = 'normal'
+            goal_point_index[reply_1] = agents_path[comm_dict[p]['raise_agent'][_index]].index((1,9))
         comm_dict[p]['raise_event'].pop(_index)
         comm_dict[p]['raise_agent'].pop(_index)
         comm_dict[p]['request_position'].pop(_index)
@@ -350,8 +371,13 @@ def movement(): #放到一个类里面去
 
         
         _index = comm_dict[p]['raise_event'].index('rep_2')
-        comm_dict[comm_dict[p]['raise_agent'][_index]]['agent_state'] = 'normal'
-        goal_point_index[comm_dict[p]['raise_agent'][_index]] = agents_path[comm_dict[p]['raise_agent'][_index]].index((7,7))
+#        if len(comm_dict[comm_dict[p]['raise_agent'][_index]]['raise_event']) == 0:
+#            comm_dict[comm_dict[p]['raise_agent'][_index]]['agent_state'] = 'normal'
+#            goal_point_index[comm_dict[p]['raise_agent'][_index]] = agents_path[comm_dict[p]['raise_agent'][_index]].index((7,7))
+        if len(comm_dict[reply_2]['raise_event']) == 0:
+            comm_dict[reply_2]['agent_state'] = 'normal'
+            goal_point_index[reply_2] = agents_path[comm_dict[p]['raise_agent'][_index]].index((7,7))
+
         comm_dict[p]['raise_event'].pop(_index)
         comm_dict[p]['raise_agent'].pop(_index)
         comm_dict[p]['request_position'].pop(_index)
@@ -432,13 +458,13 @@ def update(i):
 
  #FuncAnimation 会在每一帧都调用“update” 函数。
  #在这里设置一个10帧的动画，每帧之间间隔200毫秒
-anim = FuncAnimation(fig1, update, frames=np.arange(0, 1000), interval=20)
+#anim = FuncAnimation(fig1, update, frames=np.arange(0, 10000), interval=20)
     
-#if __name__ == '__main__':
-#    i = 0
-#    while(1):
-#        print(i)
-#        update(i)
-#        savefig('D:/debug/'+str(i)+'.jpg')
-#        #print(i)
-#        i = i+1
+if __name__ == '__main__':
+    i = 0
+    while(1):
+        print(i)
+        update(i)
+        savefig('D:/debug/'+str(i)+'.jpg')
+        #print(i)
+        i = i+1
