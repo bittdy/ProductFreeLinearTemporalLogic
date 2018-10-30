@@ -23,8 +23,12 @@ from matplotlib.lines import Line2D
 from matplotlib.animation import FuncAnimation 
 #仿真参数为间隔20ms
 interval = 20
+#机器人视野
+agent_horizon = [3,5]
 #机器人速度
 agent_velocity = [0.02,0.04,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02]
+#机器人颜色
+agent_color = ['red','red','silver','silver','silver','silver','silver','silver','silver','silver','silver','silver','silver','silver']
 #机器人分组
 agents_split = [1,7,13]
 #构建机器人运动序列
@@ -65,7 +69,12 @@ for i in xyrange:
 ##圆构成的机器人
 agents_list = []
 for i in range(0,len(agents_path)):
-    agent = patches.Ellipse(xy=(agents_path[i][1][0],agents_path[i][1][1]),width=0.3,height=0.3,color='r',fill='True')
+    if i in range(0,agents_split[0]+1):
+        agent = patches.Ellipse(xy=(agents_path[i][1][0],agents_path[i][1][1]),width=0.3,height=0.3,color='r',fill='True')
+    if i in range(agents_split[0]+1,agents_split[1]+1):
+        agent = patches.Ellipse(xy=(agents_path[i][1][0],agents_path[i][1][1]),width=0.3,height=0.3,color='silver',fill='True')
+    if i in range(agents_split[1]+1,agents_split[2]+1):
+        agent = patches.Ellipse(xy=(agents_path[i][1][0],agents_path[i][1][1]),width=0.3,height=0.3,color='silver',fill='True')
     ax1.add_artist(agent)
     agents_list.append(agent)
 #文字，在之后的动画中的那一帧加
@@ -421,9 +430,19 @@ def update(i):
     label = 'timestep {0}'.format(i)
     #确定机器人新位置
     agents_incre = movement()
-    for p in range(0,len(agents_list)):
+    for p in range(0,agents_split[0]+1):
         agents_list[p].center = (agents_list[p].center[0]+agents_incre[p][0],agents_list[p].center[1]+agents_incre[p][1])
-    print(agents_list[0].center)
+        if p in comm_dict[p]['raise_agent']:
+            agents_list[p].set_color('deepskyblue')
+        else:
+            agents_list[p].set_color(agent_color[p])
+    for p in range(agents_split[0]+1,agents_split[2]+1):
+        agents_list[p].center = (agents_list[p].center[0]+agents_incre[p][0],agents_list[p].center[1]+agents_incre[p][1])
+        if comm_dict[p]['agent_state'] == 'lock':
+            agents_list[p].set_color('black')
+        else:
+            agents_list[p].set_color(agent_color[p])
+    #print(agents_list[0].center)
     #确定门，货物等物品状态
     open1_on = 0
     open2_on = 0
