@@ -433,7 +433,7 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-We consider the collaboration under compact coupled task specifications of a multiagent system that consists of heterogeneous groups of homogeneous agents. To fight the extreme computational complexity of centralized multi-agent planning, we propose a decentralized solution, where the-couple-edge is proposed to eliminate the coupling among compact task and transform the collaboration issue into a local task planning problem. Meanwhile, we adapt the online coordination scheme based on real-time exchange of request and reply messages to ensure the satisfaction of task specifications without central coordination. This adapted online coordination scheme facilitates not only decreasing the total execution cost but also dispatching agents to strive to complete task when part of agents failure. Proposed approach is demonstrated by a simulated scenario of 14 agents under compact coupled task specifications.
+We consider the collaboration under compact coupled task specifications of a multiagent system that consists of heterogeneous groups of homogeneous agents. To fight the extreme computational complexity of centralized multi-agent planning, we propose a decentralized solution, where couple-edge is proposed to eliminate the coupling among compact task and transform the collaboration issue into a local task planning problem. Meanwhile, we adapt the online coordination scheme based on real-time exchange of request and reply messages to ensure the satisfaction of task specifications without central coordination. This adapted online coordination scheme facilitates not only decreasing the total execution cost but also dispatching agents to strive to complete task when part of agents failure. Proposed approach is demonstrated by a simulated scenario of 14 agents under compact coupled task specifications.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -595,19 +595,24 @@ Atomic propositions (AP) are boolean variables that can be either true or false 
 
 
 \subsection{B\"{u}chi Automaton}
-Given a LTL formula $\varphi$, we can always translate it to a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{A}_\varphi$ that accepts all the languages that satisfy $\varphi$. It is defined as $\mathcal{A}_\varphi\ =\ (Q,2^{AP},\delta,Q_0,\mathcal{F})$, where $Q$ is a finite set of all the states of B\"{u}chi Automaton, $2^{AP}$ is the set of alphabets, $\delta\ :\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $\mathcal{F}\subseteq Q$ is the set of accepting states of B\"{u}chi Automaton. There are fast translation algorithms[add ref] to obtain $\mathcal{A}_\varphi$ from LTL formula $\varphi$.
+Given a LTL formula $\varphi$, we can always translate it to a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{A}_\varphi$ that accepts all the languages that satisfy $\varphi$. It is defined as $\mathcal{A}_\varphi=\ (Q,2^{AP},\delta,Q_0,\mathcal{F})$, where $Q$ is a finite set of all the states of B\"{u}chi Automaton, $2^{AP}$ is the set of alphabets, $\delta:\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $\mathcal{F}\subseteq Q$ is the set of accepting states of B\"{u}chi Automaton. There are fast translation algorithms[add ref] to obtain $\mathcal{A}_\varphi$ from LTL formula $\varphi$.
 
 \section{Problem Formulation}
-We consider a multiagent system organized by $N\geq1$ agents. Each agent has the capabilities of navigating within the workspace and performing various motions. The agent index is denoted by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. Then, we divide all the agents into different subsets according to their local LTL task specifications, which implies that only agents with the same local LTL task specifications can be divided into one subset. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \bigcup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\bigcap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$. 
+We consider a multiagent system organized by $N\geq1$ agents. Each agent has the capabilities of navigating within the workspace and performing various motions. The agent index is denoted by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. Then, we divide all the agents into different subsets according to their local LTL task specifications, which implies that only agents with the same local LTL task specifications can be divided into one subset. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \bigcup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\bigcap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$.
 \subsection{Motion Abstraction}
+Each agent only knows part of the full workspace which guarantee the completeness of local task and collaboration task
 \subsection{Communication Model}
 \subsection{Complete Agent Model}
 \subsection{Compact Coupled Task Specification}
+In this paper we consider the compact coupled task specification. Compared to loosely coupled task specifications, compact coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The compact coupled task specification takes an recursive definition: Given a LTL formula $\varphi$ contains temporal operators such as $\bigcup \ $, $\Longrightarrow \ $, $\wedge$, we denote the terms around each temporal operators by $t^{left}_i$ and $t^{right}_i$, respectively. if $t^{left}_i$ and $t^{right}_i$ belongs to $AP$ of different agents or one of them is a compact coupled task specification, then we say $\varphi$ is a compact coupled task specification. In other words, a compact coupled task specification should combine the motions of different agents through $\bigcup \ $, $\Longrightarrow \ $, $\wedge$ so that we can't translate it to B\"{u}chi Automaton and synthesize an initial motion and action plan for each agent. In summary, we consider following problem.
+\par
+\emph{Problem 1:}  Given the complete agent model $???$ and a serious of task specifications $\varphi$ which contain compact coupled task specifications, design a decentralized collaboration scheme such that $\varphi$ is fulfilled for all $p_i \ \subseteq \ \mathcal{I}$.
 \section{Initial Decentralized Plan Synthesis}
-In this section, we will show how we decouple the compact coupled task and transform the
+In this section, we will demonstrate how we decouple the compact coupled task specifications through a set of special edge called couple-edge. Then we use the decoupled B\"{u}chi Automaton to synthesize an initial motion plan for each agent.
 \subsection{Decoupling the Compact Coupled Task}
 
 \section{Decentralized Task Collaboration}
+To ensure the 
 \subsection{Planning In Speed Matching Horizon}
 \subsection{Online Coordination Scheme}
 
