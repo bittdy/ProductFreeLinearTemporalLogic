@@ -591,15 +591,20 @@ Subsubsection text here.
 \section{Preliminaries}
 
 \subsection{Linear Temporal Logic}
-aaa
+Atomic propositions (AP) are boolean variables that can be either true or false and the ingredients of an linear temporal logic are a set of atomic propositions and several boolean and temporal operators, which are specified according to the following syntax[add ref]: $\varphi\ $$:$$:$$=\top\ |\ a\ |\ \varphi_1\wedge\varphi_2\ |\ ????\varphi\ |\ \bigcirc\varphi\ |\ \varphi_1\bigcup\varphi_2\ |\ ???fangxing\ |\ ???lingxing\ |\ ???jiantou$, where $\top\ ???$, $a\ \in AP$, $\bigcirc$ (???), $\bigcup$ (???), $ ???fangxing$ (???),  $??? lingxing$ (???), $???jiantou$ (???), and $\bigcup$ (). We refer the readers to [add ref] to grasp the detailed semantics of LTL. We consider $\ \bigcup\ $, $\Longrightarrow$ and $\wedge$ in this paper which can combine the atomic propositions of different agents, thus generating the compact coupling task.
 
-\subsection{B\"{u}chi Automata}
-aaa
+
+\subsection{B\"{u}chi Automaton}
+Given a LTL formula $\varphi$, we can always translate it to a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{A}_\varphi$ that accepts all the languages that satisfy $\varphi$. It is defined as $\mathcal{A}_\varphi\ =\ (Q,2^{AP},\delta,Q_0,\mathcal{F})$, where $Q$ is a finite set of all the states of B\"{u}chi Automaton, $2^{AP}$ is the set of alphabets, $\delta\ :\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $\mathcal{F}\subseteq Q$ is the set of accepting states of B\"{u}chi Automaton. There are fast translation algorithms[add ref] to obtain $\mathcal{A}_\varphi$ from LTL formula $\varphi$.
 
 \section{Problem Formulation}
-
+We consider a multiagent system organized by $N\geq1$ agents. Each agent has the capabilities of navigating within the workspace and performing various motions. The agent index is denoted by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. Then, we divide all the agents into different subsets according to their local LTL task specifications, which implies that only agents with the same local LTL task specifications can be divided into one subset. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \bigcup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\bigcap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$. 
+\subsection{Motion Abstraction}
+\subsection{Communication Model}
+\subsection{Complete Agent Model}
+\subsection{Compact Coupled Task Specification}
 \section{Initial Decentralized Plan Synthesis}
-In this section, we will show how we decouple the compact coupled task and transform the slkdfjkljfaldf
+In this section, we will show how we decouple the compact coupled task and transform the
 \subsection{Decoupling the Compact Coupled Task}
 
 \section{Decentralized Task Collaboration}
