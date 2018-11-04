@@ -604,15 +604,27 @@ Each agent only knows part of the full workspace which guarantee the completenes
 \subsection{Communication Model}
 \subsection{Complete Agent Model}
 \subsection{Compact Coupled Task Specification}
-In this paper we consider the compact coupled task specification. Compared to loosely coupled task specifications, compact coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The compact coupled task specification takes an recursive definition: Given a LTL formula $\varphi$ contains temporal operators such as $\bigcup \ $, $\Longrightarrow \ $, $\wedge$, we denote the terms around each temporal operators by $t^{left}_i$ and $t^{right}_i$, respectively. if $t^{left}_i$ and $t^{right}_i$ belongs to $AP$ of different agents or one of them is a compact coupled task specification, then we say $\varphi$ is a compact coupled task specification. In other words, a compact coupled task specification should combine the motions of different agents through $\bigcup \ $, $\Longrightarrow \ $, $\wedge$ so that we can't translate it to B\"{u}chi Automaton and synthesize an initial motion and action plan for each agent. In summary, we consider following problem.
+In this paper we consider the compact coupled task specification. Compared to loosely coupled task specifications, compact coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The compact coupled task specification takes an recursive definition as following.
 \par
-\emph{Problem 1:}  Given the complete agent model $???$ and a serious of task specifications $\varphi$ which contain compact coupled task specifications, design a decentralized collaboration scheme such that $\varphi$ is fulfilled for all $p_i \ \subseteq \ \mathcal{I}$.
+\emph{Definition 1:} Given a LTL formula $\varphi$ contains temporal operators such as $\bigcup \ $, $\Longrightarrow$ and  $\wedge$, we denote the terms around each temporal operators by $t^{left}_i$ and $t^{right}_i$, respectively. if $t^{left}_i$ and $t^{right}_i$ belongs to $AP$ of different agents or one of them is a compact coupled task specification, then we say $\varphi$ is a compact coupled task specification.
+\par
+In other words, a compact coupled task specification should combine the motions of different agents through $\bigcup \ $, $\Longrightarrow \ $, $\wedge$ so that we can't translate it to B\"{u}chi Automaton and synthesize an initial motion and action plan for each agent. In summary, we consider following problem.
+\par
+\emph{Problem 1:}  Given the complete agent model $\mathcal{C}^{p_i}$ and a serious of task specifications $\varphi$ which contain compact coupled task specifications, design a decentralized collaboration scheme such that $\varphi$ is fulfilled for all $p_i \ \subseteq \ \mathcal{I}$.
 \section{Initial Decentralized Plan Synthesis}
 In this section, we will demonstrate how we decouple the compact coupled task specifications through a set of special edge called couple-edge. Then we use the decoupled B\"{u}chi Automaton to synthesize an initial motion plan for each agent.
 \subsection{Decoupling the Compact Coupled Task}
-We consider the basic compact coupled task such as $\varphi_1 \bigcup (\varphi_2 \wedge \varphi_3)$ and $\varphi_1 \Longrightarrow (\varphi_2 \wedge \varphi_3)$, the nested compact coupled task can be transform to basic terms through utilizing auxiliary words. For example, we can transform $\varphi_1 \bigcup (\varphi_2 \Longrightarrow \varphi_3)$ into $\varphi_1 \bigcup \kappa$ and $\kappa=\varphi_2 \Longrightarrow \varphi_3$. Then towards basic compact coupled task specification, 
+We consider the basic compact coupled task such as $\varphi_1 \bigcup (\varphi_2 \wedge \varphi_3)$ and $\varphi_1 \Longrightarrow \bigcirc(\varphi_2 \wedge \varphi_3)$, the nested compact coupled task can be transform to basic terms through utilizing auxiliary words. For example, we can transform $\varphi_1 \bigcup (\varphi_2 \Longrightarrow \bigcirc \varphi_3)$ into $\varphi_1 \bigcup \kappa$ and $\kappa=\varphi_2 \Longrightarrow \bigcirc \varphi_3$.
+\par
+Towards basic compact coupled task specification, we notice that compact coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider compact coupled task specification $!\varphi_1\bigcup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Consider the local complete agent model $\mathcal{C}^{p_i}$, of which the state set is $Q_c^{p_i}$ that $\varphi_1 \subseteq Q_c^{p_i}|_{\mathcal{M}}$, and $\varphi_2 ??? bushuyuhao Q_c^{p_i}|_{\mathcal{M}} $. There exists a subset of $Q_c^{p_i}$ denoted by $\epsilon$ that $\varphi_1 \subseteq \epsilon |_{\mathcal{M}}$ and $\varphi_1 ???bushuyuhao Q_c^{p_i} \setminus \epsilon |_{\mathcal{M}}$. Then there is no edge from $Q_c^{p_i} \setminus \epsilon$ to $\epsilon$ so that we can't synthesize an initial motion plan fulfill $\varphi$.
+%So zhiyao women zhaodao jiqiren moxing zhong naxie yu ouhe renwu youguan de zhuanhuan guanxi ,jia she jiqiren yijing ti gongle xiezhu ,jiang zhexie ouhe bian tianjia zhi bendi complete model zhong bian keyi dedao chushi lujing
+
+%ouhe bian de dingyi
+%zhao ou he bian de suan fa
+%tietu
+%\subsection{ci local agent model xia de chushi lujing guihua}
 \section{Decentralized Task Collaboration}
-To ensure the 
+To ensure the
 \subsection{Planning In Speed Matching Horizon}
 \subsection{Online Coordination Scheme}
 
