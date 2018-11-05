@@ -51,6 +51,12 @@
 
 
 \documentclass[journal]{IEEEtran}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm
 %
 % If IEEEtran.cls has not been installed into the LaTeX system files,
 % manually specify the path to it like:
@@ -459,6 +465,7 @@ multiagent system, linear temporal logics (LTLs), decentralized collaboration.
 
 
 \section{Introduction}
+zhao yu guo meng qu bie, you ming que de xian hou shun xv guan xi?buxv yao ren wei ding yi xie zuo dong zuo
 % The very first letter is a 2 line initial drop letter followed
 % by the rest of the first word in caps.
 %
@@ -591,16 +598,16 @@ Subsubsection text here.
 \section{Preliminaries}
 
 \subsection{Linear Temporal Logic}
-Atomic propositions (AP) are boolean variables that can be either true or false and the ingredients of an linear temporal logic are a set of atomic propositions and several boolean and temporal operators, which are specified according to the following syntax[add ref]: $\varphi\ $$:$$:$$=\top\ |\ a\ |\ \varphi_1\wedge\varphi_2\ |\ ????\varphi\ |\ \bigcirc\varphi\ |\ \varphi_1\bigcup\varphi_2\ |\ ???fangxing\ |\ ???lingxing\ |\ ???jiantou$, where $\top\ ???$, $a\ \in AP$, $\bigcirc$ (???), $\bigcup$ (???), $ ???fangxing$ (???),  $??? lingxing$ (???), $???jiantou$ (???), and $\bigcup$ (). We refer the readers to [add ref] to grasp the detailed semantics of LTL. We consider $\ \bigcup\ $, $\Longrightarrow$ and $\wedge$ in this paper which can combine the atomic propositions of different agents, thus generating the compact coupling task.
+Atomic propositions (AP) are boolean variables that can be either true or false and the ingredients of an linear temporal logic are a set of atomic propositions and several boolean and temporal operators, which are specified according to the following syntax[add ref]: $\varphi\ $$:$$:$$=\top\ |\ a\ |\ \varphi_1\wedge\varphi_2\ |\ ????\varphi\ |\ \bigcirc\varphi\ |\ \varphi_1\cup\varphi_2\ |\ ???fangxing\ |\ ???lingxing\ |\ ???jiantou$, where $\top\ ???$, $a\ \in AP$, $\bigcirc$ (???), $\cup$ (???), $ ???fangxing$ (???),  $??? lingxing$ (???), $???jiantou$ (???), and $\cup$ (). We refer the readers to [add ref] to grasp the detailed semantics of LTL. We consider $\ \cup\ $, $\Longrightarrow$ and $\wedge$ in this paper which can combine the atomic propositions of different agents, thus generating the compact coupling task.
 
 
 \subsection{B\"{u}chi Automaton}
 Given a LTL formula $\varphi$, we can always translate it to a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{A}_\varphi$ that accepts all the languages that satisfy $\varphi$. It is defined as $\mathcal{A}_\varphi=\ (Q,2^{AP},\delta,Q_0,\mathcal{F})$, where $Q$ is a finite set of all the states of B\"{u}chi Automaton, $2^{AP}$ is the set of alphabets, $\delta:\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $\mathcal{F}\subseteq Q$ is the set of accepting states of B\"{u}chi Automaton. There are fast translation algorithms[add ref] to obtain $\mathcal{A}_\varphi$ from LTL formula $\varphi$.
 
 \section{Problem Formulation}
-We consider a multiagent system organized by $N\geq1$ agents. Each agent has the capabilities of navigating within the workspace and performing various motions. The agent index is denoted by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. Then, we divide all the agents into different subsets according to their local LTL task specifications, which implies that only agents with the same local LTL task specifications can be divided into one subset. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \bigcup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\bigcap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$.
+We consider a multiagent system organized by $N\geq1$ agents. Each agent has the capabilities of navigating within the workspace and performing various motions. The agent index is denoted by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. Then, we divide all the agents into different subsets according to their local LTL task specifications, which implies that only agents with the same local LTL task specifications can be divided into one subset. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \cup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\cap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$.
 \subsection{Motion Abstraction}
-Each agent only knows part of the full workspace which guarantee the completeness of local task and collaboration task. huan jing bao han X ge partition, biao shi wei:
+Each agent only knows part of the full workspace which guarantee the completeness of local task and collaboration task. huan jing bao han X ge partition, biao shi wei:   jie shao FTS gai nian
 \subsection{Communication Model}
 fen wei liang ceng tong xin
 \subsection{Complete Agent Model}
@@ -608,40 +615,68 @@ zheng ge de wan quan de zhi neng ti model wei motion product buchi automaton
 \subsection{Compact Coupled Task Specification}
 In this paper we consider the compact coupled task specification. Compared to loosely coupled task specifications, compact coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The compact coupled task specification takes an recursive definition as following.
 \par
-\emph{Definition 1:} Given a LTL formula $\varphi$ contains temporal operators such as $\bigcup \ $, $\Longrightarrow$ and  $\wedge$, we denote the terms around each temporal operators by $t^{left}_i$ and $t^{right}_i$, respectively. if $t^{left}_i$ and $t^{right}_i$ belongs to $AP$ of different agents or one of them is a compact coupled task specification, then we say $\varphi$ is a compact coupled task specification.
+\emph{Definition 1:} Given a LTL formula $\varphi$ contains temporal operators such as $\cup \ $, $\Longrightarrow$ and  $\wedge$, we denote the terms around each temporal operators by $t^{left}_i$ and $t^{right}_i$, respectively. if $t^{left}_i$ and $t^{right}_i$ belongs to $AP$ of different agents or one of them is a compact coupled task specification, then we say $\varphi$ is a compact coupled task specification.
 \par
-In other words, a compact coupled task specification should combine the motions of different agents through $\bigcup \ $, $\Longrightarrow \ $, $\wedge$ so that we can't translate it to B\"{u}chi Automaton and synthesize an initial motion and action plan for each agent. In summary, we consider following problem.
+In other words, a compact coupled task specification should combine the motions of different agents through $\cup \ $, $\Longrightarrow \ $, $\wedge$ so that we can't translate it to B\"{u}chi Automaton and synthesize an initial motion plan for each agent. In summary, we consider following problem.
 \par
 \emph{Problem 1:}  Given the complete agent model $\mathcal{C}^{p_i}$ and a serious of task specifications $\varphi$ which contain compact coupled task specifications, design a decentralized collaboration scheme such that $\varphi$ is fulfilled for all $p_i \ \subseteq \ \mathcal{I}$.
-\section{Initial Decentralized Plan Synthesis}
+\section{Decentralized Initial Plan Synthesis}
 In this section, we will demonstrate how we decouple the compact coupled task specifications through a set of special edge called couple-edge. Then we use the decoupled B\"{u}chi Automaton to synthesize an initial motion plan for each agent.
 \subsection{Decoupling the Compact Coupled Task}
-We consider the basic compact coupled task such as $\varphi_1 \bigcup (\varphi_2 \wedge \varphi_3)$ and $\varphi_1 \Longrightarrow \bigcirc(\varphi_2 \wedge \varphi_3)$, the nested compact coupled task can be transform to basic terms through utilizing auxiliary words. For example, we can transform $\varphi_1 \bigcup (\varphi_2 \Longrightarrow \bigcirc \varphi_3)$ into $\varphi_1 \bigcup \kappa$ and $\kappa=\varphi_2 \Longrightarrow \bigcirc \varphi_3$.
+We consider the basic compact coupled task such as $\varphi_1 \cup (\varphi_2 \wedge \varphi_3)$ and $\varphi_1 \Longrightarrow \bigcirc(\varphi_2 \wedge \varphi_3)$, the nested compact coupled task can be transform to basic terms through utilizing auxiliary words. For example, we can transform $\varphi_1 \cup (\varphi_2 \Longrightarrow \bigcirc \varphi_3)$ into $\varphi_1 \cup \kappa$ and $\kappa=\varphi_2 \Longrightarrow \bigcirc \varphi_3$.
 \par
-Towards basic compact coupled task specification, we notice that compact coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider compact coupled task specification $!\varphi_1\bigcup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Consider the local complete agent model $\mathcal{C}^{p_i}$, of which the state set is $Q_c^{p_i}$ that $\varphi_1 \subseteq Q_c^{p_i}|_{\mathcal{M}}$, and $\varphi_2 ??? bushuyuhao Q_c^{p_i}|_{\mathcal{M}} $. There exists a subset of $Q_c^{p_i}$ denoted by $\epsilon$ that $\varphi_1 \subseteq \epsilon |_{\mathcal{M}}$ and $\varphi_1 ???bushuyuhao Q_c^{p_i} \setminus \epsilon |_{\mathcal{M}}$. Then there is no edge from $Q_c^{p_i} \setminus \epsilon$ to $\epsilon$ so that we can't synthesize an initial motion plan fulfill $\varphi$.\par
+Towards basic compact coupled task specification, we notice that compact coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider compact coupled task specification $!\varphi_1\cup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Consider the local complete agent model $\mathcal{C}^{p_i}$, of which the state set is $Q_c^{p_i}$ that $\varphi_1 \in Q_c^{p_i}|_{\mathcal{M}}$, and $\varphi_2 \notin Q_c^{p_i}|_{\mathcal{M}} $. There exists a subset of $Q_c^{p_i}$ denoted by $\epsilon$ that $\varphi_1 \in \epsilon |_{\mathcal{M}}$ and $\varphi_1 \notin Q_c^{p_i} \setminus \epsilon |_{\mathcal{M}}$. Then there is no edge from $Q_c^{p_i} \setminus \epsilon$ to $\epsilon$ so that we can't synthesize an initial motion plan fulfill $\varphi$.\par
 \emph{Definition 2:} Given a complete agent model $\mathcal{C}^{p_i}$, If two nodes $q_i$, $q_j$ satisfy following properties:
 \par
-(1) $q_i \subseteq \epsilon$, $q_j \subseteq Q_c^{p_i} \setminus \epsilon$ or vice versa.\par
+(1) $q_i \in \epsilon$, $q_j \in Q_c^{p_i} \setminus \epsilon$ or vice versa.\par
 (2) $\delta(q_i,q_j)\subseteq sym(\varphi_c)$ or $\delta(q_j,q_i)\subseteq sym(\varphi_c)$.\par
 where $\varphi_c$ denote the compact coupled part of task specification $\varphi$ and $sym(\varphi)$ denote all the atomic proposition of $\varphi$.
 We call each edge which connects $q_i$ and $q_j$ the couple-edge.
 At first we can assume that all the collaborative agents have provided assistance and add all the couple-edge to the local complete agent model, then we can synthesize an initial motion plan for each agent.\par
-We apply algorithm 1 to find out all the couple-edge with respect to the compact coupled task specification $\varphi_c$ and add them into the origin complete agent model $\mathcal{C}^{p_i}$. At last we can get a new complete agent model $\mathcal{C}^{p_i}_n$ for each agent, which contains $\mathcal{C}^{p_i}$ and all the couple-edges.\par
-
-algorithm 1:
-input:
-output:
-
-
-
-zhengming zhaodaole quanbu ouhe bian
-%So zhiyao women zhaodao jiqiren moxing zhong naxie yu ouhe renwu youguan de zhuanhuan guanxi ,jia she jiqiren yijing ti gongle xiezhu ,jiang zhexie ouhe bian tianjia zhi bendi complete model zhong bian keyi dedao chushi lujing
-
-%ouhe bian de dingyi
-%zhao ou he bian de suan fa
-yaobuyao tie ge tu, xing xiang de zhan shi xia suan fa de xiao guo?
+We adapt previous local product algorithm[add ref] which combines the FTS and B\"{u}chi Automaton of single agent for finding out all the couple-edge with respect to the compact coupled task specification $\varphi_c$ and add them into the origin complete agent model. Applying algorithm 1 we can get a new complete agent model $\mathcal{C}^{p_i}_n$ for each agent, which contains $\mathcal{C}^{p_i}$ and all the couple-edges.\par
+\begin{algorithm}[ha]
+  \caption{ New Local Product Procedure, $NewProd()$ }
+  \label{alg:Framwork}
+  \begin{algorithmic}[1]
+    \Require
+      The compact coupled task specification, $\varphi_c$;
+      The local agent FTS, $\mathcal{F}^{p_i}$ and B\"{u}chi Automaton $\mathcal{B}^{p_i}$;
+    \Ensure
+      New local complete agent model, $\mathcal{C}^{p_i}_n$;
+        \ForAll {$f^i \in \mathcal{F}^{p_i}$}
+          \ForAll {a}
+            \State $pp$
+          \EndFor
+          \State $T=T\cup T_{i};$
+        \EndFor
+        \ForAll {$c$ such that $c\in RecentMBatch(E_{n-1})$}
+          \label{code:TrainBase:getc}
+          \State $T=T\cup PosSample(c)$;
+          \label{code:TrainBase:pos}
+        \EndFor;
+        \For{$i=1$; $i<n$; $i++$ }
+          \State $//$ Your source here;
+        \EndFor
+        \For{$i=1$ to $n$}
+          \State $//$ Your source here;
+        \EndFor
+        \State $//$ Reusing recent base classifiers.
+        \label{code:recentStart}
+        \While {$(|E_n| \leq L_1 )and( D \neq \phi)$}
+          \State Selecting the most recent classifier $c_i$ from $D$;
+          \State $D=D-c_i$;
+          \State $E_n=E_n+c_i$;
+        \EndWhile
+        \label{code:recentEnd}
+  \end{algorithmic}
+\end{algorithm}
+\emph{Lemma 1:} By adding all the couple-edges found out by applying algorithm 1 to $\mathcal{C}^{p_i}$, we can synthesize an initial accepted motion plan for each agent.\par
+\emph{proof:} According to algorithm 1, the nodes in $Q_c^{p_i} \setminus \epsilon$ are connected because these nodes are correspond to independent task specifications. Through adding couple-edges into $\mathcal{C}^{p_i}$, each node in $\epsilon$ becomes reachable and $\mathcal{C}^{p_i}_n$ becomes fully connected. Consequently, there must exist spanning trees for $\mathcal{C}^{p_i}_n$ and there must exist a path from any initial node in $\Phi_0^{p_i}$ to any accepted node in $\Phi_A^{p_i}$. So we can synthesize an initial motion plan fulfilling $\varphi_c$ according to $\mathcal{C}^{p_i}_n$.
 \subsection{ci local agent model xia de chushi lujing guihua}
 zheyijie yao li yong ben di de complete agent model wan cheng local fenbushi guihua , the algorithm is omitted there for jie sheng kong jian[add ref]. bing qie goujian shihe yu ben wenti de motion plan(zhi jiang xv yao de ts fa chulai,biru !aUb,zou zhe tiao bian yao ba b fachulai ,jiqiren cai zhidao qu naer) kao lv yao bu yao chong gou dijstra suan fa, cong er gou jian shi he zi ji yong de ge shi de lu jing.
+yaobuyao tie ge tu, xing xiang de zhan shi xia suan fa de xiao guo?????????????????????\par
+\emph{Lemma 2:} This decentralized initial plan synthesis method has solutions as long as original centralized plan synthesis method has solutions.\par
+\emph{Proof:} In algorithm 1 we assume that all the collaborative agents have provided assistance and add all the couple-edges into $\mathcal{C}^{p_i}$. Then towards $\mathcal{C}^{p_i}$, $\varphi_c$ is no longer a constraint. The constraint becomes $\varphi \setminus \varphi_c$. Assume we synthesize an initial motion plan $R$ applying original centralized plan synthesis method, $R$ fulfills $\varphi$ and then $R$ must fulfill $\varphi \setminus \varphi_c$, so all the solutions generated by original centralized method are contained in the solutions generated by decentralized method. Consequently, the proposed decentralized initial plan synthesis method has solutions as long as original centralized plan synthesis method has solutions.
 \section{Decentralized Task Collaboration}
 wo men zai jie ou jin ou he ren wu shi, jia she le xie zuo ji qi ren yi jing ti gong le bang zhu, dan ru guo ge ge ji qi ren zhen de an zhao ge zi de xv lie zhu bu yun xing de hua,bing bu neng bao zheng fulfill the task. zai ben zhang ,jiang tong guo zai xian jiao liu kuang jia tiao zheng ji qi ren de yun dong xv lie,cong er fulfill task.
 \subsection{Planning In Speed Matching Horizon}
@@ -652,7 +687,7 @@ reply: ti chu dai jia han shu, que ding shei lai reply
 confirm: dang ji qi ren wan cheng ren wu, jie chu request, hui fu ji qi ren zhuang tai ,zhe qi zhong jie qian guo meng lun wen you mei you shen me shu xue wen ti ke yi xie.
 \section{Agent Scheduling System}
 ji bian wo men an zhao shang mian zhang jie dui ji qi ren jin xing lu jing gui hua, reng ran ke neng you tu fa zhuang kuang zao cheng dui ren wu de bu man zu. wo men zai jie xia lai de zhang jie zhong gou jian ji qi ren de diao du xi tong wan cheng dui ji qi ren de jin yi bu de gui hua diao du.
-\subsection{Prevention Of Long-time Demission}
+\subsection{Prevention Of Long-time Demission huo zhe xie yan chi ren wu zi shi ying gai bian xv lie}
 ruo cong shi mou yi ren wu de ji qi ren shu liang guo duo, ti chu request de ci shu ji wei pin fan, an zhao shang mian de tong xin kaung jia, ke neng hui zao cheng mou xie ji qi ren yi zhi zai xiang ying request, er wu fa wan cheng zi ji de ren wu, ru guo you ji xiao xi tong,gai ji qi ren jiang bei pan wei li zhi shen zhi bei jian ce wei shi xiao. wei le fang zhi zhe zhong qing kuang fa sheng ,wo men she ji le ru xia de ce lue lai kong zhi xie zuo ji qi ren he shi hui dao zi shen de ren wu.   jian mo, neng ge dai jia han shu,qiu he shi tuo li ran hou ling yi ge ji qi ren bu shang bi jiao hao.
 \subsection{Failure Signal Transmission And Agents Dispatching}
 dang mou ge ji qi ren dang ji,xv yao ling yi ge ji qi ren lai jie ti qi ren wu, dan tong shi yao neng gou zai ji qi ren xiu fu hou hui zi ji ren wu, xv yao shi xiao ji qi ren chaun di shi xiao xin hao,ti dai ji qi ren xv yao she ji yi tao shu xue fang fa lai zui xiao dai jia qie ru shi xiao ji qi ren de ren wu.
