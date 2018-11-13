@@ -51,19 +51,34 @@
 
 
 \documentclass[journal]{IEEEtran}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-\usepackage{amsmath}
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm
-\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm
+
+%\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage{algpseudocode}
+%\usepackage{amsmath}
+
+%\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm
+%\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm
 %
 % If IEEEtran.cls has not been installed into the LaTeX system files,
 % manually specify the path to it like:
 % \documentclass[journal]{../sty/IEEEtran}
 
 
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
 
+\makeatletter
+\newif\if@restonecol
+\makeatother
+\let\algorithm\relax
+\let\endalgorithm\relax
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}%[ruled,vlined]{
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm
 
 
 % Some very useful LaTeX packages include:
@@ -600,7 +615,7 @@ Subsubsection text here.
 \section{Preliminaries}
 
 \subsection{Linear Temporal Logic}
-Atomic propositions (AP) are boolean variables that can be either true or false and the ingredients of an linear temporal logic are a set of atomic propositions and several boolean and temporal operators, which are specified according to the following syntax[add ref]: $\varphi\ $$:$$:$$=\top\ |\ a\ |\ \varphi_1\wedge\varphi_2\ |\ ????\varphi\ |\ \bigcirc\varphi\ |\ \varphi_1\cup\varphi_2\ |\ ???fangxing\ |\ ???lingxing\ |\ ???jiantou$, where $\top\ ???$, $a\ \in AP$, $\bigcirc$ (???), $\cup$ (???), $ ???fangxing$ (???),  $??? lingxing$ (???), $???jiantou$ (???), and $\cup$ (). We refer the readers to [add ref] to grasp the detailed semantics of LTL. We consider $\ \cup\ $, $\Longrightarrow$ and $\wedge$ in this paper which can combine the atomic propositions of different agents, thus generating the compact coupling task.
+Atomic propositions (AP) are boolean variables that can be either true or false and the ingredients of an linear temporal logic are a set of atomic propositions and several boolean and temporal operators, which are specified according to the following syntax[add ref]: $\varphi\ $$:$$:$$=\top|a|\varphi_1\wedge\varphi_2| \neg \varphi|\bigcirc\varphi|\varphi_1\cup\varphi_2|\Box\varphi|\Diamond\varphi|\Longrightarrow\varphi$, where $\top\ (\emph{True})$, $a\ \in AP$, $\bigcirc$ (\emph{Next}), $\cup$ (\emph{Until}), $\Box (\emph{Always})$,  $\Diamond (\emph{Eventually})$ and $\Longrightarrow (\emph{Implicate})$. We refer the readers to [add ref] to grasp the detailed semantics of LTL. We consider $\ \cup\ $, $\Longrightarrow$ and $\wedge$ in this paper which can combine the atomic propositions of different agents, thus generating the compact coupling task.
 
 
 \subsection{B\"{u}chi Automaton}
@@ -614,6 +629,7 @@ Each agent only knows part of the full workspace which guarantee the completenes
 fen wei liang ceng tong xin
 \subsection{Complete Agent Model}
 zheng ge de wan quan de zhi neng ti model wei motion product buchi automaton
+????yao an zhao algorithm 1 ding yi,ba ou he bian ti xian chu lai
 \subsection{Compact Coupled Task Specification}
 In this paper we consider the compact coupled task specification. Compared to loosely coupled task specifications, compact coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The compact coupled task specification takes an recursive definition as following.
 \par
@@ -627,52 +643,62 @@ In this section, we will demonstrate how we decouple the compact coupled task sp
 \subsection{Decoupling the Compact Coupled Task}
 We consider the basic compact coupled task such as $\varphi_1 \cup (\varphi_2 \wedge \varphi_3)$ and $\varphi_1 \Longrightarrow \bigcirc(\varphi_2 \wedge \varphi_3)$, the nested compact coupled task can be transform to basic terms through utilizing auxiliary words. For example, we can transform $\varphi_1 \cup (\varphi_2 \Longrightarrow \bigcirc \varphi_3)$ into $\varphi_1 \cup \kappa$ and $\kappa=\varphi_2 \Longrightarrow \bigcirc \varphi_3$.
 \par
-Towards basic compact coupled task specification, we notice that compact coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider compact coupled task specification $!\varphi_1\cup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Consider the local complete agent model $\mathcal{C}^{p_i}$, of which the state set is $Q_c^{p_i}$ that $\varphi_1 \in Q_c^{p_i}|_{\mathcal{M}}$, and $\varphi_2 \notin Q_c^{p_i}|_{\mathcal{M}} $. There exists a subset of $Q_c^{p_i}$ denoted by $\epsilon$ that $\varphi_1 \in \epsilon |_{\mathcal{M}}$ and $\varphi_1 \notin Q_c^{p_i} \setminus \epsilon |_{\mathcal{M}}$. Then there is no edge from $Q_c^{p_i} \setminus \epsilon$ to $\epsilon$ so that we can't synthesize an initial motion plan fulfill $\varphi$.\par
+Towards basic compact coupled task specification, we notice that compact coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider compact coupled task specification $\neg \varphi_1\cup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Consider the local complete agent model $\mathcal{C}^{p_i}$, of which the state set is $Q_c^{p_i}$ that $\varphi_1 \in Q_c^{p_i}|_{\mathcal{M}}$, and $\varphi_2 \notin Q_c^{p_i}|_{\mathcal{M}} $. There exists a subset of $Q_c^{p_i}$ denoted by $\epsilon$ that $\varphi_1 \in \epsilon |_{\mathcal{M}}$ and $\varphi_1 \notin Q_c^{p_i} \setminus \epsilon |_{\mathcal{M}}$. Then there is no edge from $Q_c^{p_i} \setminus \epsilon$ to $\epsilon$ so that we can't synthesize an initial motion plan fulfill $\varphi$.\par
 \emph{Definition 2:} Given a complete agent model $\mathcal{C}^{p_i}$, If two nodes $q_i$, $q_j$ satisfy following properties:
 \par
 (1) $q_i \in \epsilon$, $q_j \in Q_c^{p_i} \setminus \epsilon$ or vice versa.\par
-(2) $\delta(q_i,q_j)\subseteq sym(\varphi_c)$ or $\delta(q_j,q_i)\subseteq sym(\varphi_c)$.\par
+(2) $\delta(q_i,q_j)\subseteq sym(\varphi_c)$ or $\delta(q_j,q_i)\subseteq sym(\varphi_c)$.
+
 where $\varphi_c$ denote the compact coupled part of task specification $\varphi$ and $sym(\varphi)$ denote all the atomic proposition of $\varphi$.
 We call each edge which connects $q_i$ and $q_j$ the couple-edge.
 At first we can assume that all the collaborative agents have provided assistance and add all the couple-edge to the local complete agent model, then we can synthesize an initial motion plan for each agent.\par
-We adapt previous local product algorithm[add ref] which combines the FTS and B\"{u}chi Automaton of single agent for finding out all the couple-edge with respect to the compact coupled task specification $\varphi_c$ and add them into the origin complete agent model. Applying algorithm 1 we can get a new complete agent model $\mathcal{C}^{p_i}_n$ for each agent, which contains $\mathcal{C}^{p_i}$ and all the couple-edges.\par
-\begin{algorithm}[ha]
-  \caption{ New Local Product Procedure, $NewProd()$ }
-  \label{alg:Framwork}
-  \begin{algorithmic}[1]
-    \Require
-      The compact coupled task specification, $\varphi_c$;
-      The local agent FTS, $\mathcal{F}^{p_i}$ and B\"{u}chi Automaton $\mathcal{B}^{p_i}$;
-    \Ensure
-      New local complete agent model, $\mathcal{C}^{p_i}_n$;
-        \ForAll {$f^i \in \mathcal{F}^{p_i}$}
-          \ForAll {a}
-            \State $pp$
-          \EndFor
-          \State $T=T\cup T_{i};$
-        \EndFor
-        \ForAll {$c$ such that $c\in RecentMBatch(E_{n-1})$}
-          \label{code:TrainBase:getc}
-          \State $T=T\cup PosSample(c)$;
-          \label{code:TrainBase:pos}
-        \EndFor;
-        \For{$i=1$; $i<n$; $i++$ }
-          \State $//$ Your source here;
-        \EndFor
-        \For{$i=1$ to $n$}
-          \State $//$ Your source here;
-        \EndFor
-        \State $//$ Reusing recent base classifiers.
-        \label{code:recentStart}
-        \While {$(|E_n| \leq L_1 )and( D \neq \phi)$}
-          \State Selecting the most recent classifier $c_i$ from $D$;
-          \State $D=D-c_i$;
-          \State $E_n=E_n+c_i$;
-        \EndWhile
-        \label{code:recentEnd}
-  \end{algorithmic}
+We adapt previous local product algorithm[add ref] which combines the FTS and B\"{u}chi Automaton of single agent for finding out all the couple-edge with respect to the compact coupled task specification $\varphi_c$ and add them into the origin complete agent model. Applying Algorithm 1 we can get a new complete agent model $\mathcal{C}^{p_i}_n$ for each agent, which contains $\mathcal{C}^{p_i}$ and all the couple-edges.\par
+\begin{algorithm}
+  \caption{Construct New Complete Agent Model $\mathcal{C}^{p_i}_n$}
+  \KwIn{the local FTS $\mathcal{F}^{p_i}$, the local B\"{u}chi Automaton $\mathcal{B}^{p_i}$ and the compact coupled task specification $\varphi_c$}
+  \KwOut{complete agent model $\mathcal{C}^{p_i}$}
+  \ForEach{$\pi_i\in \Pi,q_m\in Q$}
+  {
+    $q'_s=<\pi_i,q_m>\in Q'$
+
+    \If{$\pi_i\in \Pi_0\ and\ q_m\in Q_0$}
+    {
+        $q'_s\in Q'_0$
+    }
+    \If{$q_m\in Q_\mathcal{F}$}
+    {
+        $q'_s\in Q'_\mathcal{F}$
+    }
+    \ForEach{$\pi_j\in Post(\pi_i),q_n \in Post(q_m)$}
+    {
+        $q'_g=<\pi_j,q_n>\in Q'$
+        $d = CheckTranB(q_m,L_c(\pi_i),q_n,\mathcal{B}^{p_i})$
+
+        \If{$d \geqslant 0$}
+        {
+            $q'_g\in \delta'(q'_s)$
+
+            $W_p(q'_s,q'_g)=W_c(\pi_i,\pi_j)$
+
+            $\tau(q'_s,q'_g) = None$
+        }
+        \Else
+        {
+            \If{$L_c(\pi_i)\in sym(\varphi_c)$}
+            {
+                $q'_g\in \delta'(q'_s)$
+
+                $W_p(q'_s,q'_g)=W_c(\pi_i,\pi_j)$
+
+                $\tau(q'_s,q'_g)=L_c(\pi_i)$
+            }
+        }
+    }
+  }
+  \Return $\mathcal{C}^{p_i}$
 \end{algorithm}
-\emph{Lemma 1:} By adding all the couple-edges found out by applying algorithm 1 to $\mathcal{C}^{p_i}$, we can synthesize an initial accepted motion plan for each agent.\par
+
+\emph{Lemma 1:} By adding all the couple-edges found out by applying Algorithm 1 to $\mathcal{C}^{p_i}$, we can synthesize an initial accepted motion plan for each agent.\par
 \emph{proof:} According to algorithm 1, the nodes in $Q_c^{p_i} \setminus \epsilon$ are connected because these nodes are correspond to independent task specifications. Through adding couple-edges into $\mathcal{C}^{p_i}$, each node in $\epsilon$ becomes reachable and $\mathcal{C}^{p_i}_n$ becomes fully connected. Consequently, there must exist spanning trees for $\mathcal{C}^{p_i}_n$ and there must exist a path from any initial node in $\Phi_0^{p_i}$ to any accepted node in $\Phi_A^{p_i}$. So we can synthesize an initial motion plan fulfilling $\varphi_c$ according to $\mathcal{C}^{p_i}_n$.
 \subsection{Plan Synthesis and Reconstitution}
 zheyijie yao li yong ben di de complete agent model wan cheng local fenbushi guihua , the algorithm is omitted there for jie sheng kong jian[add ref]. bing qie goujian shihe yu ben wenti de motion plan(zhi jiang xv yao de ts fa chulai,biru !aUb,zou zhe tiao bian yao ba b fachulai ,jiqiren cai zhidao qu naer) kao lv yao bu yao chong gou dijstra suan fa, cong er gou jian shi he zi ji yong de ge shi de lu jing.
@@ -687,26 +713,51 @@ In previous section, we assume that all the collaborative agents have provided a
 In order to reduce the complexity of task collaboration, we apply a receding horizon method for each agent. Consider the initial reconstituted motion plan $\varrho^{p_i}$ previous, assume the current position of agent $p_i$ is $\pi^{p_i}$ which is the $l$th element of $\varrho^{p_i}$ namely $\varrho^{p_i}[l]$. Assign a receding time $T_H$ for each agent, note that different agents have different velocity so each agent will adjust its velocity according to its speed. Assume that each agent could estimate the approximate time according its current velocity, departure position and target position, then the segment the agent expected to execute in $T_H$ is denoted by $\tau^{p_i}_H$, $\tau^{p_i}_H = \varrho^{p_i}[l:t]$, where the index $t$ is the solution of the following optimization problem: min $t$, subject to $\sum_{k=l}^{t}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])\geq T_H$, this issue can be solved by iterating through the $\varrho^{p_i}$ and computing the accumulated time which is compared to $T_H$. If previous optimization problem doesn't have a solution, it means that in $T_H$ the agent can execute the rest of the suffix of $\varrho^{p_i}$, namely $\varrho^{p_i}[l:]$. Since the split point of $\varrho^{p_i}$ has been indicated previously, original optimization problem can be transformed into a new optimization problem: min $t$, subject to $\sum_{k=\gamma}^{t}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])\geq T_H - \sum_{k=l}^{|\varrho^{p_i}|}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])$, where $|\varrho^{p_i}|$ denote the length of $\varrho^{p_i}$ and $\gamma$ denote the split point index. We can always find a solution to above problem iteratively.
 
 \subsection{Online Coordination Scheme}
-Through speed matching receding horizon planning, the truncation index is founded and the receding horizon motion plan $\varrho^{p_i}_H$ is synthesized. To ensure the fulfill of task specification $\varphi$, each agent needs to check whether it needs others' collaboration within $\varrho^{p_i}_H$. Since we have reconstituted the motion plan of each agent, we can just find the first item in $\varrho^{p_i}_H$ which has $req$ attribute.  After one agent confirms that it needs others' collaboration, a $\textbf{Request}^{p_i}$ is sent to others. More specifically, for the first item $<\pi_c^{p_i},req^{p_i}>\ \in \varrho^{p_i}_H$ satisfying $req \neq \emptyset$, where $c$ denote the index of $<\pi_c^{p_i},req^{p_i}>$ in $\varrho^{p_i}_H$. Agent $p_i$ needs to broadcast the request message to $\mathcal{N}^{p_i}$ through its communicate network. $\textbf{Request}^{p_i}$ has the following format:
+Through speed matching receding horizon planning, the truncation index is founded and the receding horizon motion plan $\varrho^{p_i}_H$ is synthesized. To ensure the fulfill of task specification $\varphi$, each agent needs to check whether it needs others' collaboration within $\varrho^{p_i}_H$. Since we have reconstituted the motion plan of each agent, we can just find the first item in $\varrho^{p_i}_H$ which has $req^{p_i}$ attribute.  After one agent confirms that it needs others' collaboration, a $\textbf{Request}^{p_i}$ is sent to others. More specifically, for the first item $<\pi_c^{p_i},req^{p_i}>\ \in \varrho^{p_i}_H$ satisfying $req \neq \emptyset$, where $c$ denote the index of $<\pi_c^{p_i},req^{p_i}>$ in $\varrho^{p_i}_H$. Agent $p_i$ needs to broadcast the request message to $\mathcal{N}^{p_i}$ through its communicate network. $\textbf{Request}^{p_i}$ has the following format:
 $$\textbf{Request}^{p_i} = (\chi^{p_i},\pi_c^{p_i},T^{p_i}_e)$$
-where $\chi^{p_i}$ denotes all the items in $req^{p_i}$, which indicates the collaborative motion agent $p_i$ needs in $\pi_c^{p_i}$, and $T^{p_i}_e$ denotes the estimated time spent from $\varrho^{p_i}[l]$ to $\varrho^{p_i}[c]$, namely $T^{p_i}_e=\sum_{k=l}^{c}T^{p_i}(\varrho^{p_i}_H[k],\varrho^{p_i}_H[k+1])$. Since $\varrho^{p_i}_H[c]$ is the predecessor of the first request state in $\varrho^{p_i}_H$, $\varrho^{p_i}_H[c]$ can be always reached within finite time, so $T^{p_i}_e$ is a finite positive number.
+where $\chi^{p_i}$ denotes all the items in $req^{p_i}$, which indicates the collaborative motion agent $p_i$ needs in $\pi_c^{p_i}$, and $T^{p_i}_e$ denotes the estimated time spent from $\varrho^{p_i}[l]$ to $\varrho^{p_i}[c]$, namely $T^{p_i}_e=\sum_{k=l}^{c}T^{p_i}(\varrho^{p_i}_H[k],\varrho^{p_i}_H[k+1])$. Since $\varrho^{p_i}_H[c]$ is the predecessor of the first request state in $\varrho^{p_i}_H$, $\varrho^{p_i}_H[c]$ can be always reached within finite time, so $T^{p_i}_e$ is a finite positive number.\par
+If agent $p_i$ proposes a request message and there is no reply message transitorily, all the collaborations $p_i$ requests are stored in $\mathcal{R}^{p_i}_c$.\par
 The algorithm finding out the first request in receding horizon motion plan $\varrho^{p_i}_H$ is as Algorithm 2.\par
-\begin{algorithm}[hb]
-  \caption{ Request within Receding Horizon, $Request()$ }
-  \label{alg:Framwork}
-  \begin{algorithmic}[1]
-    \Require
-      The compact coupled task specification, $\varphi_c$;
-      The local agent FTS, $\mathcal{F}^{p_i}$ and B\"{u}chi Automaton $\mathcal{B}^{p_i}$;
-    \Ensure
-      New local complete agent model, $\mathcal{C}^{p_i}_n$;
-        \For{$i=1$; $i<n$; $i++$ }
-          \State $//$ Your source here;
-        \EndFor
-  \end{algorithmic}
+\begin{algorithm}
+  \caption{Plan in Horizon and Request}
+  \KwIn{$\varrho^{p_i},\pi^{p_i},T_H,\gamma$}
+  \KwOut{$\varrho^{p_i}_H,\textbf{Request}^{p_i}$}
+  $\varrho^{p_i}[l]=\pi^{p_i},m=0,T_m=0,\textbf{Request}^{p_i}=\emptyset$
+
+  \While{$T_m<T_H$}
+  {
+    $m=m+1$
+
+    $n=m$
+
+    \If{$m>|\varrho^{p_i}|$}
+    {
+        $m=\gamma-l$
+    }
+
+    $T_m=T_m+T^{p_i}(\varrho^{p_i}[l+n-1],\varrho^{p_i}[l+m])$
+
+    $<\pi^{p_i}_c,req^{p_i}>=\varrho^{p_i}[l+m]$
+
+    \If{$req^{p_i}\neq \emptyset$ and $\textbf{Request}^{p_i}=\emptyset$}
+    {
+        \ForAll{$\chi^{p_i}\in req^{p_i}$}
+        {
+            add $(\chi^{p_i},\pi^{p_i}_c,T_m)$ to $\textbf{Request}^{p_i}$
+        }
+    }
+  }
+  \If{$m>n$}
+  {
+    $\varrho^{p_i}_H=\varrho^{p_i}[l:l+m]$
+  }
+  \Else
+  {
+    $\varrho^{p_i}_H=\varrho^{p_i}[l:]\oplus \varrho^{p_i}[\gamma:m]$
+  }
+  \Return $\varrho^{p_i}_H,\textbf{Request}^{p_i}$;
 \end{algorithm}
-bu tong req de he bing, que ding reply agent hou, lock zhu, req dui qi ta ji qi ren zhuan wei bu ke jian??????????
-Once there are request messages transmitted among agents, some agents should revise their motion plan to provide assistance. The procedure of determining which agent to respond to the request is quite similar with the algorithm proposed in [add ref], we only present a brief overview here and we refer the readers to [add ref] to grasp more detail. In order to provide collaboration, the collaborative agent needs to revise its motion plan temporarily. Assume current state of agent $p_j$ is $\varrho^{p_j}[l]$ and next accepting state is $\varrho^{p_j}[f]$, original motion plan from $\varrho^{p_j}[1]$ to $\varrho^{p_j}[f]$ is $R^{p_j}_-=\varrho^{p_j}[l:f]$ and the motion plan after revision is denoted by $R^{p_j}_+$, the index of the position in where agent $p_j$ provides collaboration is $m$. We require each agent to calculate the cost of providing assistance in order to decide which agent to collaborate. The $balanced$ cost is defined as following:
+Once there are request messages transmitted among agents, some agents should revise their motion plan to provide assistance. The procedure of determining which agent to respond to the request is quite similar with the algorithm proposed in [add ref], we only present a brief overview here and we refer the readers to [add ref] to grasp more detail. In order to provide collaboration, the collaborative agent needs to revise its motion plan temporarily. Assume current state of agent $p_j$ is $\varrho^{p_j}[l]$ and next accepting state is $\varrho^{p_j}[f]$, original motion plan from $\varrho^{p_j}[l]$ to $\varrho^{p_j}[f]$ is $R^{p_j}_-=\varrho^{p_j}[l:f]$ and the motion plan after revision is denoted by $R^{p_j}_+$, the index of the position in where agent $p_j$ provides collaboration is $m$. We require each agent to calculate the cost of providing assistance in order to decide which agent to collaborate. The $balanced$ cost is defined as following:
 \[ \begin{split}
 BalCost(R^{p_j}_+,&T^{p_i}_e,\mathcal{C}^{p_j})=\\
 &|(\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1])-T^{p_i}_e)|\\
@@ -714,27 +765,45 @@ BalCost(R^{p_j}_+,&T^{p_i}_e,\mathcal{C}^{p_j})=\\
 \end{split} \]
 where the first part denotes the time gap between the agent which sends a request message arriving the position where needs collaboration and corresponding agent arrive the position where assistance is provided. Simply, the first part denotes the waiting time of multiagent system, which contains both the waiting time of request agent and reply agent. The second part denotes the additional cost of $R^{p_i}_+$ compared with $R^{p_i}_-$, and $\beta_{p_j}$ is a designed parameter as relative weighting. Instead of formulating the agent choice issue as an integer programming problem,[add ref], we transmit the balanced cost of each agent among the group $\mathcal{N}^{G}$, since each agent calculates its balanced cost in the same way, there must exist a consensus agent $p_{min}$ whose balanced cost is minimal and $p_{min}$ will be elected to reply to corresponding $\textbf{Request}^{p_i}$.\par
 After $p_{min}$ is elected, we design an attribute of agent named $state^{p_i}$ which turns into $locked$ when agent $p_i$ is providing collaboration, otherwise $state^{p_i}$ is $normal$. Meanwhile, due to the property of compact coupled task, all the request messages that have time overlapping can be replied by a group of heterogeneous agents. So towards each request message $Request^{p_i}$, if there is already a group of agents ${p_i}$ whose $state^{p_i}$ are $locked$, ${p_i}$ automatically become the collaborative agents and the corresponding request message becomes invisible to other agents.\par
-??????ke yi pan duan shi li kai hai shi deng dai xia yi ge req shun bian xiang ying le. ji suan qi ta ji qi ren qu xiang ying de dai jia,he ling yi ge shen me dai jia bijiao yixia.
+Towards some compact coupled task, such as agents can't across region $r_i$ until some agents reach region $r_j$, only a group of agents is needed to reply request messages from different agents. Hence if two request messages $\textbf{Request}^{p_i}$ and $\textbf{Request}^{p_j}$ have time overlapping and there is a group of agents $\partial$ replying one request messages, then $\partial$ is selected as the reply agents for the other request message $\textbf{Request}'$ and $\textbf{Request}'$ becomes invisible to other agents.\par
 $R^{p_i}_+$ can be constructed by the $bidirectional Dijkstra$ algorithm which utilizes the function $bidirectional\_dijkstra()$ in $Networkx$, we refer the readers to [add ref] for more details. After the reply agent $p_r$ is elected, when $p_i$ reaches the requested replying position and provides collaboration, there is a reply message sent from the reply agent to request agent, whose format is as following:
 $$\textbf{Reply}^{p_r}=(p_r,p_i,\xi)$$
 where $p_r$ denotes the grade of replying agent and $\xi$ denotes the collaboration provided.\par
 Finally, we adapt the purpose and structure of $\textbf{Confirm}^{p_i}$ to suit the compact coupled task specification. The format of confirm message is as following:
 $$\textbf{Confirm}^{p_i}=(p_i,p_r,\hat{\xi})$$
-where $p_r$ denotes the grades of all replying agents and $\hat{\xi}$ denotes that $p_i$ has relieved collaboration requirements for action $\hat{\xi}$. It is sent when the agents which send the request message separate themselves from the area where the collaboration is required and enter next state and the confirm messages informs the replying agents to recovery their $state^{p_r}$ from $locked$ to $normal$. The entire algorithm to handle reply and confirm message is as algorithm 3.
-\begin{algorithm}[hc]
-  \caption{ aaaaa, $Request()$ }
-  \label{alg:Framwork}
-  \begin{algorithmic}[1]
-    \Require
-      The compact coupled task specification, $\varphi_c$;
-      The local agent FTS, $\mathcal{F}^{p_i}$ and B\"{u}chi Automaton $\mathcal{B}^{p_i}$;
-    \Ensure
-      New local complete agent model, $\mathcal{C}^{p_i}_n$;
-        \For{$i=1$; $i<n$; $i++$ }
-          \State $//$ Your source here;
-        \EndFor
-  \end{algorithmic}
+where $p_r$ denotes the grades of all replying agents and $\hat{\xi}$ denotes that $p_i$ has relieved collaboration requirements for action $\hat{\xi}$. It is sent when the agents which send the request message separate themselves from the area where the collaboration is required and enter next state and the confirm messages informs the replying agents to recovery their $state^{p_r}$ from $locked$ to $normal$. Denote all the request, reply and confirm messages which agent $p_i$ received by $\textbf{Request}_{p_i}^{\ast}$, $\textbf{Reply}_{p_i}^{\ast}$, $\textbf{Confirm}_{p_i}^{\ast}$, respectively. The entire algorithm to handle request, reply and confirm messages is as Algorithm 3.
+
+\begin{algorithm}
+  \caption{Handle Reply and Confirm messages}
+  \KwIn{$\textbf{Request}_{p_i}^{\ast}$, $\textbf{Reply}_{p_i}^{\ast}$, $\textbf{Confirm}_{p_i}^{\ast}$, $\partial$, $\mathcal{R}^{p_i}_c$, $\mathcal{C}^{p_i}$ }
+  \KwOut{$state^{p_i}$, $R^{p_j}_+$}
+  \If{$\textbf{Request}_{p_i}^{\ast} \neq \emptyset$}
+  {
+    \ForEach{$\textbf{Request}^{r} = (\chi^{r},\pi_c^{r},T^{r}_e) \in \textbf{Request}_{p_i}^{\ast}$}
+    {
+        \If{$\partial \neq \emptyset\ and\ p_i \notin \partial$ }
+        {
+            continue
+        }
+        \ElseIf{$\partial \neq \emptyset\ and\ p_i \in \partial$ or $\partial = \emptyset\ and\ min_{\mathcal{N}^G}BalCost = p_i$}
+        {
+            $(R^{p_i}_+,b^{p_i}_d,t^{p_i}_d)=EvalReq(R^{p_i}_-,(\chi^{p_i},\pi_c^{p_i},T^{p_i}_e),\varrho^{p_i}[l],\mathcal{C}^{p_i})$
+            
+            $state^{p_i}=locked$
+        }
+    }
+  }
+  \If{$\textbf{Reply}_{p_i}^{\ast} \neq \emptyset$}
+  {
+
+  }
+  \If{$\textbf{Confirm}_{p_i}^{\ast} \neq \emptyset$}
+  {
+
+  }
+  \Return{}
 \end{algorithm}
+If R is empty and state is normal, then agent can go to next position.
 \section{Agent Scheduling System}
 ji bian wo men an zhao shang mian zhang jie dui ji qi ren jin xing lu jing gui hua, reng ran ke neng you tu fa zhuang kuang zao cheng dui ren wu de bu man zu. wo men zai jie xia lai de zhang jie zhong gou jian ji qi ren de diao du xi tong wan cheng dui ji qi ren de jin yi bu de gui hua diao du.
 \subsection{Prevention Of Long-time Demission}
@@ -754,26 +823,35 @@ $$R^{\varpi}_+ = R^{\varpi,p}_+\oplus R^{\varpi,s}_+$$ ???????gei R quan jia sha
 
 Then all the candidates of inheriting the task need to elect the agent with minimal cost to revise its motion plan, namely, they need to solve the minimal problem: min $Cost(R^{\varpi}_+)$, subject to $\sum b^{p_j}=1$.\par
 When the broken down agent is fixed properly, we can drive the inheriting agent to return to its own task by reversing above method. The entire procedure of constructing the union agent model and each candidate finds out $R^{\varpi}_+???jia jiao biao$ is exhibited by algorithm 4.
-\begin{algorithm}[hd]
-  \caption{ bbbbb, $Request()$ }
-  \label{alg:Framwork}
-  \begin{algorithmic}[1]
-    \Require
-      The compact coupled task specification, $\varphi_c$;
-      The local agent FTS, $\mathcal{F}^{p_i}$ and B\"{u}chi Automaton $\mathcal{B}^{p_i}$;
-    \Ensure
-      New local complete agent model, $\mathcal{C}^{p_i}_n$;
-        \For{$i=1$; $i<n$; $i++$ }
-          \State $//$ Your source here;
-        \EndFor
-  \end{algorithmic}
+
+\begin{algorithm}
+  \caption{identify Row Context}
+  \KwIn{$r_i$, $Backgrd(T_i)$=${T_1,T_2,\ldots ,T_n}$ and similarity threshold $\theta_r$}
+  \KwOut{$con(r_i)$}
+  $con(r_i)= \Phi$\;
+  \For{$j=1;j \le n;j \ne i$}
+  {
+    float $maxSim=0$\;
+    $r^{maxSim}=null$\;
+    \While{not end of $T_j$}
+    {
+      compute Jaro($r_i,r_m$)($r_m\in T_j$)\;
+      \If{$(Jaro(r_i,r_m) \ge \theta_r)\wedge (Jaro(r_i,r_m)\ge r^{maxSim})$}
+      {
+        replace $r^{maxSim}$ with $r_m$\;
+      }
+    }
+    $con(r_i)=con(r_i)\cup {r^{maxSim}}$\;
+  }
+  return $con(r_i)$\;
 \end{algorithm}
+
 \section{Overall Structure}
 
 \section{Case Study}
 
 \section{Conclusion}
-The conclusion goes here.
+The conclusion goes here.??????ke yi pan duan shi li kai hai shi deng dai xia yi ge req shun bian xiang ying le.
 
 
 
@@ -794,14 +872,14 @@ The conclusion goes here.
 %
 
 
-\appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
 
-% you can choose not to have a title for an appendix
-% if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
+%% you can choose not to have a title for an appendix
+%% if you want by leaving the argument blank
+%\section{}
+%Appendix two text goes here.
 
 
 % use section* for acknowledgment
