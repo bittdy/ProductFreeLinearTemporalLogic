@@ -68,6 +68,8 @@
 \usepackage{latexsym}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{subfigure}
 
 \makeatletter
 \newif\if@restonecol
@@ -619,17 +621,20 @@ Atomic propositions (AP) are boolean variables that can be either true or false 
 
 
 \subsection{B\"{u}chi Automaton}
-Given a LTL formula $\varphi$, we can always translate it to a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{A}_\varphi$ that accepts all the languages that satisfy $\varphi$. It is defined as $\mathcal{A}_\varphi=\ (Q,2^{AP},\delta,Q_0,\mathcal{F})$, where $Q$ is a finite set of all the states of B\"{u}chi Automaton, $2^{AP}$ is the set of alphabets, $\delta:\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $\mathcal{F}\subseteq Q$ is the set of accepting states of B\"{u}chi Automaton. There are fast translation algorithms[add ref] to obtain $\mathcal{A}_\varphi$ from LTL formula $\varphi$.
+Given a LTL formula $\varphi$, we can always translate it to a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{A}_\varphi$ that accepts all the languages that satisfy $\varphi$. It is defined as $\mathcal{B}_\varphi=\ (Q,2^{AP},\delta,Q_0,\mathcal{F})$, where $Q$ is a finite set of all the states of B\"{u}chi Automaton, $2^{AP}$ is the set of alphabets, $\delta:\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $\mathcal{F}\subseteq Q$ is the set of accepting states of B\"{u}chi Automaton. There are fast translation algorithms[add ref] to obtain $\mathcal{B}_\varphi$ from LTL formula $\varphi$.
 
 \section{Problem Formulation}
 We consider a multiagent system organized by $N\geq1$ agents. Each agent has the capabilities of navigating within the workspace and performing various motions. The agent index is denoted by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. Then, we divide all the agents into different subsets according to their local LTL task specifications, which implies that only agents with the same local LTL task specifications can be divided into one subset. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \cup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\cap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$.
 \subsection{Motion Abstraction}
-Each agent only knows part of the full workspace which guarantee the completeness of local task and collaboration task. huan jing bao han X ge partition, biao shi wei:   jie shao FTS gai nian
+Each agent only knows a part of the full workspace which guarantees the completeness of local task and collaboration task. Towards each agent, its workspace consists of $L$ partitions, denoted by $\Pi^{p_i}=\{\pi_1,\pi_2,...,\pi_L\}$, assume all the partitions are known by agents a priori. Besides, there is a set of atomic propositions $\digamma^{p_i}$ describing the properties of the workspace of agent $p_i$. According to [add ref], the motion of $p_i$ is modeled as a finite transition system (FTS) as following[add ref]:
+$$\mathcal{F}^{p_i}=(\Pi^{p_i},\rightarrow^{p_i},\Pi^{p_i}_0,L^{p_i},\digamma^{p_i})$$
+where $\rightarrow^{p_i} \subseteq \Pi \times \Pi$ is the transition relation, $\Pi^{p_i}_0 \subseteq \Pi^{p_i}$ is the initial region, $L^{p_i}:\Pi^{p_i}\rightarrow 2^{\digamma^{p_i}}$ is the labeling function which indicates the properties held by each region. A path of $\mathcal{F}^{p_i}$ is a sequence of regions $\pi_0 \pi_1 ...\pi_s$ where $(\pi_k,\pi_{k+1})\in \rightarrow^{p_i}$, $\forall k=0,1,...,L-1$.
 \subsection{Communication Model}
-fen wei liang ceng tong xin
+Similar to the communication model in [add ref], the communication network $\mathcal{V}=(\mathcal{N},\mathcal{E}(t))$ at $t>0$, where $\mathcal{N}$ is the set of nodes and $\mathcal{E}(t)\subseteq \mathcal{N} \times \mathcal{N}$ is the set of edges, which has two layers that $\mathcal{E}(t)=\mathcal{E}_1(t)\cup \mathcal{E}_2(t)$. The first layer $\mathcal{E}_1(t)={(p_i,p_j),\forall i,j\in g_t}$ and $\mathcal{E}_2(t)={(p_i,p_j),\forall i\in g_t,\forall j \in g_s, t\neq s}$. The first layer $\mathcal{E}_1(t)$ is static, which indicates that all the agents belong to the same group $g_t$ can always communicate with each other. The second layer $\mathcal{E}_2(t)$ is dynamic, which indicates that it is enabled when there are decentralized collaboration occurs.
 \subsection{Complete Agent Model}
-zheng ge de wan quan de zhi neng ti model wei motion product buchi automaton
-????yao an zhao algorithm 1 ding yi,ba ou he bian ti xian chu lai
+Given the NBA $\mathcal{B}^{p_i}$ associated with $\varphi^{p_i}$ and FTS $\mathcal{F}^{p_i}$, the complete agent model $\mathcal{C}^{p_i}$ of $p_i$ is defined as following:
+$$\mathcal{C}^{p_i}=\mathcal{B}^{p_i}\otimes \mathcal{C}^{p_i}=(Q^{p_i,\ast},\delta^{p_i},Q^{p_i,\ast}_0,Q^{p_i,\ast}_{\mathcal{F}},W^{p_i,\ast},\tau^{p_i})$$
+where $Q^{p_i,\ast}=\Pi^{p_i}\times Q^{p_i}$, $q^{p_i,\ast}=<\pi^{p_i},q^{p_i}>$, $\forall \pi^{p£»_i}\in \Pi^{p_i}$, $\forall q^{p_i}\in Q^{p_i}$; $(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)\in \delta^{p_i}$ if $\pi^{p_i}_m \rightarrow^{p_i} \pi^{p_i}_n$ and $(q^{p_i}_s,L^{p_i}(\pi^{p_i}_m),q^{p_i}_t)\in \delta^{p_i}$; $Q^{p_i,\ast}_0=\Pi^{p_i}_0\times Q_0^{p_i}$ is the set of initial states; $Q^{p_i,\ast}_{\mathcal{F}}=\Pi^{p_i}\times Q^{p_i}_\mathcal{F}$ is the set of accepting states; $W^{p_i,\ast}:\delta^{p_i}\times Q^{p_i,\ast}\rightarrow \mathbb{R}^{+}$. $W^{p_i,\ast}(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)=T^{p_i}(\pi^{p_i}_m,\pi^{p_i}_n)$ which is estimated by agent $p_i$, where $<\pi^{p_i}_n,q^{p_i}_t>\in \delta^{p_i}(<\pi^{p_i}_m,q^{p_i}_s>)$. $\tau^{p_i}$ indicates whether $(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)$ is a couple edge which is going to be introduced next.
 \subsection{Compact Coupled Task Specification}
 In this paper we consider the compact coupled task specification. Compared to loosely coupled task specifications, compact coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The compact coupled task specification takes an recursive definition as following.
 \par
@@ -656,7 +661,7 @@ We adapt previous local product algorithm[add ref] which combines the FTS and B\
 \begin{algorithm}
   \caption{Construct New Complete Agent Model $\mathcal{C}^{p_i}_n$}
   \KwIn{the local FTS $\mathcal{F}^{p_i}$, the local B\"{u}chi Automaton $\mathcal{B}^{p_i}$ and the compact coupled task specification $\varphi_c$}
-  \KwOut{complete agent model $\mathcal{C}^{p_i}$}
+  \KwOut{complete agent model $\mathcal{C}^{p_i}_n$}
   \ForEach{$\pi_i\in \Pi,q_m\in Q$}
   {
     $q'_s=<\pi_i,q_m>\in Q'$
@@ -695,7 +700,7 @@ We adapt previous local product algorithm[add ref] which combines the FTS and B\
         }
     }
   }
-  \Return $\mathcal{C}^{p_i}$
+  \Return $\mathcal{C}^{p_i}_n$
 \end{algorithm}
 
 \emph{Lemma 1:} By adding all the couple-edges found out by applying Algorithm 1 to $\mathcal{C}^{p_i}$, we can synthesize an initial accepted motion plan for each agent.\par
@@ -887,16 +892,43 @@ When the broken down agent is fixed properly, we can drive the inheriting agent 
 \end{algorithm}
 
 \section{Overall Structure}
-
+Given the task specification $\varphi^{p_i}$ and FTS $\mathcal{F}^{p_i}$ of each agent, we decouple the compact coupled task specification and construct new complete agent model $\mathcal{C}^{p_i}_n$ through applying Algorithm. The initial motion path $R^{p_i}$ of each agent $p_i$ can be synthesized and we plan in speed matching horizon to reduce the complexity of task collaboration. To guarantee the completeness of collaboration task, an online coordination scheme is adapted to revise the initial motion path of each agent, where the collaboration task is completed through $\textbf{Request}^{p_i}$, $\textbf{Reply}^{p_i}$ and $\textbf{Confirm}^{p_i}$ messages. Corresponding to the properties of compact coupled task, we propose an agent scheduling system to prevent long-time demission and dispatch agents to strive to complete task when part of agents failure. The agent scheduling system is triggered by specific conditions, such as the ultimate time $T_u$ is reached or $\textbf{Warning}^{p_i}$ messages are transmitted through communication network, while the online coordination system is running.
 \section{Case Study}
+Consider the logistics system in a depot, there are three groups of agents assigned three different task specifications. For simplicity, denote the agents by $g_k={p_{i,k},i=1,2,...},\forall k=1,2,3$. The algorithms proposed are implemented and simulated on a laptop (i5-7300HQ,2.50GHz Duo CPU and 8GB RAM).
+\subsection{a} 
+\begin{figure}
+\centering
+\subfigure[environment]{
+\label{envir}
+\includegraphics[width=1.2in]{simulate1/envir.png}}
+\hspace{0.3in}
+\subfigure[initial positions]{
+\label{initial}
+\includegraphics[width=1.2in]{simulate1/initial.png}}
+\caption{(a) shows the simulation environment, where the relevant regions of different groups are in different colors and some pivotal regions are labeled. (b) shows the initial positions of agents.}
+\label{first}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\subfigure[]{
+\label{fig:a}
+\includegraphics[width=1in]{simulate1/before.png}}
+\hspace{0.02cm}
+\subfigure[]{
+\label{fig:subfig:b}
+\includegraphics[width=1in]{simulate1/across.png}}
+\hspace{0.02cm}
+\subfigure[]{\label{fig:subfig:c}
+\includegraphics[width=1in]{simulate1/path.png}}
+\caption{bingpai}
+\label{a}
+\end{figure}
+
+
 
 \section{Conclusion}
-The conclusion goes here.??????ke yi pan duan shi li kai hai shi deng dai xia yi ge req shun bian xiang ying le.
-
-
-
-
-
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
 % or
