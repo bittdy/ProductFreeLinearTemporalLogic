@@ -894,8 +894,10 @@ When the broken down agent is fixed properly, we can drive the inheriting agent 
 \section{Overall Structure}
 Given the task specification $\varphi^{p_i}$ and FTS $\mathcal{F}^{p_i}$ of each agent, we decouple the compact coupled task specification and construct new complete agent model $\mathcal{C}^{p_i}_n$ through applying Algorithm. The initial motion path $R^{p_i}$ of each agent $p_i$ can be synthesized and we plan in speed matching horizon to reduce the complexity of task collaboration. To guarantee the completeness of collaboration task, an online coordination scheme is adapted to revise the initial motion path of each agent, where the collaboration task is completed through $\textbf{Request}^{p_i}$, $\textbf{Reply}^{p_i}$ and $\textbf{Confirm}^{p_i}$ messages. Corresponding to the properties of compact coupled task, we propose an agent scheduling system to prevent long-time demission and dispatch agents to strive to complete task when part of agents failure. The agent scheduling system is triggered by specific conditions, such as the ultimate time $T_u$ is reached or $\textbf{Warning}^{p_i}$ messages are transmitted through communication network, while the online coordination system is running.
 \section{Case Study}
-Consider the logistics system in a depot, there are three groups of agents assigned three different task specifications. For simplicity, denote the agents by $g_k={p_{i,k},i=1,2,...},\forall k=1,2,3$. The algorithms proposed are implemented and simulated on a laptop (i5-7300HQ,2.50GHz Duo CPU and 8GB RAM).
-\subsection{a} 
+Consider the logistics system in a depot, there are three groups of agents assigned three different task specifications. For simplicity, denote the agents by $g_k={p_{i,k},i=1,2,...},\forall k=1,2,3$. The algorithms proposed are implemented and simulated on a laptop (i5-7300HQ, 2.50GHz Duo CPU and 8GB RAM).
+\subsection{Workspace Description}
+The environment of depot is shown in Fig.\ref{envir} and the initial positions of agents are as shown in Fig.\ref{initial}. The blue strips are the conveyor belts in the depot which occupy the space and agents cannot across them, and the regions labeled as $ti$ and $mi$ ($i=1,2,...,6$) are checkpoints around the conveyor belts where the agents working on belts need to visit frequently to ensure the belts work properly. Two groups of agents which are silver in Fig.\ref{initial} are responsible for the work on the conveyor belts and need to take care of the switch which is labeled by $o$ and $o'$. The regions associated with these two groups are painted yellow and green. A group of agents which are red in Fig.\ref{initial} are assigned to collect goods in $g$, move across the door $d$ and place the goods at the cargo collection point which is labeled $r$. The regions associated with them are painted gray.\par
+The switches in gray control the door $d$ and when the switch is open, it will change to yellow. Only if $o$ and $o'$ are open simultaneously, the door is open and agents can move across it. If an agent sends request message, it will change to blue, meanwhile, if there is an agent reply the request message, it will change to black and there will be a red line connect them. In Fig.\ref{initial}, the agent in $r$ has sent a request message because it intends to move across the door $d$, and we can see there are two agents turn to black to reply the request message and there are two red lines connect each of them to the request agent.
 \begin{figure}
 \centering
 \subfigure[environment]{
@@ -908,22 +910,25 @@ Consider the logistics system in a depot, there are three groups of agents assig
 \caption{(a) shows the simulation environment, where the relevant regions of different groups are in different colors and some pivotal regions are labeled. (b) shows the initial positions of agents.}
 \label{first}
 \end{figure}
-
-
+\subsection{Task Specification}
+Three different tasks are assigned to three groups of agents. The task of agents working on conveyor belts is specified as ($\square\Diamond t1 \wedge \square\Diamond t2 \wedge \square\Diamond t3 \wedge \square\Diamond t4 \wedge \square\Diamond t5 \wedge \square\Diamond t6 \wedge \square(\neg b)$) and ($\square\Diamond m1 \wedge \square\Diamond m2 \wedge \square\Diamond m3 \wedge \square\Diamond m4 \wedge \square\Diamond m5 \wedge \square\Diamond m6 \wedge \square(\neg b)$) which means that they need to often eventually bie de lun wen zen me biao shu????? visit all the checkpoints and never move across the conveyor belts. The task of agents which need to collect goods and place them in cargo collection point is specified as ???zai kan zhe ge ren wu ($\square\Diamond g \wedge \square(g\Longrightarrow \Diamond r) \wedge \square(\neg b) \wedge \square(\neg d \cup (o \wedge) o')$), which means the goods collection agents need to often eventually kan bie de lun wen zen me biao shu???????? visit $g$ and when they collect goods in $g$, they need go to $r$ to place them. The goods collection agents can never move across the belts and only when the switches are both open can they move across the door $d$. We can see $\square(\neg r \cup (o \wedge) o')$ is the compact coupled task $\varphi_c$ because only two switches are both open can the goods collection agents move across the door.
+\subsection{Simulation Result}
+The motion path of each agent is shown in Fig.\ref{path}, where ke neng hui you chong die,bu tong yan se de han yi
 \begin{figure}
 \centering
-\subfigure[]{
-\label{fig:a}
+\subfigure[a]{
+\label{path}
+\includegraphics[width=1in]{simulate1/path.png}}
+\hspace{0.02cm}
+\subfigure[b]{
+\label{before}
 \includegraphics[width=1in]{simulate1/before.png}}
 \hspace{0.02cm}
-\subfigure[]{
-\label{fig:subfig:b}
+\subfigure[c]{
+\label{across}
 \includegraphics[width=1in]{simulate1/across.png}}
-\hspace{0.02cm}
-\subfigure[]{\label{fig:subfig:c}
-\includegraphics[width=1in]{simulate1/path.png}}
 \caption{bingpai}
-\label{a}
+\label{second}
 \end{figure}
 
 
