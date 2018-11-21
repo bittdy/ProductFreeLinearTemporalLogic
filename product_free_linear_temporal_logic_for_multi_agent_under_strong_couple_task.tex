@@ -854,7 +854,7 @@ BalCost(R^{p_j}_+,&T_u,T_{p_i}^{\ast},\mathcal{C}^{p_j})=\\
 where the meaning of notations in [2] are the same as the notations in [3]. The agent $p_j$ that minimizes [2] in group $\mathcal{N}^G$ is elected to succeed $p_i$.\par
 Suppose the message corresponding to the most recent request is $\textbf{Request}^{p_r}=(\chi^{p_r},\pi_c^{p_r},T^{p_r}_e)$, denote $\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1]$ by $T_{p_j}^{\ast}$, if $T_{p_j}^{\ast}<T^{p_r}_e$, $state^{p_i}$ can be set as $normal$ and $p_i$ can go back to complete its own task, otherwise $p_i$ needs to wait for the arrival of successor. During the period between stopping collaboration and returning to its own task, agent $p_i$ doesn't accept any request messages in case of being elected as collaborative agent again.
 \subsection{Failure Signal Transmission And Agents Dispatching}
-Suppose there are several weak agents that are prone to breakdown, in this section we introduce how to mobilize other agents to inherit the task of weak agents when breakdown occurs to maximize task completion. At first, we define a virtual order $\mathcal{O}$ which indicates the importance of each individual task that each agent undertakes, towards agent $p_i$, if its task is more important, or the agents number in $g_j$ where $p_i \in g_j$ is few, the $\mathcal{O}_{p_i}$ is larger. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then when $p_i$ is breakdown, $p_j$ needs to revise its motion plan to inherit the task of $p_i$, otherwise $p_j$ still fixes on its own task.\par
+Suppose there are several weak agents that are prone to breakdown, in this section we introduce how to mobilize other agents to inherit the task of weak agents when breakdown occurs to maximize the completion of task. At first, we define a virtual order $\mathcal{O}$ which indicates the importance of each individual task that each agent undertakes, towards agent $p_i$, if its task is more important, or the agents number in $g_j$ where $p_i \in g_j$ is few, the $\mathcal{O}_{p_i}$ is larger. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then when $p_i$ is breakdown, $p_j$ needs to revise its motion plan to inherit the task of $p_i$, otherwise $p_j$ still fixes on its own task.\par
 When $p_i$ is broken down, there is a $\textbf{Warning}^{p_i}$ message sent to all the other agents, the format of $\textbf{Warning}^{p_i}$ is as following:
 $$\textbf{Warning}^{p_i} = (p_i,\mathcal{C}^{p_i},\aleph^{p_i})$$
 which means $p_i$ needs to broadcast its grade $p_i$, local complete agent model $\mathcal{C}^{p_i}$ and capacity $\aleph^{p_i}$ when it is broken down. After $\textbf{Warning}^{p_i}$ is broadcast, all the agents are qualified for capacity $\aleph^{p_i}$, denoted by $\nu$, will respond to the $\textbf{Warning}^{p_i}$. All the agents in $\nu$ with the same minimal $\mathcal{O}_{p_j}$ become candidates for inheriting the task of $p_i$. In order to elect an agent to respond to the warning message and revise its motion plan, we need to solve following problem:\par
@@ -867,7 +867,7 @@ After the union agent model is constructed, we decide $\varpi$ and synthesize $R
 $$R^{\varpi}_+ = R^{\varpi,p}_+\oplus R^{\varpi,s}_+$$ ???????gei R quan jia shang ji qi ren jiao biao
 
 Then all the candidates of inheriting the task need to elect the agent with minimal cost to revise its motion plan, namely, they need to solve the minimal problem: min $Cost(R^{\varpi}_+)$, subject to $\sum b^{p_j}=1$.\par
-When the broken down agent is fixed properly, we can drive the inheriting agent to return to its own task by reversing above method. The entire procedure of constructing the union agent model and each candidate finds out $R^{\varpi}_+???jia jiao biao$ is exhibited by Algorithm 4.
+When the broken down agent is fixed properly, we can drive the inheriting agent to return to its own task by reversing above method. The entire procedure of constructing the union agent model and each candidate finds out $R^{\varpi}_+???jia jiao biao$ is exhibited by Algorithm 4 and $\emph{Problem 2}$ is solved.
 
 \begin{algorithm}
   \caption{identify Row Context}
@@ -911,27 +911,38 @@ The switches in gray control the door $d$ and when the switch is open, it will c
 \label{first}
 \end{figure}
 \subsection{Task Specification}
-Three different tasks are assigned to three groups of agents. The task of agents working on conveyor belts is specified as ($\square\Diamond t1 \wedge \square\Diamond t2 \wedge \square\Diamond t3 \wedge \square\Diamond t4 \wedge \square\Diamond t5 \wedge \square\Diamond t6 \wedge \square(\neg b)$) and ($\square\Diamond m1 \wedge \square\Diamond m2 \wedge \square\Diamond m3 \wedge \square\Diamond m4 \wedge \square\Diamond m5 \wedge \square\Diamond m6 \wedge \square(\neg b)$) which means that they need to often eventually bie de lun wen zen me biao shu????? visit all the checkpoints and never move across the conveyor belts. The task of agents which need to collect goods and place them in cargo collection point is specified as ???zai kan zhe ge ren wu ($\square\Diamond g \wedge \square(g\Longrightarrow \Diamond r) \wedge \square(\neg b) \wedge \square(\neg d \cup (o \wedge) o')$), which means the goods collection agents need to often eventually kan bie de lun wen zen me biao shu???????? visit $g$ and when they collect goods in $g$, they need go to $r$ to place them. The goods collection agents can never move across the belts and only when the switches are both open can they move across the door $d$. We can see $\square(\neg r \cup (o \wedge) o')$ is the compact coupled task $\varphi_c$ because only two switches are both open can the goods collection agents move across the door.
+Three different tasks are assigned to three groups of agents. The task of agents working on conveyor belts is specified as ($\square\Diamond t1 \wedge \square\Diamond t2 \wedge \square\Diamond t3 \wedge \square\Diamond t4 \wedge \square\Diamond t5 \wedge \square\Diamond t6 \wedge \square(\neg b)$) and ($\square\Diamond m1 \wedge \square\Diamond m2 \wedge \square\Diamond m3 \wedge \square\Diamond m4 \wedge \square\Diamond m5 \wedge \square\Diamond m6 \wedge \square(\neg b)$) which means that they need to often eventually bie de lun wen zen me biao shu????? visit all the checkpoints and never move across the conveyor belts. The task of agents which need to collect goods and place them in cargo collection point is specified as ???zai kan zhe ge ren wu ($\square\Diamond g \wedge \square(g\Longrightarrow \Diamond r) \wedge \square(\neg b) \wedge \square(\neg d \cup (o \wedge o'))$), which means the goods collection agents need to often eventually kan bie de lun wen zen me biao shu???????? visit $g$ and when they collect goods in $g$, they need go to $r$ to place them. The goods collection agents can never move across the belts and only when the switches are both open can they move across the door $d$. We can see $\square(\neg r \cup (o \wedge o'))$ is the compact coupled task $\varphi_c$ because it indicates that only when two switches are both open can the goods collection agents move across the door.
 \subsection{Simulation Result}
-The motion path of each agent is shown in Fig.\ref{path}, where ke neng hui you chong die,bu tong yan se de han yi
+The motion path of each agent is shown in Fig.\ref{path}, where different colors indicates different states of agents. The agents which are responding to deliver goods are denoted by $g_1$, they will change from red to blue when they send request message. Meanwhile, two agents are elected from $g_2$ and $g_3$ to reply the request message and change from blue to black. We record the position of agents in each time step and synthesize this motion path of agents.\par
+We select two scenes to analyze the online coordination scheme. In Fig.\ref{before}, two agents, denoted by $p_0$ and $p_1$, in $g1$ are passing through the door $d$ to place the goods in goods collection point $r$. Meanwhile, two agents, denoted by $p_2$ and $p_3$, in $g_2$ and $g_3$ are elected to collaborate. $p_0$ and $p_1$ are turned to blue, and $p_2$, $p_3$ are turned to black. There are red solid lines connect $p_0$ and $p_2$, $p_3$, $p_1$ and $p_2$, $p_3$, which indicates they are transmitting message.\par
+In Fig.\ref{across}, $p_0$ and $p_1$ have placed the goods in $r$ and they are going back to $g$ to collect goods. $p_0$ has passed through $d$ so it stop the sending of request message, but $p_1$ is still passing through $d$ so it continues to send the request message and $p_2$, $p_3$ continue to reply to it, so there are red solid lines connecting $p_0$ and $p_2$, $p_3$.\par
 \begin{figure}
 \centering
-\subfigure[a]{
+\subfigure[]{
 \label{path}
 \includegraphics[width=1in]{simulate1/path.png}}
 \hspace{0.02cm}
-\subfigure[b]{
+\subfigure[]{
 \label{before}
 \includegraphics[width=1in]{simulate1/before.png}}
 \hspace{0.02cm}
-\subfigure[c]{
+\subfigure[]{
 \label{across}
 \includegraphics[width=1in]{simulate1/across.png}}
-\caption{bingpai}
+\caption{(a) shows the motion path of agents, (b) shows the message transmission when two agents are passing through the door and moving to the goods collection point and (c) shows the message transmission when two agents are going back to collect goods after they placed the goods.}
 \label{second}
 \end{figure}
+In order to represent the collaboration of agents more intuitively, we draw the Gantt chart as Fig.\ref{Gantt}. In Fig.\ref{Gantt}, each agent has a  
 
+\begin{figure}[h]	
+\centering  	
+\includegraphics[width=1\linewidth]{simulate1/gante_no_grid.png}
+\caption{Gantt}
+\label{Gantt}
+\end{figure}
 
+\subsection{Prevention Of Long-time Demission}
+\subsection{Agents Scheduling When Failure Occurs}
 
 \section{Conclusion}
 % if have a single appendix:
