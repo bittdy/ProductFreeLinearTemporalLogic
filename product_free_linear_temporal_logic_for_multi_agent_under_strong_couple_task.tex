@@ -483,10 +483,12 @@ multiagent system, linear temporal logics (LTLs), decentralized collaboration.
 
 \section{Introduction}
 1. ltl de yingyong
-2. ltl de ling huo chu li (partial known, learning)
-3. jiang shi jian fu za du(receding horizon, decomposition, zhen dui song ou he,yin ru wo men de gong zuo, ye ke shi yong yu song ou he ren wu ,women de gong xian)
-zhao yu guo meng qu bie, you ming que de xian hou shun xv guan xi?buxv yao ren wei ding yi xie zuo dong zuo
+2. dan ji ying yong
+3. duo ji ying yong
 
+4. jiang shi jian fu za du(receding horizon, decomposition, zhen dui song ou he,yin ru wo men de gong zuo, ye ke shi yong yu song ou he ren wu ,women de gong xian)
+zhao yu guo meng qu bie, you ming que de xian hou shun xv guan xi?buxv yao ren wei ding yi xie zuo dong zuo
+5. lunwen jie gou
 wo men de fang fa neng gou jie jue zhi qian guo meng de song ou he, tong guo huan yi zhong sheng ming fang fa,dan shi guo meng de fang fa jiejue bu le zhe ge wen ti,di yi ,xv yao ding yi xie zuo ren wu,di er qiang ou he xing wu fa sheng cheng chu shi lu jing. di san ,online scheme bu shi yong.
 % The very first letter is a 2 line initial drop letter followed
 % by the rest of the first word in caps.
@@ -503,25 +505,24 @@ wo men de fang fa neng gou jie jue zhi qian guo meng de song ou he, tong guo hua
 %
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-for IEEE journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8b and later.
+\IEEEPARstart{T}{emporal} logic based motion planning method has gained attention significantly over the last decade because it can provide complete solution for motion planning under specific environment and task specifications. The temporal logic, such as linear temporal logic (LTL) has usage as offering formal language which specify the task in a high level. Meanwhile, model checking algorithms are applied to find the discrete plan according to task specification and the abstraction of environment[principle of ...]. Then the plan is implemented through the low-level physical system.\par
+LTL has been employed by multiagent system to plan the motion path under complex task specifications. In [1],[3] and [4], the essential LTL is employed by a multiagent system to perform coordinated behaviors in Robotic Urban-Like Environment(RULE). Navigation function is combined with LTL in [6] to tackle task specifications. Due to dynamic workspace, agents need to revise their motion path to conform the task specification. [9],[19] propose a motion path revision method based on knowledge transferring and real time Dijstra algorithm. Towards infeasible task, [8] synthesizes the motion plan that fulfills the infeasible task specifications most and relax the infeasible task specifications. LTL is employed in many aspects of research of multiagent system. In [7], the motion of each agent is modeled as a weighted transition system, and the goal is to minimize a cost function which captures the maximum time between successive satisfactions of the optimizing proposition while guaranteeing the formula is satisfied. Discrete Average Space Robustness which is composed of Signal Temporal Logic and Model Predictive Control is proposed in [40]. Besides the robust control, the hybrid control [24,28,29] and game theorem [13] in multiagent systems are also combined with LTL. In addition, human-in-the-loop mixed initiative control is studied in [44] and [43] demonstrates the event trigger scheme of LTL in multiagent systems.\par
+A key challenge of applying LTL to the motion planning of multiagent systems is the computational complexity. In centralized method, all the agents need to product their agent model to synthesize the motion paths which satisfying all the task specifications[add ref], and the complexity exponential increases with the number of states. To fight with the massive amount of calculation, many methods are proposed. These methods can be classified into two aspects: (1) decompose the task specifications and decentralize the (2)receding the horizon of agents.
+
+Our contribution can be summarized as proposal ..jin ou he ren wu you ming que de shun xv guan xi, ren wu yi dan fu za,huo zhe qian tao,wu fa qingsong de ding yi dong zuo de yi lai guan xi. zhi qian de suan fa kuang jia bu shi yong yu fu za de ren wu miao shu, dang wu fa ding yi dong zuo de  yi lai guan xi ,cong er wu fa sheng cheng chu shi lu jing shi, gai fang fa bu neng yong . ke yi bu yong ding yi da liang dong zuo yi lai guan xi er wan cheng jin ou he ren wu de product free, bing qie ke yi tong shi jie jue song ou he ren wu
+The remaining of this paper is organized as follows. First, we
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
-I wish you the best of success.
 
-\hfill mds
 
-\hfill August 26, 2015
-
-\subsection{Subsection Heading Here}
-Subsection text here.
+%\subsection{Subsection Heading Here}
+%Subsection text here.
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+%\subsubsection{Subsubsection Heading Here}
+%Subsubsection text here.
 
 
 % An example of a floating figure using the graphicx package.
@@ -946,7 +947,7 @@ In order to represent the collaboration of agents more intuitively, we draw the 
 \subsection{Prevention Of Long-time Demission}
 In this section we increase the amount of agents in $g_1$ to yin zheng suan fa 2 de he shi xing
 \subsection{Agents Scheduling When Failure Occurs}
-In this section we assume 
+In this section we assume
 \subsection{Computational Complexity}
 In the first simulation, the team has 14 agents and the simulation environment consists of 108 states and 97 edges, the NBA associated with $g_1$ consists of 8 states and 30 transitions, and the NBA associated with the NBA associated with $g_2$ and $g_3$ consists of 7 states and 34 transitions. As a result, the centralized method products all the FTS and NBA of agents in team will have $108^{14}\times 8^6 \times 7^6(9\times 10^{38})$ states. In our decentralized method, each agent only has partial environment which consists of 38, 17, 30 states as shown in Fig.\ref{envir}. Our method relies on local product of FTS and NBA of each agent and synthesize the initial motion path locally so the complete agent model of $g_1$, $g_2$ and $g_3$ consists of 136, 266 and 210 states, respectively and it costs an average of 0.02s to synthesize the initial motion path for each agent.
 % if have a single appendix:
