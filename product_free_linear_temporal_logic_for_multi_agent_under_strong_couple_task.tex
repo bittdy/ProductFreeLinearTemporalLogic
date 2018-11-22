@@ -482,6 +482,9 @@ multiagent system, linear temporal logics (LTLs), decentralized collaboration.
 
 
 \section{Introduction}
+1. ltl de yingyong
+2. ltl de ling huo chu li (partial known, learning)
+3. jiang shi jian fu za du(receding horizon, decomposition, zhen dui song ou he,yin ru wo men de gong zuo, ye ke shi yong yu song ou he ren wu ,women de gong xian)
 zhao yu guo meng qu bie, you ming que de xian hou shun xv guan xi?buxv yao ren wei ding yi xie zuo dong zuo
 
 wo men de fang fa neng gou jie jue zhi qian guo meng de song ou he, tong guo huan yi zhong sheng ming fang fa,dan shi guo meng de fang fa jiejue bu le zhe ge wen ti,di yi ,xv yao ding yi xie zuo ren wu,di er qiang ou he xing wu fa sheng cheng chu shi lu jing. di san ,online scheme bu shi yong.
@@ -932,19 +935,20 @@ In Fig.\ref{across}, $p_0$ and $p_1$ have placed the goods in $r$ and they are g
 \caption{(a) shows the motion path of agents, (b) shows the message transmission when two agents are passing through the door and moving to the goods collection point and (c) shows the message transmission when two agents are going back to collect goods after they placed the goods.}
 \label{second}
 \end{figure}
-In order to represent the collaboration of agents more intuitively, we draw the Gantt chart as Fig.\ref{Gantt}. In Fig.\ref{Gantt}, each agent has a  
-
+In order to represent the collaboration of agents more intuitively, we draw the Gantt chart as Fig.\ref{Gantt}. Each horizontal line in Gantt chart demonstrates the change of agent states over time. Same as previous figures, different colors indicates different states of agents. If a section of the horizontal line indicates the agent is sending request messages or replying for the request messages of other agents, which is represented by blue and black, then the indices of agents that is sending request messages or the agent is replying for are identified at the beginning of this section.
 \begin{figure}[h]	
 \centering  	
 \includegraphics[width=1\linewidth]{simulate1/gante_no_grid.png}
-\caption{Gantt}
+\caption{The gantt chart of agents. Different colors indicate different states of agents. The number at the beginning of blue section indicates the agent sending request messages and the number $p_s$ at the beginning of black section in horizontal line of agent $p_t$ indicates the $p_t$ is replying for $p_s$.}
 \label{Gantt}
 \end{figure}
 
 \subsection{Prevention Of Long-time Demission}
+In this section we increase the amount of agents in $g_1$ to yin zheng suan fa 2 de he shi xing
 \subsection{Agents Scheduling When Failure Occurs}
-
-\section{Conclusion}
+In this section we assume 
+\subsection{Computational Complexity}
+In the first simulation, the team has 14 agents and the simulation environment consists of 108 states and 97 edges, the NBA associated with $g_1$ consists of 8 states and 30 transitions, and the NBA associated with the NBA associated with $g_2$ and $g_3$ consists of 7 states and 34 transitions. As a result, the centralized method products all the FTS and NBA of agents in team will have $108^{14}\times 8^6 \times 7^6(9\times 10^{38})$ states. In our decentralized method, each agent only has partial environment which consists of 38, 17, 30 states as shown in Fig.\ref{envir}. Our method relies on local product of FTS and NBA of each agent and synthesize the initial motion path locally so the complete agent model of $g_1$, $g_2$ and $g_3$ consists of 136, 266 and 210 states, respectively and it costs an average of 0.02s to synthesize the initial motion path for each agent.
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
 % or
