@@ -456,7 +456,7 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-We consider the collaboration under compact coupled task specifications of a multiagent system that consists of heterogeneous groups of homogeneous agents. To fight the extreme computational complexity of centralized multi-agent planning, we propose a decentralized solution, where couple-edge is proposed to eliminate the coupling among compact task and transform the collaboration issue into a local task planning problem. Meanwhile, we adapt the online coordination scheme based on real-time exchange of request and reply messages to ensure the satisfaction of task specifications without central coordination. This adapted online coordination scheme facilitates not only decreasing the total execution cost but also dispatching agents to strive to complete task when part of agents failure. Proposed approach is demonstrated by a simulated scenario of 14 agents under compact coupled task specifications.
+We consider the collaboration under compact coupled task specifications of a multiagent system that consists of heterogeneous groups of homogeneous agents. To alleviate the massive computational complexity of centralized multi-agent planning, we propose a decentralized solution, where couple-edge is proposed to eliminate the coupling among compact task and transform the collaboration issue into a local task planning problem. Meanwhile, we adapt the online coordination scheme based on real-time exchange of request and reply messages to ensure the satisfaction of task specifications without central coordination. This adapted online coordination scheme facilitates not only decreasing the total execution cost but also dispatching agents to strive to complete task when part of agents failure. Proposed approach is demonstrated by a simulated scenario in a warehouse and agents are assigned compact coupled task specifications.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -482,14 +482,6 @@ multiagent system, linear temporal logics (LTLs), decentralized collaboration.
 
 
 \section{Introduction}
-1. ltl de yingyong
-2. dan ji ying yong
-3. duo ji ying yong
-
-4. jiang shi jian fu za du(receding horizon, decomposition, zhen dui song ou he,yin ru wo men de gong zuo, ye ke shi yong yu song ou he ren wu ,women de gong xian)
-zhao yu guo meng qu bie, you ming que de xian hou shun xv guan xi?buxv yao ren wei ding yi xie zuo dong zuo
-5. lunwen jie gou
-wo men de fang fa neng gou jie jue zhi qian guo meng de song ou he, tong guo huan yi zhong sheng ming fang fa,dan shi guo meng de fang fa jiejue bu le zhe ge wen ti,di yi ,xv yao ding yi xie zuo ren wu,di er qiang ou he xing wu fa sheng cheng chu shi lu jing. di san ,online scheme bu shi yong.
 % The very first letter is a 2 line initial drop letter followed
 % by the rest of the first word in caps.
 %
@@ -507,10 +499,11 @@ wo men de fang fa neng gou jie jue zhi qian guo meng de song ou he, tong guo hua
 % and "HIS" in caps to complete the first word.
 \IEEEPARstart{T}{emporal} logic based motion planning method has gained attention significantly over the last decade because it can provide complete solution for motion planning under specific environment and task specifications. The temporal logic, such as linear temporal logic (LTL) has usage as offering formal language which specify the task in a high level. Meanwhile, model checking algorithms are applied to find the discrete plan according to task specification and the abstraction of environment[principle of ...]. Then the plan is implemented through the low-level physical system.\par
 LTL has been employed by multiagent system to plan the motion path under complex task specifications. In [1],[3] and [4], the essential LTL is employed by a multiagent system to perform coordinated behaviors in Robotic Urban-Like Environment(RULE). Navigation function is combined with LTL in [6] to tackle task specifications. Due to dynamic workspace, agents need to revise their motion path to conform the task specification. [9],[19] propose a motion path revision method based on knowledge transferring and real time Dijstra algorithm. Towards infeasible task, [8] synthesizes the motion plan that fulfills the infeasible task specifications most and relax the infeasible task specifications. LTL is employed in many aspects of research of multiagent system. In [7], the motion of each agent is modeled as a weighted transition system, and the goal is to minimize a cost function which captures the maximum time between successive satisfactions of the optimizing proposition while guaranteeing the formula is satisfied. Discrete Average Space Robustness which is composed of Signal Temporal Logic and Model Predictive Control is proposed in [40]. Besides the robust control, the hybrid control [24,28,29] and game theorem [13] in multiagent systems are also combined with LTL. In addition, human-in-the-loop mixed initiative control is studied in [44] and [43] demonstrates the event trigger scheme of LTL in multiagent systems.\par
-A key challenge of applying LTL to the motion planning of multiagent systems is the computational complexity. In centralized method, all the agents need to product their agent model to synthesize the motion paths which satisfying all the task specifications[add ref], and the complexity exponential increases with the number of states. To fight with the massive amount of calculation, many methods are proposed. These methods can be classified into two aspects: (1) decompose the task specifications and decentralize the (2)receding the horizon of agents.
+A key challenge of applying LTL to the motion planning of multiagent systems is the computational complexity. In centralized method, all the agents need to product their agent models to synthesize the motion paths which satisfying all the task specifications[add ref], and the complexity exponential increases with the number of states. To alleviate the massive amount of calculation, many methods are proposed. These methods can be classified into two aspects. On the one hand, a receding horizon framework consists of a goal generator, a trajectory planner and a continues controller is proposed in [5], where the goal generator reduces the computational complexity of trajectory generation and meanwhile the desired system-level temporal properties are preserved. This framework is then employed in multiagent system in [10]. On the other hand, the decomposition and decentralization of LTL are studied widely. A two-phase automata-based solution is proposed in [30], where the planning procedure is systematically decoupled for the specifications that constraints agents' trace and expresses the agents' task. [31] demonstrates an automata-based approach to decompose LTL specifications into sets of independently executable task specifications and the hierarchical decomposition of LTL is introduced in [37]. Compared to the decomposition of LTL specifications, decentralization methods tend to reduce the computational complexity more efficiently. [15] presents a decentralized hybrid supervisory control approach. Local LTL tasks are employed in [14] where the connectivity constraints are considered simultaneously. With the preliminary decentralization methods, the reconfiguration of distributed plan is studied in [16]. Recently, a decentralization framework using Tableau approach is proposed in [Efficient Dec...]. Most of these frameworks can't handle coupled task, which requires to product all the agent models of multiagent system and results massive computational complexity. In this regard, [jing chang yin] presents a product-free framework towards loosely coupled task. However, the execution of motion is sequential in compact coupled tasks, the dependencies among motions can't be defined clearly, especially for complex and nested compact coupled task specifications. Regarding compact coupled tasks specifications, we proposed a decentralization collaboration framework of multiagent system.
 
-Our contribution can be summarized as proposal ..jin ou he ren wu you ming que de shun xv guan xi, ren wu yi dan fu za,huo zhe qian tao,wu fa qingsong de ding yi dong zuo de yi lai guan xi. zhi qian de suan fa kuang jia bu shi yong yu fu za de ren wu miao shu, dang wu fa ding yi dong zuo de  yi lai guan xi ,cong er wu fa sheng cheng chu shi lu jing shi, gai fang fa bu neng yong . ke yi bu yong ding yi da liang dong zuo yi lai guan xi er wan cheng jin ou he ren wu de product free, bing qie ke yi tong shi jie jue song ou he ren wu
-The remaining of this paper is organized as follows. First, we
+Our contribution can be summarized as follows: (1) A formal definition of compact coupled task specifications is introduced and the method decoupling the compact coupled tasks among agents is proposed. This method is applicable to loosely coupled tasks as well, as long as the loosely coupled task is specificated in a compact coupled manner. (2) The communication framework in [jing chang yin] is simplified and adapted to the path planning under compact coupled tasks. (3) The prevention of long-time demission and the agents scheduling when failures occur under compact coupled task specifications are analyzed to enrich our framework.
+
+The remaining of this paper is organized as follows: Some preliminaries are introduced in Sec.\uppercase\expandafter{\romannumeral2}. Sec.\uppercase\expandafter{\romannumeral3} states formally the problem. Sec.\uppercase\expandafter{\romannumeral4} presents the decentralized synthesis of initial plan of each agent. The decentralized collaboration of agents is described in Sec.\uppercase\expandafter{\romannumeral5}. The agent scheduling system is demonstrated in Sec.\uppercase\expandafter{\romannumeral6}. In Sec.\uppercase\expandafter{\romannumeral7} we show the overall structure of our framework and case studies are shown in Sec.\uppercase\expandafter{\romannumeral8}. Finally, a summary and future work are given in Sec.\uppercase\expandafter{\romannumeral9}.
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
 
@@ -867,32 +860,61 @@ $\mathcal{C}^{p_i}$ and $\mathcal{C}^{p_j}$ can be combined to obtain $union\ ag
 (1)Add all the nodes and edges in $\mathcal{C}^{p_i}$ and $\mathcal{C}^{p_j}$ into $\widetilde{\mathcal{U}}_{ij}$.\par
 (2)Find all the position pair $\tilde{s}=(\tilde{\eta}_{p_i},\tilde{\eta}_{p_j})$, where $\tilde{\eta}_{p_i}$ and $\tilde{\eta}_{p_j}$ appertain to $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$, respectively and they are bordered, which means agent can transition from $\tilde{\eta}_{p_i}$ to $\tilde{\eta}_{p_j}$ by one step and vice versa. We call these position pair bordered position pair and denote the set of $\tilde{\eta}_{p_i}$ and $\tilde{\eta}_{p_j}$ by $\hat{\eta}_{p_i}$ and $\hat{\eta}_{p_j}$, respectively.\par
 (3)For all nodes $\tilde{c}_{p_i}$ and $\tilde{c}_{p_j}$ in $\mathcal{C}^{p_i}$ and $\mathcal{C}^{p_j}$, if $\tilde{c}_{p_i}|_\mathcal{M}$ and $\tilde{c}_{p_j}|_\mathcal{M}$ is a bordered position pair and there are no violations of task specifications when transferring from $\tilde{c}_{p_i}|_\mathcal{M}$ to $\tilde{c}_{p_j}|_\mathcal{M}$, then we add an edge $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ into $\widetilde{\mathcal{U}}_{ij}$, where $weight$ denotes the distance between $\tilde{c}_{p_i}|_\mathcal{M}$ and $\tilde{c}_{p_j}|_\mathcal{M}$. If the transition violates the coupled task specifications and $(\tilde{c}_{p_i},\tilde{c}_{p_j})$ is a couple-edge according to \emph{Definition 2}, then add $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ as a couple-edge into $\widetilde{\mathcal{U}}_{ij}$.\par
-After the union agent model is constructed, we decide $\varpi$ and synthesize $R^{\varpi}_+$. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then $p_j$ needs to revise its motion plan to inherit the task of $p_i$ when $p_i$ is broken down. Denote the current state of $p_j$ is $\tilde{c}_{p_j}^{\ast}$, $p_j$ needs to interrupt its own task so that the states of B\"{u}chi Automaton can no longer restrict the motion of $p_j$ and each $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ can be the departure point of $R^{\varpi}_+$. It is obvious that the suffix $R^{\varpi,s}_+$ is invariant due to the inheriting of task specification $\varphi_i$, so we can transform the $\emph{Problem 2}$ to the synthesizing of prefix $R^{\varpi,p}_+$ from any $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ to $\tilde{c}_{p_i}$ where $\tilde{c}_{p_i}|_\mathcal{M}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in \mathcal{I}^{p_i}????chushi zhuangtai$. We apply $bidirectional Dijkstra$ method to synthesize $R^{\varpi,p}_+$, where all the $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ are set as source nodes and all $\tilde{c}_{p_i}$ satisfying $\tilde{c}_{p_i}|_\mathcal{M}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in \mathcal{I}^{p_i}????chushi zhuangtai$ are set as target nodes and we can obtain the shortest path between two nodes from source nodes and target nodes, ultimately, the shortest path in all the shortest paths is selected as $R^{\varpi,p}_+$. Then $R^{\varpi,p}_+$ is synthesized:(????zhe kuai you wen ti,shi zhao dao initial de ,hai shi zai suffix zhong mei ge jie dian kai shi shuang xiang zhao, ran hou na ge dian zuo wei qie ru dian)
-$$R^{\varpi}_+ = R^{\varpi,p}_+\oplus R^{\varpi,s}_+$$ ???????gei R quan jia shang ji qi ren jiao biao
+After the union agent model is constructed, we decide $\varpi$ and synthesize $R^{\varpi}_+$. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then $p_j$ needs to revise its motion plan to inherit the task of $p_i$ when $p_i$ is broken down. Denote the current state of $p_j$ is $\tilde{c}_{p_j}^{\ast}$, $p_j$ needs to interrupt its own task so that the states of B\"{u}chi Automaton can no longer restrict the motion of $p_j$ and each $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ can be the departure point of $R^{\varpi}_+$. It is obvious that the suffix $R^{\varpi,s}_+$ is invariant due to the inheriting of task specification $\varphi_i$, so we can transform the $\emph{Problem 2}$ to the synthesizing of prefix $R^{\varpi,p}_+$ from any $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ to $\tilde{c}_{p_i}$ where $\tilde{c}_{p_i}|_\mathcal{M}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in \mathcal{Q}^{p_i}_0$. We apply $bidirectional\ Dijkstra$ method to synthesize $R^{\varpi,p}_+$, where all the $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ are set as source nodes and all $\tilde{c}_{p_i}$ satisfying $\tilde{c}_{p_i}|_\mathcal{M}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in \mathcal{Q}^{p_i}_0$ are set as target nodes and we can obtain the shortest path between two nodes from source nodes and target nodes, ultimately, the shortest path in all the shortest paths is selected as $R^{\varpi,p}_+$. Then $R^{\varpi,p}_+$ is synthesized:(????zhe kuai you wen ti,shi zhao dao initial de ,hai shi zai suffix zhong mei ge jie dian kai shi shuang xiang zhao, ran hou na ge dian zuo wei qie ru dian)
+$$R^{\varpi}_+ = R^{\varpi,p}_+\oplus R^{\varpi,s}_-$$ ???????gei R quan jia shang ji qi ren jiao biao
 
 Then all the candidates of inheriting the task need to elect the agent with minimal cost to revise its motion plan, namely, they need to solve the minimal problem: min $Cost(R^{\varpi}_+)$, subject to $\sum b^{p_j}=1$.\par
 When the broken down agent is fixed properly, we can drive the inheriting agent to return to its own task by reversing above method. The entire procedure of constructing the union agent model and each candidate finds out $R^{\varpi}_+???jia jiao biao$ is exhibited by Algorithm 4 and $\emph{Problem 2}$ is solved.
+zhe li yao shuo ming, yao fang qi yuan lai de ren wu,dan shi yi xie ying xing renwu yao bao liu. ran hou qi ta de ren wu yao cheng jie ji cheng de ren wu. huo zhe zai qian mian zai jia ge shuo ming. dui yu zheng ge huan jing nei de ying xing yue shu, suo you ji qi ren de ren wu mo xing zhong dou you.
 
 \begin{algorithm}
-  \caption{identify Row Context}
-  \KwIn{$r_i$, $Backgrd(T_i)$=${T_1,T_2,\ldots ,T_n}$ and similarity threshold $\theta_r$}
-  \KwOut{$con(r_i)$}
-  $con(r_i)= \Phi$\;
-  \For{$j=1;j \le n;j \ne i$}
+  \caption{the construction of $\widetilde{\mathcal{U}}_{ij}$ and the synthesis of $R^{\varpi}_+$}
+  \KwIn{$\mathcal{C}^{p_i}$, $\mathcal{C}^{p_j}$ and $\tilde{c}_{p_j}^{\ast}$}
+  \KwOut{$\widetilde{\mathcal{U}}_{ij}\ and\  R^{\varpi}_+$}
+  $\widetilde{\mathcal{U}}_{ij}=\mathcal{C}^{p_i}\cup \mathcal{C}^{p_j}$
+  
+  $\tilde{\eta}_{p_i}=\emptyset,\Omega_{p_j}=\emptyset$
+  
+  \ForEach{$Q'_{p_j}\in \mathcal{C}^{p_j}$}
   {
-    float $maxSim=0$\;
-    $r^{maxSim}=null$\;
-    \While{not end of $T_j$}
+    \If{$Q'_{p_j}|\mathcal{F}^{p_j}=\tilde{c}_{p_j}^{\ast}|\mathcal{F}^{p_j}$}
     {
-      compute Jaro($r_i,r_m$)($r_m\in T_j$)\;
-      \If{$(Jaro(r_i,r_m) \ge \theta_r)\wedge (Jaro(r_i,r_m)\ge r^{maxSim})$}
-      {
-        replace $r^{maxSim}$ with $r_m$\;
-      }
+        add $Q'_{p_j}$ to $\Omega_{p_j}$
+    }  
+    \ForEach{$Q'_{p_i}\in \mathcal{C}^{p_i}$}
+    {
+        \If{$Q'_{p_i}|_{\mathcal{F}^{p_i}}\ is\ borded\ to\ Q'_{p_j}|_{\mathcal{F}^{p_j}}$}
+        {
+            add $Q'_{p_i}$ to $\tilde{\eta}_{p_i}$
+            
+            \If{$CheckTranB(Q'_{p_i}|_{\mathcal{B}^{p_i}},L_c(Q'_{p_i}|_{\mathcal{F}^{p_i}}), 
+             Q'_{p_j}|_{\mathcal{B}^{p_j}},Q'_{p_j}|_{\mathcal{F}^{p_j}})\geqslant 0$}
+            {
+                $Q'_{p_j}\in \delta'(Q'_{p_i})$
+
+                $W_p(Q'_{p_i},Q'_{p_j})=W_c(Q'_{p_i}|_{\mathcal{F}^{p_i}},Q'_{p_j}|_{\mathcal{F}^{p_j}})$
+
+                $\tau(Q'_{p_i},Q'_{p_j}) = None$
+            }
+            \Else
+            {
+                \If{$L_c(Q'_{p_i}|_{\mathcal{F}^{p_i}})\in sym(\varphi_c^{p_j})$}
+                {
+                    $Q'_{p_j}\in \delta'(Q'_{p_i})$
+
+                    $W_p(Q'_{p_i},Q'_{p_j})=W_c(Q'_{p_i}|_{\mathcal{F}^{p_i}},Q'_{p_j}|_{\mathcal{F}^{p_j}})$
+
+                    $\tau(Q'_{p_i},Q'_{p_j})=L_c(Q'_{p_i}|_{\mathcal{F}^{p_i}})$
+                }
+            }
+        }
     }
-    $con(r_i)=con(r_i)\cup {r^{maxSim}}$\;
   }
-  return $con(r_i)$\;
+  $R^{\varpi,p}_+=BidirectionDijkstra(\Omega_{p_j},\tilde{\eta}_{p_i})$
+  
+  $R^{\varpi}_+ = R^{\varpi,p}_+ \oplus R^{\varpi,s}_-$
+  
+  \Return{$\widetilde{\mathcal{U}}_{ij}\ and\  R^{\varpi}_+$}
 \end{algorithm}
 
 \section{Overall Structure}
@@ -964,7 +986,7 @@ In the first simulation, the team has 14 agents and the simulation environment c
 % starts a section numbered zero.)
 %
 
-
+\section{Summary And Future Work}
 %\appendices
 %\section{Proof of the First Zonklar Equation}
 %Appendix one text goes here.
@@ -973,6 +995,7 @@ In the first simulation, the team has 14 agents and the simulation environment c
 %% if you want by leaving the argument blank
 %\section{}
 %Appendix two text goes here.
+Through the simulation results we can see the proposed method can handle the decentralized collaboration of multiagent system under compact coupled task specifications. If we convert the specifications of loosely coupled task to a compact coupled task specification, such as converting $water^{a}$[add ref](zai zhe li zhao yi ge ren wu shuo ming) to $\neg water\cup a$, then our method is applicable for loosely coupled tasks.  ????meixiewan
 
 
 % use section* for acknowledgment
