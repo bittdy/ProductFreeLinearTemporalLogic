@@ -618,7 +618,7 @@ Atomic propositions (AP) are boolean variables that can be either true or false 
 
 
 \subsection{B\"{u}chi Automaton}
-Given a LTL formula $\varphi$, we can always translate it to a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{A}_\varphi$ that accepts all the languages that satisfy $\varphi$. It is defined as $\mathcal{B}_\varphi=\ (Q,2^{AP},\delta,Q_0,\mathcal{F})$, where $Q$ is a finite set of all the states of B\"{u}chi Automaton, $2^{AP}$ is the set of alphabets, $\delta:\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $\mathcal{F}\subseteq Q$ is the set of accepting states of B\"{u}chi Automaton. There are fast translation algorithms[add ref] to obtain $\mathcal{B}_\varphi$ from LTL formula $\varphi$.
+Given a LTL formula $\varphi$, we can always translate it to a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{B}_\varphi$ that accepts all the languages that satisfy $\varphi$. It is defined as $\mathcal{B}_\varphi=\ (Q,2^{AP},\delta,Q_0,Q_F)$, where $Q$ is a finite set of all the states of B\"{u}chi Automaton, $2^{AP}$ is the set of alphabets, $\delta:\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $Q_F \subseteq Q$ is the set of accepting states of B\"{u}chi Automaton. There are fast translation algorithms[add ref] to obtain $\mathcal{B}_\varphi$ from LTL formula $\varphi$.
 
 \section{Problem Formulation}
 We consider a multiagent system organized by $N\geq1$ agents. Each agent has the capabilities of navigating within the workspace and performing various motions. The agent index is denoted by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. Then, we divide all the agents into different subsets according to their local LTL task specifications, which implies that only agents with the same local LTL task specifications can be divided into one subset. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \cup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\cap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$.
@@ -630,8 +630,8 @@ where $\rightarrow^{p_i} \subseteq \Pi \times \Pi$ is the transition relation, $
 Similar to the communication model in [add ref], the communication network $\mathcal{V}=(\mathcal{N},\mathcal{E}(t))$ at $t>0$, where $\mathcal{N}$ is the set of nodes and $\mathcal{E}(t)\subseteq \mathcal{N} \times \mathcal{N}$ is the set of edges, which has two layers that $\mathcal{E}(t)=\mathcal{E}_1(t)\cup \mathcal{E}_2(t)$. The first layer $\mathcal{E}_1(t)={(p_i,p_j),\forall i,j\in g_t}$ and $\mathcal{E}_2(t)={(p_i,p_j),\forall i\in g_t,\forall j \in g_s, t\neq s}$. The first layer $\mathcal{E}_1(t)$ is static, which indicates that all the agents belong to the same group $g_t$ can always communicate with each other. The second layer $\mathcal{E}_2(t)$ is dynamic, which indicates that it is enabled when there are decentralized collaboration occurs.
 \subsection{Complete Agent Model}
 Given the NBA $\mathcal{B}^{p_i}$ associated with $\varphi^{p_i}$ and FTS $\mathcal{F}^{p_i}$, the complete agent model $\mathcal{C}^{p_i}$ of $p_i$ is defined as following:
-$$\mathcal{C}^{p_i}=\mathcal{B}^{p_i}\otimes \mathcal{C}^{p_i}=(Q^{p_i,\ast},\delta^{p_i},Q^{p_i,\ast}_0,Q^{p_i,\ast}_{\mathcal{F}},W^{p_i,\ast},\tau^{p_i})$$
-where $Q^{p_i,\ast}=\Pi^{p_i}\times Q^{p_i}$, $q^{p_i,\ast}=<\pi^{p_i},q^{p_i}>$, $\forall \pi^{p£»_i}\in \Pi^{p_i}$, $\forall q^{p_i}\in Q^{p_i}$; $(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)\in \delta^{p_i}$ if $\pi^{p_i}_m \rightarrow^{p_i} \pi^{p_i}_n$ and $(q^{p_i}_s,L^{p_i}(\pi^{p_i}_m),q^{p_i}_t)\in \delta^{p_i}$; $Q^{p_i,\ast}_0=\Pi^{p_i}_0\times Q_0^{p_i}$ is the set of initial states; $Q^{p_i,\ast}_{\mathcal{F}}=\Pi^{p_i}\times Q^{p_i}_\mathcal{F}$ is the set of accepting states; $W^{p_i,\ast}:\delta^{p_i}\times Q^{p_i,\ast}\rightarrow \mathbb{R}^{+}$. $W^{p_i,\ast}(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)=T^{p_i}(\pi^{p_i}_m,\pi^{p_i}_n)$ which is estimated by agent $p_i$, where $<\pi^{p_i}_n,q^{p_i}_t>\in \delta^{p_i}(<\pi^{p_i}_m,q^{p_i}_s>)$. $\tau^{p_i}$ indicates whether $(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)$ is a couple edge which is going to be introduced next.
+$$\mathcal{C}^{p_i}=\mathcal{B}^{p_i}\otimes \mathcal{C}^{p_i}=(Q^{p_i,\ast},\delta^{p_i},Q^{p_i,\ast}_0,Q^{p_i,\ast}_F,W^{p_i,\ast},\tau^{p_i})$$
+where $Q^{p_i,\ast}=\Pi^{p_i}\times Q^{p_i}$, $q^{p_i,\ast}=<\pi^{p_i},q^{p_i}>$, $\forall \pi^{p£»_i}\in \Pi^{p_i}$, $\forall q^{p_i}\in Q^{p_i}$; $(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)\in \delta^{p_i}$ if $\pi^{p_i}_m \rightarrow^{p_i} \pi^{p_i}_n$ and $(q^{p_i}_s,L^{p_i}(\pi^{p_i}_m),q^{p_i}_t)\in \delta^{p_i}$; $Q^{p_i,\ast}_0=\Pi^{p_i}_0\times Q_0^{p_i}$ is the set of initial states; $Q^{p_i,\ast}_F=\Pi^{p_i}\times Q^{p_i}_F$ is the set of accepting states; $W^{p_i,\ast}:\delta^{p_i}\times Q^{p_i,\ast}\rightarrow \mathbb{R}^{+}$. $W^{p_i,\ast}(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)$ is the distance between $\pi^{p_i}_m$ and $\pi^{p_i}_n$, where $<\pi^{p_i}_n,q^{p_i}_t>\in \delta^{p_i}(<\pi^{p_i}_m,q^{p_i}_s>,L^{p_i}(\pi^{p_i}_m))$. $\tau^{p_i}$ indicates whether $(<\pi^{p_i}_m,q^{p_i}_s>,<\pi^{p_i}_n,q^{p_i}_t>)$ is a couple edge which is going to be introduced next.
 \subsection{Compact Coupled Task Specification}
 In this paper we consider the compact coupled task specification. Compared to loosely coupled task specifications, compact coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The compact coupled task specification takes an recursive definition as following.
 \par
@@ -645,13 +645,13 @@ In this section, we will demonstrate how we decouple the compact coupled task sp
 \subsection{Decoupling the Compact Coupled Task}
 We consider the basic compact coupled task such as $\varphi_1 \cup (\varphi_2 \wedge \varphi_3)$ and $\varphi_1 \Longrightarrow \bigcirc(\varphi_2 \wedge \varphi_3)$, the nested compact coupled task can be transform to basic terms through utilizing auxiliary words. For example, we can transform $\varphi_1 \cup (\varphi_2 \Longrightarrow \bigcirc \varphi_3)$ into $\varphi_1 \cup \kappa$ and $\kappa=\varphi_2 \Longrightarrow \bigcirc \varphi_3$.
 \par
-Towards basic compact coupled task specification, we notice that compact coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider compact coupled task specification $\neg \varphi_1\cup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Consider the local complete agent model $\mathcal{C}^{p_i}$, of which the state set is $Q_c^{p_i}$ that $\varphi_1 \in Q_c^{p_i}|_{\mathcal{M}}$, and $\varphi_2 \notin Q_c^{p_i}|_{\mathcal{M}} $. There exists a subset of $Q_c^{p_i}$ denoted by $\epsilon$ that $\varphi_1 \in \epsilon |_{\mathcal{M}}$ and $\varphi_1 \notin Q_c^{p_i} \setminus \epsilon |_{\mathcal{M}}$. Then there is no edge from $Q_c^{p_i} \setminus \epsilon$ to $\epsilon$ so that we can't synthesize an initial motion plan fulfill $\varphi$.\par
+Towards basic compact coupled task specification, we notice that compact coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider compact coupled task specification $\neg \varphi_1\cup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Consider the local complete agent model $\mathcal{C}^{p_i}$ and denote all the atomic propositions associated with $\varphi$ is denoted by $sym(\varphi)$. Then $sym(\varphi_1) \in Q^{p_i}|_{\mathcal{F}^{p_i}}$, and $sym(\varphi_2) \notin Q^{p_i}|_{\mathcal{F}^{p_i}} $. There exists a subset of $Q^{p_i}$ denoted by $\epsilon$ that $sym(\varphi_1) \in \epsilon |_{\mathcal{F}^{p_i}}$ and $sym(\varphi_1) \notin Q^{p_i} \setminus \epsilon |_{\mathcal{F}^{p_i}}$. Then there is no edge from $Q^{p_i} \setminus \epsilon$ to $\epsilon$ so that we can't synthesize an initial motion plan fulfill $\varphi$.\par
 \emph{Definition 2:} Given a complete agent model $\mathcal{C}^{p_i}$, If two nodes $q_i$, $q_j$ satisfy following properties:
 \par
-(1) $q_i \in \epsilon$, $q_j \in Q_c^{p_i} \setminus \epsilon$ or vice versa.\par
+(1) $q_i \in \epsilon$, $q_j \in Q^{p_i} \setminus \epsilon$ or vice versa.\par
 (2) $\delta(q_i,q_j)\subseteq sym(\varphi_c)$ or $\delta(q_j,q_i)\subseteq sym(\varphi_c)$.
 
-where $\varphi_c$ denote the compact coupled part of task specification $\varphi$ and $sym(\varphi)$ denote all the atomic proposition of $\varphi$.
+where $\varphi_c$ denote the compact coupled part of task specification $\varphi$.
 We call each edge which connects $q_i$ and $q_j$ the couple-edge.
 At first we can assume that all the collaborative agents have provided assistance and add all the couple-edge to the local complete agent model, then we can synthesize an initial motion plan for each agent.\par
 We adapt previous local product algorithm[add ref] which combines the FTS and B\"{u}chi Automaton of single agent for finding out all the couple-edge with respect to the compact coupled task specification $\varphi_c$ and add them into the origin complete agent model. Applying Algorithm 1 we can get a new complete agent model $\mathcal{C}^{p_i}_n$ for each agent, which contains $\mathcal{C}^{p_i}$ and all the couple-edges.\par
@@ -659,40 +659,40 @@ We adapt previous local product algorithm[add ref] which combines the FTS and B\
   \caption{Construct New Complete Agent Model $\mathcal{C}^{p_i}_n$}
   \KwIn{the local FTS $\mathcal{F}^{p_i}$, the local B\"{u}chi Automaton $\mathcal{B}^{p_i}$ and the compact coupled task specification $\varphi_c$}
   \KwOut{complete agent model $\mathcal{C}^{p_i}_n$}
-  \ForEach{$\pi_i\in \Pi,q_m\in Q$}
+  \ForEach{$\pi_l\in \Pi^{p_i},q_m\in Q^{p_i}$}
   {
-    $q'_s=<\pi_i,q_m>\in Q'$
+    $q^{\ast}_s=<\pi_l,q_m>\in Q^{p_i,\ast}$
 
-    \If{$\pi_i\in \Pi_0\ and\ q_m\in Q_0$}
+    \If{$\pi_l\in \Pi_0^{p_i}\ and\ q_m\in Q_0^{p_i}$}
     {
-        $q'_s\in Q'_0$
+        $q^{\ast}_s\in Q^{p_i,\ast}_0$
     }
-    \If{$q_m\in Q_\mathcal{F}$}
+    \If{$q_m\in Q_F$}
     {
-        $q'_s\in Q'_\mathcal{F}$
+        $q^{\ast}_s\in Q^{p_i,\ast}_F$
     }
-    \ForEach{$\pi_j\in Post(\pi_i),q_n \in Post(q_m)$}
+    \ForEach{$\pi_z\in Post(\pi_l),q_n \in Post(q_m)$}
     {
-        $q'_g=<\pi_j,q_n>\in Q'$
-        $d = CheckTranB(q_m,L_c(\pi_i),q_n,\mathcal{B}^{p_i})$
+        $q^{\ast}_g=<\pi_z,q_n>\in Q^{p_i,\ast}$
+        $d = CheckTranB(q_m,L_c(\pi_l),q_n,\mathcal{B}^{p_i})$
 
         \If{$d \geqslant 0$}
         {
-            $q'_g\in \delta'(q'_s)$
+            $q^{\ast}_g\in \delta(q^{\ast}_s)$
 
-            $W_p(q'_s,q'_g)=W_c(\pi_i,\pi_j)$
+            $W^{p_i,\ast}(q^{\ast}_s,q^{\ast}_g)=dist(\pi_l,\pi_z)$
 
-            $\tau(q'_s,q'_g) = None$
+            $\tau(q^{\ast}_s,q^{\ast}_g) = None$
         }
         \Else
         {
-            \If{$L_c(\pi_i)\in sym(\varphi_c)$}
+            \If{$L^{p_i}(\pi_l)\in sym(\varphi_c)$}
             {
-                $q'_g\in \delta'(q'_s)$
+                $q^{\ast}_g\in \delta(q^{\ast}_s)$
 
-                $W_p(q'_s,q'_g)=W_c(\pi_i,\pi_j)$
+                $W^{p_i,\ast}(q^{\ast}_s,q^{\ast}_g)=dist(\pi_l,\pi_z)$
 
-                $\tau(q'_s,q'_g)=L_c(\pi_i)$
+                $\tau(q^{\ast}_s,q^{\ast}_g)=L^{p_i}(\pi_l)$
             }
         }
     }
@@ -701,26 +701,25 @@ We adapt previous local product algorithm[add ref] which combines the FTS and B\
 \end{algorithm}
 
 \emph{Lemma 1:} By adding all the couple-edges found out by applying Algorithm 1 to $\mathcal{C}^{p_i}$, we can synthesize an initial accepted motion plan for each agent.\par
-\emph{proof:} According to algorithm 1, the nodes in $Q_c^{p_i} \setminus \epsilon$ are connected because these nodes are correspond to independent task specifications. Through adding couple-edges into $\mathcal{C}^{p_i}$, each node in $\epsilon$ becomes reachable and $\mathcal{C}^{p_i}_n$ becomes fully connected. Consequently, there must exist spanning trees for $\mathcal{C}^{p_i}_n$ and there must exist a path from any initial node in $\Phi_0^{p_i}$ to any accepted node in $\Phi_A^{p_i}$. So we can synthesize an initial motion plan fulfilling $\varphi_c$ according to $\mathcal{C}^{p_i}_n$.
+\emph{proof:} According to algorithm 1, the nodes in $Q^{p_i} \setminus \epsilon$ are connected because these nodes are correspond to independent task specifications. Through adding couple-edges into $\mathcal{C}^{p_i}$, each node in $\epsilon$ becomes reachable and $\mathcal{C}^{p_i}_n$ becomes fully connected. Consequently, there must exist spanning trees for $\mathcal{C}^{p_i}_n$ and there must exist a path from any initial node in $Q_0^{p_i}$ to any accepted node in $Q_F^{p_i}$. So we can synthesize an initial motion plan fulfilling $\varphi_c$ according to $\mathcal{C}^{p_i}_n$.
 \subsection{Plan Synthesis and Reconstitution}
-Given $\mathcal{C}^{p_i}_n$ and $\varphi^{p_i}$, there exists a finite path satisfying $\varphi^{p_i}$ if and only if $\mathcal{C}^{p_i}_n$ has a finite path from an initial state to an accepting state. This finite path can be projected back to $\mathcal{F}^{p_i}$ as a finite path. Let $R^{p_i}=q^{p_i}_0 q^{p_i}_1 ... q^{p_i}_s$ be a finite path, where $q^{p_i}_0\in Q_0$, $q^{p_i}_s\in Q_\mathcal{F}$ and $q^{p_i}_z\in Q$ and $(q^{p_i}_z,q^{p_i}_{z+1})\in \delta^{p_i}$. The $cost$ of $R^{p_i}$ is denoted by $cost(R^{p_i},\mathcal{C}^{p_i}_n)=\sum^{s}_{k=0}W^{p_i}(q^{p_i}_k,q^{p_i}_{k+1})$.[add ref] Apply [add ref, Algorithm 1] to find $R^{p_i}$, which utilizes Dijkstra algorithm [add ref] to find the shortest path from any initial state in $Q^{p_i}_0$ to every reachable accepting state in $Q_\mathcal{F}^{p_i}$.
+Given $\mathcal{C}^{p_i}_n$ and $\varphi^{p_i}$, there exists a finite path satisfying $\varphi^{p_i}$ if and only if $\mathcal{C}^{p_i}_n$ has a finite path from an initial state to an accepting state. This finite path can be projected back to $\mathcal{F}^{p_i}$ as a finite path. Let $\varrho^{p_i}=q^{p_i,\ast}_0 q^{p_i,\ast}_1 ... q^{p_i,\ast}_s$ be a finite path, where $q^{p_i,\ast}_0\in Q^{p_i,\ast}_0$, $q^{p_i,\ast}_s\in Q^{p_i,\ast}_F$ and $q^{p_i,\ast}_z\in Q^{p_i,\ast}$ and $(q^{p_i,\ast}_z,q^{p_i,\ast}_{z+1})\in \delta^{p_i}$. The $cost$ of $\varrho^{p_i}$ is denoted by $cost(\varrho^{p_i},\mathcal{C}^{p_i}_n)=\sum^{s}_{k=0}W^{p_i,\ast}(q^{p_i,\ast}_k,q^{p_i,\ast}_{k+1})$.[add ref] Apply [add ref, Algorithm 1] to find $\varrho^{p_i}$, which utilizes Dijkstra algorithm [add ref] to find the shortest path from any initial state in $Q^{p_i,\ast}_0$ to every reachable accepting state in $Q^{p_i,\ast}_F$.
 
-yaobuyao tie ge tu, xing xiang de zhan shi xia suan fa de xiao guo?????????????????????\par
 \emph{Lemma 2:} This decentralized initial plan synthesis method has solutions as long as original centralized plan synthesis method has solutions.\par
-\emph{Proof:} In algorithm 1 we assume that all the collaborative agents have provided assistance and add all the couple-edges into $\mathcal{C}^{p_i}$. Then towards $\mathcal{C}^{p_i}$, $\varphi_c$ is no longer a constraint. The constraint becomes $\varphi \setminus \varphi_c$. Assume we synthesize an initial motion plan $R$ applying original centralized plan synthesis method, $R$ fulfills $\varphi$ and then $R$ must fulfill $\varphi \setminus \varphi_c$, so all the solutions generated by original centralized method are contained in the solutions generated by decentralized method. Consequently, the proposed decentralized initial plan synthesis method has solutions as long as original centralized plan synthesis method has solutions.\par
-$R^{p_i}$ constructed by [zhao na ge suan fa] is composed of prefix $R^{p_i}_p$ and suffix $R^{p_i}_s$. In order to adapt to next algorithms, $R^{p_i}$ is reconstituted as following:\par
-(1)Merge $R^{p_i}_p$ and $R^{p_i}_s$ and use $\gamma$ to indicate the separation point.
+\emph{Proof:} In algorithm 1 we assume that all the collaborative agents have provided assistance and add all the couple-edges into $\mathcal{C}^{p_i}$. Then towards $\mathcal{C}^{p_i}_n$, $\varphi_c$ is no longer a constraint. The constraint becomes $\varphi \setminus \varphi_c$. Assume we synthesize an initial motion plan $\varrho^{p_i}$ applying original centralized plan synthesis method, $\varrho^{p_i}$ fulfills $\varphi$ and then $\varrho^{p_i}$ must fulfill $\varphi \setminus \varphi_c$, so all the solutions generated by original centralized method are contained in the solutions generated by decentralized method. Consequently, the proposed decentralized initial plan synthesis method has solutions as long as original centralized plan synthesis method has solutions.\par
+$\varrho^{p_i}$ constructed by [zhao na ge suan fa] is composed of prefix $\varrho^{p_i}_p$ and suffix $\varrho^{p_i}_s$. In order to adapt to next algorithms, $\varrho^{p_i}$ is reconstituted as following:\par
+(1)Merge $\varrho^{p_i}_p$ and $\varrho^{p_i}_s$ and use $\gamma$ to indicate the separation point.
 
-(2)If two state nodes $q^{p_i}_s$ and $q^{p_i}_t$ satisfy the properties in $\emph{Definition 2}$, add $\delta(q^{p_i}_s,q^{p_i}_t)$ to the attribute $req^{p_i}$ of $q^{p_i}_s$.
+(2)If two state nodes $q^{p_i,\ast}_s$ and $q^{p_i,\ast}_t$ satisfy the properties in $\emph{Definition 2}$, add $\tau(q^{p_i,\ast}_s,q^{p_i,\ast}_t)$ to the attribute $req^{p_i}$ of $q^{p_i,\ast}_s$.
 
 \section{Decentralized Task Collaboration}
 In previous section, we assume that all the collaborative agents have provided assistance and add all the couple-edges into $\mathcal{C}^{p_i}$, which permits us to synthesize an initial motion plan for each agent. If each agent runs on its own local path independently without any communication with other agents, there may be no guarantee that the collaborative task will be completed, which may result in a violation of the task specification $\varphi$. In response to this issue, we adapt the online coordination scheme to ensure the completion of the collaborative task.
 \subsection{Planning In Speed Matching Horizon}
-In order to reduce the complexity of task collaboration, we apply a receding horizon method for each agent. Consider the initial reconstituted motion plan $\varrho^{p_i}$ previous, assume the current position of agent $p_i$ is $\pi^{p_i}$ which is the $l$th element of $\varrho^{p_i}$ namely $\varrho^{p_i}[l]$. Assign a receding time $T_H$ for each agent, note that different agents have different velocity so each agent will adjust its velocity according to its speed. Assume that each agent could estimate the approximate time according its current velocity, departure position and target position, then the segment the agent expected to execute in $T_H$ is denoted by $\tau^{p_i}_H$, $\tau^{p_i}_H = \varrho^{p_i}[l:t]$, where the index $t$ is the solution of the following optimization problem: min $t$, subject to $\sum_{k=l}^{t}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])\geq T_H$, this issue can be solved by iterating through the $\varrho^{p_i}$ and computing the accumulated time which is compared to $T_H$. If previous optimization problem doesn't have a solution, it means that in $T_H$ the agent can execute the rest of the suffix of $\varrho^{p_i}$, namely $\varrho^{p_i}[l:]$. Since the split point of $\varrho^{p_i}$ has been indicated previously, original optimization problem can be transformed into a new optimization problem: min $t$, subject to $\sum_{k=\gamma}^{t}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])\geq T_H - \sum_{k=l}^{|\varrho^{p_i}|}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])$, where $|\varrho^{p_i}|$ denote the length of $\varrho^{p_i}$ and $\gamma$ denote the split point index. We can always find a solution to above problem iteratively.
+In order to reduce the complexity of task collaboration, we apply a receding horizon method for each agent. Consider the initial reconstituted motion plan $\varrho^{p_i}$ previous, assume the current position of agent $p_i$ is $\pi^{p_i}$ which is the $l$th element of $\varrho^{p_i}$ namely $\varrho^{p_i}[l]$. Assign a receding time $T_H$ for each agent, note that different agents have different velocity so each agent will adjust its velocity according to its speed. Assume that each agent could estimate the approximate time according its current velocity, departure position and target position, then the segment the agent expected to execute in $T_H$ is denoted by $\varrho^{p_i}_H$, $\varrho^{p_i}_H = \varrho^{p_i}[l:t]$, where the index $t$ is the solution of the following optimization problem: min $t$, subject to $\sum_{k=l}^{t}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])\geq T_H$, this issue can be solved by iterating through the $\varrho^{p_i}$ and computing the accumulated time which is compared to $T_H$. If previous optimization problem doesn't have a solution, it means that in $T_H$ the agent can execute the rest of the suffix of $\varrho^{p_i}$, namely $\varrho^{p_i}[l:]$. Since the split point of $\varrho^{p_i}$ has been indicated previously, original optimization problem can be transformed into a new optimization problem: min $t$, subject to $\sum_{k=\gamma}^{t}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])\geq T_H - \sum_{k=l}^{|\varrho^{p_i}|}T^{p_i}(\varrho^{p_i}[k],\varrho^{p_i}[k+1])$, where $|\varrho^{p_i}|$ denote the length of $\varrho^{p_i}$ and $\gamma$ denote the split point index. We can always find a solution to above problem iteratively.
 
 \subsection{Online Coordination Scheme}
-Through speed matching receding horizon planning, the truncation index is founded and the receding horizon motion plan $\varrho^{p_i}_H$ is synthesized. To ensure the fulfill of task specification $\varphi$, each agent needs to check whether it needs others' collaboration within $\varrho^{p_i}_H$. Since we have reconstituted the motion plan of each agent, we can just find the first item in $\varrho^{p_i}_H$ which has $req^{p_i}$ attribute.  After one agent confirms that it needs others' collaboration, a $\textbf{Request}^{p_i}$ is sent to others. More specifically, for the first item $<\pi_c^{p_i},req^{p_i}>\ \in \varrho^{p_i}_H$ satisfying $req \neq \emptyset$, where $c$ denote the index of $<\pi_c^{p_i},req^{p_i}>$ in $\varrho^{p_i}_H$. Agent $p_i$ needs to broadcast the request message to $\mathcal{N}^{p_i}$ through its communicate network. $\textbf{Request}^{p_i}$ has the following format:
-$$\textbf{Request}^{p_i} = (\chi^{p_i},\pi_c^{p_i},T^{p_i}_e)$$
+Through speed matching receding horizon planning, the truncation index is founded and the receding horizon motion plan $\varrho^{p_i}_H$ is synthesized. To ensure the fulfill of task specification $\varphi$, each agent needs to check whether it needs others' collaboration within $\varrho^{p_i}_H$. Since we have reconstituted the motion plan of each agent, we can just find the first item in $\varrho^{p_i}_H$ which has $req^{p_i}$ attribute.  After one agent confirms that it needs others' collaboration, a $\textbf{Request}^{p_i}$ is sent to others. More specifically, for the first item $<q_c^{p_i},req^{p_i}>\ \in \varrho^{p_i}_H$ satisfying $req^{p_i} \neq \emptyset$, where $c$ denote the index of $<\pi_c^{p_i},q_c^{p_i},req^{p_i}>$ in $\varrho^{p_i}_H$. Agent $p_i$ needs to broadcast the request message to $\mathcal{G}\setminus g_s, p_i \in g_s$, through its communicate network. $\textbf{Request}^{p_i}$ has the following format:
+$$\textbf{Request}^{p_i} = (\chi^{p_i},\pi_c^{p_i},q_c^{p_i},T^{p_i}_e)$$
 where $\chi^{p_i}$ denotes all the items in $req^{p_i}$, which indicates the collaborative motion agent $p_i$ needs in $\pi_c^{p_i}$, and $T^{p_i}_e$ denotes the estimated time spent from $\varrho^{p_i}[l]$ to $\varrho^{p_i}[c]$, namely $T^{p_i}_e=\sum_{k=l}^{c}T^{p_i}(\varrho^{p_i}_H[k],\varrho^{p_i}_H[k+1])$. Since $\varrho^{p_i}_H[c]$ is the predecessor of the first request state in $\varrho^{p_i}_H$, $\varrho^{p_i}_H[c]$ can be always reached within finite time, so $T^{p_i}_e$ is a finite positive number.\par
 If agent $p_i$ proposes a request message and there is no reply message transitorily, all the collaborations $p_i$ requests are stored in $\mathcal{R}^{p_i}_c$, the current state $\varrho^{p_i}_r$ is stored.\par
 The algorithm finding out the first request in receding horizon motion plan $\varrho^{p_i}_H$ is as Algorithm 2.\par
@@ -743,13 +742,13 @@ The algorithm finding out the first request in receding horizon motion plan $\va
 
     $T_m=T_m+T^{p_i}(\varrho^{p_i}[l+n-1],\varrho^{p_i}[l+m])$
 
-    $<\pi^{p_i}_c,req^{p_i}>=\varrho^{p_i}[l+m]$
+    $<\pi_c^{p_i},q_c^{p_i},req^{p_i}>=\varrho^{p_i}[l+m]$
 
     \If{$req^{p_i}\neq \emptyset$ and $\textbf{Request}^{p_i}=\emptyset$}
     {
         \ForAll{$\chi^{p_i}\in req^{p_i}$}
         {
-            add $(\chi^{p_i},\pi^{p_i}_c,T_m)$ to $\textbf{Request}^{p_i}$
+            add $(\chi^{p_i},\pi_c^{p_i},q_c^{p_i},T_m)$ to $\textbf{Request}^{p_i}$
         }
     }
   }
@@ -763,16 +762,16 @@ The algorithm finding out the first request in receding horizon motion plan $\va
   }
   \Return $\varrho^{p_i}_H,\textbf{Request}^{p_i}$;
 \end{algorithm}
-Once there are request messages transmitted among agents, some agents should revise their motion plan to provide assistance. The procedure of determining which agent to respond to the request is quite similar with the algorithm proposed in [add ref], we only present a brief overview here and we refer the readers to [add ref] to grasp more detail. In order to provide collaboration, the collaborative agent needs to revise its motion plan temporarily. Assume current state of agent $p_j$ is $\varrho^{p_j}[l]$ and next accepting state is $\varrho^{p_j}[f]$, original motion plan from $\varrho^{p_j}[l]$ to $\varrho^{p_j}[f]$ is $R^{p_j}_-=\varrho^{p_j}[l:f]$ and the motion plan after revision is denoted by $R^{p_j}_+$, the index of the position in where agent $p_j$ provides collaboration is $m$. We require each agent to calculate the cost of providing assistance in order to decide which agent to collaborate. The $balanced$ cost is defined as following:
+Once there are request messages transmitted among agents, some agents should revise their motion plan to provide assistance. The procedure of determining which agent to respond to the request is quite similar with the algorithm proposed in [add ref], we only present a brief overview here and we refer the readers to [add ref] to grasp more detail. In order to provide collaboration, the collaborative agent needs to revise its motion plan temporarily. Assume current state of agent $p_j$ is $\varrho^{p_j}[l]$ and next accepting state is $\varrho^{p_j}[f]$, original motion plan from $\varrho^{p_j}[l]$ to $\varrho^{p_j}[f]$ is $R^{p_j}_-=\varrho^{p_j}[l:f]$ and the motion plan after revision is denoted by $R^{p_j}_+$, the index of the position in where agent $p_j$ provides collaboration is $m$. We require each agent to calculate the cost of providing assistance in order to decide which agent to collaborate. The $balanced\ cost$ is defined as following:
 \[ \begin{split}
-BalCost(R^{p_j}_+,&T^{p_i}_e,\mathcal{C}^{p_j})=\\
+BalCost(&R^{p_j}_+,T^{p_i}_e,\mathcal{C}^{p_j}_n)=\\
 &|(\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1])-T^{p_i}_e)|\\
-&+\beta_{p_j} \times (Cost(R^{p_j}_+,\mathcal{C}^{p_j})-Cost(R^{p_j}_-,\mathcal{C}^{p_j}))
+&+\beta_{p_j} \times (Cost(R^{p_j}_+,\mathcal{C}^{p_j}_n)-Cost(R^{p_j}_-,\mathcal{C}^{p_j}_n))
 \end{split} \]
-where the first part denotes the time gap between the agent which sends a request message arriving the position where needs collaboration and corresponding agent arrive the position where assistance is provided. Simply, the first part denotes the waiting time of multiagent system, which contains both the waiting time of request agent and reply agent. The second part denotes the additional cost of $R^{p_i}_+$ compared with $R^{p_i}_-$, and $\beta_{p_j}$ is a designed parameter as relative weighting. Instead of formulating the agent choice issue as an integer programming problem,[add ref], we transmit the balanced cost of each agent among the group $\mathcal{N}^{G}$, since each agent calculates its balanced cost in the same way, there must exist a consensus agent $p_{min}$ whose balanced cost is minimal and $p_{min}$ will be elected to reply to corresponding $\textbf{Request}^{p_i}$.\par
+where the first part denotes the time gap between the agent which sends a request message arriving the position where needs collaboration and corresponding agent arrive the position where assistance is provided. Simply, the first part denotes the waiting time of multiagent system, which contains both the waiting time of request agent and reply agent. The second part denotes the additional cost of $R^{p_i}_+$ compared with $R^{p_i}_-$, and $\beta_{p_j}$ is a designed parameter as relative weighting. Instead of formulating the agent choice issue as an integer programming problem,[add ref], we transmit the balanced cost of each agent among the group $g_t$, $p_j \in g_t$, since each agent calculates its balanced cost in the same way, there must exist a consensus agent $p_{min}$ whose balanced cost is minimal and $p_{min}$ will be elected to reply to corresponding $\textbf{Request}^{p_i}$.\par
 After $p_{min}$ is elected, we design an attribute of agent named $state^{p_i}$ which turns into $locked$ when agent $p_i$ is providing collaboration, otherwise $state^{p_i}$ is $normal$. Meanwhile, due to the property of compact coupled task, all the request messages that have time overlapping can be replied by a group of heterogeneous agents. So towards each request message $Request^{p_i}$, if there is already a group of agents ${p_i}$ whose $state^{p_i}$ are $locked$, ${p_i}$ automatically become the collaborative agents and the corresponding request message becomes invisible to other agents.\par
 Towards some compact coupled task, such as agents can't across region $r_i$ until some agents reach region $r_j$, only a group of agents is needed to reply request messages from different agents. Hence if two request messages $\textbf{Request}^{p_i}$ and $\textbf{Request}^{p_j}$ have time overlapping and there is a group of agents $\partial$ replying one request messages, then $\partial$ is selected as the reply agents for the other request message $\textbf{Request}'$ and $\textbf{Request}'$ becomes invisible to other agents.\par
-$R^{p_i}_+$ can be constructed by the $bidirectional Dijkstra$ algorithm which utilizes the function $bidirectional\_dijkstra()$ in $Networkx$, we refer the readers to [add ref] for more details. After the reply agent $p_r$ is elected, when $p_i$ reaches the requested replying position and provides collaboration, there is a reply message sent from the reply agent to request agent, whose format is as following:
+$R^{p_i}_+$ can be constructed by the $bidirectional\ Dijkstra$ algorithm which utilizes the function $bidirectional\_dijkstra()$ in $Networkx$, we refer the readers to [add ref] for more details. After the reply agent $p_r$ is elected, when $p_i$ reaches the requested replying position and provides collaboration, there is a reply message sent from the reply agent to request agent, whose format is as following:
 $$\textbf{Reply}^{p_r}=(p_r,p_i,\xi)$$
 where $p_r$ denotes the grade of replying agent and $\xi$ denotes the collaboration provided.\par
 Finally, we adapt the purpose and structure of $\textbf{Confirm}^{p_i}$ to suit the compact coupled task specification. The format of confirm message is as following:
@@ -781,21 +780,21 @@ where $p_r$ denotes the grades of all replying agents and $\hat{\xi}$ denotes th
 
 \begin{algorithm}
   \caption{Handle Reply and Confirm messages}
-  \KwIn{$\textbf{Request}_{p_i}^{\ast}$, $\textbf{Reply}_{p_i}^{\ast}$, $\textbf{Confirm}_{p_i}^{\ast}$, $\partial$, $\mathcal{R}^{p_i}_c$, $\mathcal{C}^{p_i}$, assist collaboration $\mathcal{A}^{p_i}_s$ }
+  \KwIn{$\textbf{Request}_{p_i}^{\ast}$, $\textbf{Reply}_{p_i}^{\ast}$, $\textbf{Confirm}_{p_i}^{\ast}$, $\partial$, $\mathcal{R}^{p_i}_c$, $\mathcal{C}^{p_i}_n$}
   \KwOut{$R^{p_j}_+$}
   $\mathcal{A}^{p_i}_s=\emptyset$
 
   \If{$\textbf{Request}_{p_i}^{\ast} \neq \emptyset$}
   {
-    \ForEach{$\textbf{Request}^{r} = (\chi^{r},\pi_c^{r},T^{r}_e) \in \textbf{Request}_{p_i}^{\ast}$}
+    \ForEach{$\textbf{Request}^{r} = (\chi^{r},\pi_c^{r},q_c^r,T^{r}_e) \in \textbf{Request}_{p_i}^{\ast}$}
     {
         \If{$\partial \neq \emptyset\ and\ p_i \notin \partial$ }
         {
             continue
         }
-        \ElseIf{$(\partial \neq \emptyset\ and\ p_i \in \partial)$ or $(\partial = \emptyset\ and\ min_{\mathcal{N}^G}BalCost = p_i)$}
+        \ElseIf{$(\partial \neq \emptyset\ and\ p_i \in \partial)$ or $(\partial = \emptyset\ and\ min_{g_s}BalCost = p_i)$}
         {
-            $(R^{p_i}_+,b^{p_i}_d,t^{p_i}_d)=EvalReq(R^{p_i}_-,(\chi^{p_i},\pi_c^{p_i},T^{p_i}_e),\varrho^{p_i}[l],\mathcal{C}^{p_i})$
+            $(R^{p_i}_+,b^{p_i}_d,t^{p_i}_d)=EvalReq(R^{p_i}_-,(\chi^{p_i},\pi_c^{p_i},q_c^{p_i},T^{p_i}_e),\varrho^{p_i}[l],\mathcal{C}^{p_i}_n)$
 
             $state^{p_i}=locked$
 
@@ -840,85 +839,85 @@ Only if $\mathcal{R}^{p_i}_c$ is empty and $state^{p_i}$ is $normal$, agent $p_i
 Even if we drive the agents according to above framework, there will still be some issues. This section we consider these issues and construct a agent scheduling system to further revise the motion plan of agents.
 \subsection{Prevention Of Long-time Demission}
 Suppose there are many agents engaged in a same task and request messages are raised frequently, which will cause the agents responding to the first request message to be stuck in the position, where the collaboration is provided, for a long time according to above framework. To prevent long-time demission, a ultimate time $T_u$ is specified, meaning that collaboration provided by one agent can only be sustained within ultimate time. Next we will elaborate how to elect an alternative to current collaborative agent in a group of homogeneous agents and minimize the overall cost.\par
-The agent will record the time that it has spent to provide assistance once it begins to collaborate, the time is denoted by $T_{p_i}^{\ast}$. When $T_{p_i}^{\ast}>T_u$, agent $p_i$ must return to its own task, if $T_u-T_{p_i}^{\ast}<T_H$, it means agent $p_i$ needs to return within $\varrho^{p_i}_H$, then a succession signal is sent to all the homogeneous agents in group $\mathcal{N}^G$. Redefine the $balanced\ cost$ as following:
+The agent will record the time that it has spent to provide assistance once it begins to collaborate, the time is denoted by $T_{p_i}^{\ast}$. When $T_{p_i}^{\ast}>T_u$, agent $p_i$ must return to its own task, if $T_u-T_{p_i}^{\ast}<T_H$, it means agent $p_i$ needs to return within $\varrho^{p_i}_H$, then a succession signal is sent to all the homogeneous agents in group $g_s$. Redefine the $balanced\ cost$ as following:
 \[ \begin{split}
-BalCost(R^{p_j}_+,&T_u,T_{p_i}^{\ast},\mathcal{C}^{p_j})=\\
+BalCost(&R^{p_j}_+,T_u,T_{p_i}^{\ast},\mathcal{C}^{p_j}_n)=\\
 &|(\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1])-(T_u-T_{p_i}^{\ast}))|\\
-&+\beta_{p_j} \times (Cost(R^{p_j}_+,\mathcal{C}^{p_j})-Cost(R^{p_j}_-,\mathcal{C}^{p_j}))
+&+\beta_{p_j} \times (Cost(R^{p_j}_+,\mathcal{C}^{p_j}_n)-Cost(R^{p_j}_-,\mathcal{C}^{p_j}_n))
 \end{split} \]
 ?????????jia gong shi suo yin
 
-where the meaning of notations in [2] are the same as the notations in [3]. The agent $p_j$ that minimizes [2] in group $\mathcal{N}^G$ is elected to succeed $p_i$.\par
-Suppose the message corresponding to the most recent request is $\textbf{Request}^{p_r}=(\chi^{p_r},\pi_c^{p_r},T^{p_r}_e)$, denote $\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1]$ by $T_{p_j}^{\ast}$, if $T_{p_j}^{\ast}<T^{p_r}_e$, $state^{p_i}$ can be set as $normal$ and $p_i$ can go back to complete its own task, otherwise $p_i$ needs to wait for the arrival of successor. During the period between stopping collaboration and returning to its own task, agent $p_i$ doesn't accept any request messages in case of being elected as collaborative agent again.
+where the meaning of notations in [2] are the same as the notations in [3]. The agent $p_j$ that minimizes [2] in group $g_s$, $p_i,p_j \in g_s$, is elected to succeed $p_i$.\par
+Suppose the message corresponding to the most recent request is $\textbf{Request}^{p_r}=(\chi^{p_r},\pi_c^{p_r},q_c^{p_r},T^{p_r}_e)$, denote $\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1]$ by $T_{p_j}^{\ast}$, if $T_{p_j}^{\ast}<T^{p_r}_e$, $state^{p_i}$ can be set as $normal$ and $p_i$ can go back to complete its own task, otherwise $p_i$ needs to wait for the arrival of successor. During the period between stopping collaboration and returning to its own task, agent $p_i$ doesn't accept any request messages in case of being elected as collaborative agent again.
 \subsection{Failure Signal Transmission And Agents Dispatching}
-Suppose there are several weak agents that are prone to breakdown, in this section we introduce how to mobilize other agents to inherit the task of weak agents when breakdown occurs to maximize the completion of task. At first, we define a virtual order $\mathcal{O}$ which indicates the importance of each individual task that each agent undertakes, towards agent $p_i$, if its task is more important, or the agents number in $g_j$ where $p_i \in g_j$ is few, the $\mathcal{O}_{p_i}$ is larger. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then when $p_i$ is breakdown, $p_j$ needs to revise its motion plan to inherit the task of $p_i$, otherwise $p_j$ still fixes on its own task.\par
+Suppose there are several weak agents that are prone to breakdown, in this section we introduce how to mobilize other agents to inherit the task of weak agents when breakdown occurs to maximize the completion of task. At first, we define a virtual order $\mathcal{O}$ which indicates the importance of each individual task that each agent undertakes, towards agent $p_i$, if its task is more important, or the agents number in $g_j$ where $p_i \in g_j$ is fewer, the $\mathcal{O}_{p_i}$ is larger. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then when $p_i$ is breakdown, $p_j$ needs to revise its motion plan to inherit the task of $p_i$, otherwise $p_j$ still fixes on its own task.\par
 When $p_i$ is broken down, there is a $\textbf{Warning}^{p_i}$ message sent to all the other agents, the format of $\textbf{Warning}^{p_i}$ is as following:
-$$\textbf{Warning}^{p_i} = (p_i,\mathcal{C}^{p_i},\aleph^{p_i})$$
-which means $p_i$ needs to broadcast its grade $p_i$, local complete agent model $\mathcal{C}^{p_i}$ and capacity $\aleph^{p_i}$ when it is broken down. After $\textbf{Warning}^{p_i}$ is broadcast, all the agents are qualified for capacity $\aleph^{p_i}$, denoted by $\nu$, will respond to the $\textbf{Warning}^{p_i}$. All the agents in $\nu$ with the same minimal $\mathcal{O}_{p_j}$ become candidates for inheriting the task of $p_i$. In order to elect an agent to respond to the warning message and revise its motion plan, we need to solve following problem:\par
-\emph{Problem 2:} With a little symbol abuse, assume the motion plan of $p_j$ after revision is $R^{p_j}_+$ and the original one is $R^{p_j}_-$. Given the local complete agent model $\mathcal{C}^{p_i}$ and $\mathcal{C}^{p_j}$, decide the grade $\varpi$ of the agent inheriting the task of $p_i$ and construct $R^{\varpi}_+$ to minimize the total cost. \par
-$\mathcal{C}^{p_i}$ and $\mathcal{C}^{p_j}$ can be combined to obtain $union\ agent\ model$. Assume that part of the local FTS $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$ of $p_i$ and $p_j$ are bordered and then the construction procedure of union agent model $\widetilde{\mathcal{U}}_{ij}$ is as following:\par
-(1)Add all the nodes and edges in $\mathcal{C}^{p_i}$ and $\mathcal{C}^{p_j}$ into $\widetilde{\mathcal{U}}_{ij}$.\par
+$$\textbf{Warning}^{p_i} = (p_i,\mathcal{C}^{p_i}_n,\aleph^{p_i})$$
+which means $p_i$ needs to broadcast its grade $p_i$, local complete agent model $\mathcal{C}^{p_i}_n$ and capacity $\aleph^{p_i}$ when it is broken down. After $\textbf{Warning}^{p_i}$ is broadcast, all the agents are qualified for capacity $\aleph^{p_i}$, denoted by $\nu$, will respond to the $\textbf{Warning}^{p_i}$. All the agents in $\nu$ with the same minimal $\mathcal{O}_{p_j}$ become candidates for inheriting the task of $p_i$. In order to elect an agent to respond to the warning message and revise its motion plan, we need to solve following problem:\par
+\emph{Problem 2:} With a little symbol abuse, we denote the states in $\mathcal{C}^{p_i}_n$ by $\tilde{c}_{p_i}$ and assume the motion plan of $p_j$ after revision is $R^{p_j}_+$ and the original one is $R^{p_j}_-$. Given the local complete agent model $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$, decide the grade $\varpi$ of the agent inheriting the task of $p_i$ and construct $R^{\varpi}_+$ to minimize the total cost. \par
+$\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$ can be combined to obtain $union\ agent\ model$. Assume that part of the local FTS $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$ of $p_i$ and $p_j$ are bordered and then the construction procedure of union agent model $\widetilde{\mathcal{U}}_{ij}$ is as following:\par
+(1)Add all the nodes and edges in $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$ into $\widetilde{\mathcal{U}}_{ij}$.\par
 (2)Find all the position pair $\tilde{s}=(\tilde{\eta}_{p_i},\tilde{\eta}_{p_j})$, where $\tilde{\eta}_{p_i}$ and $\tilde{\eta}_{p_j}$ appertain to $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$, respectively and they are bordered, which means agent can transition from $\tilde{\eta}_{p_i}$ to $\tilde{\eta}_{p_j}$ by one step and vice versa. We call these position pair bordered position pair and denote the set of $\tilde{\eta}_{p_i}$ and $\tilde{\eta}_{p_j}$ by $\hat{\eta}_{p_i}$ and $\hat{\eta}_{p_j}$, respectively.\par
-(3)For all nodes $\tilde{c}_{p_i}$ and $\tilde{c}_{p_j}$ in $\mathcal{C}^{p_i}$ and $\mathcal{C}^{p_j}$, if $\tilde{c}_{p_i}|_\mathcal{M}$ and $\tilde{c}_{p_j}|_\mathcal{M}$ is a bordered position pair and there are no violations of task specifications when transferring from $\tilde{c}_{p_i}|_\mathcal{M}$ to $\tilde{c}_{p_j}|_\mathcal{M}$, then we add an edge $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ into $\widetilde{\mathcal{U}}_{ij}$, where $weight$ denotes the distance between $\tilde{c}_{p_i}|_\mathcal{M}$ and $\tilde{c}_{p_j}|_\mathcal{M}$. If the transition violates the coupled task specifications and $(\tilde{c}_{p_i},\tilde{c}_{p_j})$ is a couple-edge according to \emph{Definition 2}, then add $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ as a couple-edge into $\widetilde{\mathcal{U}}_{ij}$.\par
-After the union agent model is constructed, we decide $\varpi$ and synthesize $R^{\varpi}_+$. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then $p_j$ needs to revise its motion plan to inherit the task of $p_i$ when $p_i$ is broken down. Denote the current state of $p_j$ is $\tilde{c}_{p_j}^{\ast}$, $p_j$ needs to interrupt its own task so that the states of B\"{u}chi Automaton can no longer restrict the motion of $p_j$ and each $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ can be the departure point of $R^{\varpi}_+$. It is obvious that the suffix $R^{\varpi,s}_+$ is invariant due to the inheriting of task specification $\varphi_i$, so we can transform the $\emph{Problem 2}$ to the synthesizing of prefix $R^{\varpi,p}_+$ from any $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ to $\tilde{c}_{p_i}$ where $\tilde{c}_{p_i}|_\mathcal{M}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in \mathcal{Q}^{p_i}_0$. We apply $bidirectional\ Dijkstra$ method to synthesize $R^{\varpi,p}_+$, where all the $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_\mathcal{M}=\tilde{c}_{p_j}^{\ast}|_\mathcal{M}$ are set as source nodes and all $\tilde{c}_{p_i}$ satisfying $\tilde{c}_{p_i}|_\mathcal{M}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in \mathcal{Q}^{p_i}_0$ are set as target nodes and we can obtain the shortest path between two nodes from source nodes and target nodes, ultimately, the shortest path in all the shortest paths is selected as $R^{\varpi,p}_+$. Then $R^{\varpi,p}_+$ is synthesized:(????zhe kuai you wen ti,shi zhao dao initial de ,hai shi zai suffix zhong mei ge jie dian kai shi shuang xiang zhao, ran hou na ge dian zuo wei qie ru dian)
+(3)For all states $\tilde{c}_{p_i}$ and $\tilde{c}_{p_j}$ in $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$, if $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ and $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$ is a bordered position pair and there are no violations of task specifications when transferring from $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ to $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$, then we add an edge $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ into $\widetilde{\mathcal{U}}_{ij}$, where $weight$ denotes the distance between $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ and $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$. If the transition violates the coupled task specifications and $(\tilde{c}_{p_i},\tilde{c}_{p_j})$ is a couple-edge according to \emph{Definition 2}, then add $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ as a couple-edge into $\widetilde{\mathcal{U}}_{ij}$.\par
+After the union agent model is constructed, we decide $\varpi$ and synthesize $R^{\varpi}_+$. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then $p_j$ needs to revise its motion plan to inherit the task of $p_i$ when $p_i$ is broken down. Denote the current state of $p_j$ is $\tilde{c}_{p_j}^{\ast}$, $p_j$ needs to interrupt its own task so that the states of B\"{u}chi Automaton can no longer restrict the motion of $p_j$ and each $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ can be the departure point of $R^{\varpi}_+$. It is obvious that the suffix $R^{\varpi,s}_+$ is invariant due to the inheriting of task specification $\varphi_i$, so we can transform the $\emph{Problem 2}$ to the synthesizing of prefix $R^{\varpi,p}_+$ from any $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ to $\tilde{c}_{p_i}$ where $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}}\in Q^{p_i,\ast}_0$. We apply $bidirectional\ Dijkstra$ method to synthesize $R^{\varpi,p}_+$, where all the $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ are set as source nodes and all $\tilde{c}_{p_i}$ satisfying $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in Q^{p_i,\ast}_0$ are set as target nodes and we can obtain the shortest path between two nodes from source nodes and target nodes, ultimately, the shortest path in all the shortest paths is selected as $R^{\varpi,p}_+$. Then $R^{\varpi,p}_+$ is synthesized:(????zhe kuai you wen ti,shi zhao dao initial de ,hai shi zai suffix zhong mei ge jie dian kai shi shuang xiang zhao, ran hou na ge dian zuo wei qie ru dian)
 $$R^{\varpi}_+ = R^{\varpi,p}_+\oplus R^{\varpi,s}_-$$ ???????gei R quan jia shang ji qi ren jiao biao
 
-Then all the candidates of inheriting the task need to elect the agent with minimal cost to revise its motion plan, namely, they need to solve the minimal problem: min $Cost(R^{\varpi}_+)$, subject to $\sum b^{p_j}=1$.\par
+Then all the candidates of inheriting the task need to elect the agent with minimal cost to revise its motion plan, namely, they need to solve the minimal problem: min $Cost(R^{\varpi}_+)$, subject to $\sum b^{p_j}=1$.????zhe li ye hai mei shuo ming\par
 When the broken down agent is fixed properly, we can drive the inheriting agent to return to its own task by reversing above method. The entire procedure of constructing the union agent model and each candidate finds out $R^{\varpi}_+???jia jiao biao$ is exhibited by Algorithm 4 and $\emph{Problem 2}$ is solved.
 zhe li yao shuo ming, yao fang qi yuan lai de ren wu,dan shi yi xie ying xing renwu yao bao liu. ran hou qi ta de ren wu yao cheng jie ji cheng de ren wu. huo zhe zai qian mian zai jia ge shuo ming. dui yu zheng ge huan jing nei de ying xing yue shu, suo you ji qi ren de ren wu mo xing zhong dou you.
 
 \begin{algorithm}
   \caption{the construction of $\widetilde{\mathcal{U}}_{ij}$ and the synthesis of $R^{\varpi}_+$}
-  \KwIn{$\mathcal{C}^{p_i}$, $\mathcal{C}^{p_j}$ and $\tilde{c}_{p_j}^{\ast}$}
+  \KwIn{$\mathcal{C}^{p_i}_n$, $\mathcal{C}^{p_j}_n$ and $\tilde{c}_{p_j}^{\ast}$}
   \KwOut{$\widetilde{\mathcal{U}}_{ij}\ and\  R^{\varpi}_+$}
-  $\widetilde{\mathcal{U}}_{ij}=\mathcal{C}^{p_i}\cup \mathcal{C}^{p_j}$
-  
+  $\widetilde{\mathcal{U}}_{ij}=\mathcal{C}^{p_i}_n\cup \mathcal{C}^{p_j}_n$
+
   $\tilde{\eta}_{p_i}=\emptyset,\Omega_{p_j}=\emptyset$
-  
-  \ForEach{$Q'_{p_j}\in \mathcal{C}^{p_j}$}
+
+  \ForEach{$\tilde{c}_{p_j}\in \mathcal{C}^{p_j}_n$}
   {
-    \If{$Q'_{p_j}|\mathcal{F}^{p_j}=\tilde{c}_{p_j}^{\ast}|\mathcal{F}^{p_j}$}
+    \If{$\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$}
     {
-        add $Q'_{p_j}$ to $\Omega_{p_j}$
-    }  
-    \ForEach{$Q'_{p_i}\in \mathcal{C}^{p_i}$}
+        add $\tilde{c}_{p_j}$ to $\Omega_{p_j}$
+    }
+    \ForEach{$\tilde{c}_{p_i}\in \mathcal{C}^{p_i}_n$}
     {
-        \If{$Q'_{p_i}|_{\mathcal{F}^{p_i}}\ is\ borded\ to\ Q'_{p_j}|_{\mathcal{F}^{p_j}}$}
+        \If{$\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\ is\ borded\ to\ \tilde{c}_{p_i}|_{\mathcal{F}^{p_j}}$}
         {
-            add $Q'_{p_i}$ to $\tilde{\eta}_{p_i}$
-            
-            \If{$CheckTranB(Q'_{p_i}|_{\mathcal{B}^{p_i}},L_c(Q'_{p_i}|_{\mathcal{F}^{p_i}}), 
-             Q'_{p_j}|_{\mathcal{B}^{p_j}},Q'_{p_j}|_{\mathcal{F}^{p_j}})\geqslant 0$}
+            add $\tilde{c}_{p_i}$ to $\tilde{\eta}_{p_i}$
+
+            \If{$CheckTranB(\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}},L^{p_i}(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}),
+             \tilde{c}_{p_j}|_{\mathcal{B}^{p_j}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})\geqslant 0$}
             {
-                $Q'_{p_j}\in \delta'(Q'_{p_i})$
+                $\tilde{c}_{p_j}\in \delta^{p_i}(\tilde{c}_{p_i})$
 
-                $W_p(Q'_{p_i},Q'_{p_j})=W_c(Q'_{p_i}|_{\mathcal{F}^{p_i}},Q'_{p_j}|_{\mathcal{F}^{p_j}})$
+                $W_{\mathcal{U}_{ij}}(\tilde{c}_{p_i},\tilde{c}_{p_j})=dist(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})$
 
-                $\tau(Q'_{p_i},Q'_{p_j}) = None$
+                $\tau(\tilde{c}_{p_i},\tilde{c}_{p_j}) = None$
             }
             \Else
             {
-                \If{$L_c(Q'_{p_i}|_{\mathcal{F}^{p_i}})\in sym(\varphi_c^{p_j})$}
+                \If{$L^{p_i}(\tilde{c}_{p_j}|_{\mathcal{F}^{p_i}})\in sym(\varphi_c^{p_j})$}
                 {
-                    $Q'_{p_j}\in \delta'(Q'_{p_i})$
+                    $\tilde{c}_{p_j}\in \delta^{p_i}(\tilde{c}_{p_i})$
 
-                    $W_p(Q'_{p_i},Q'_{p_j})=W_c(Q'_{p_i}|_{\mathcal{F}^{p_i}},Q'_{p_j}|_{\mathcal{F}^{p_j}})$
+                    $W_{\mathcal{U}_{ij}}(\tilde{c}_{p_i},\tilde{c}_{p_j})=dist(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})$
 
-                    $\tau(Q'_{p_i},Q'_{p_j})=L_c(Q'_{p_i}|_{\mathcal{F}^{p_i}})$
+                    $\tau(\tilde{c}_{p_i},\tilde{c}_{p_j})=L^{p_i}(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}})$
                 }
             }
         }
     }
   }
-  $R^{\varpi,p}_+=BidirectionDijkstra(\Omega_{p_j},\tilde{\eta}_{p_i})$
-  
+  $R^{\varpi,p}_+=bidirection_dijkstra(\Omega_{p_j},\tilde{\eta}_{p_i})$
+
   $R^{\varpi}_+ = R^{\varpi,p}_+ \oplus R^{\varpi,s}_-$
-  
+
   \Return{$\widetilde{\mathcal{U}}_{ij}\ and\  R^{\varpi}_+$}
 \end{algorithm}
 
 \section{Overall Structure}
-Given the task specification $\varphi^{p_i}$ and FTS $\mathcal{F}^{p_i}$ of each agent, we decouple the compact coupled task specification and construct new complete agent model $\mathcal{C}^{p_i}_n$ through applying Algorithm. The initial motion path $R^{p_i}$ of each agent $p_i$ can be synthesized and we plan in speed matching horizon to reduce the complexity of task collaboration. To guarantee the completeness of collaboration task, an online coordination scheme is adapted to revise the initial motion path of each agent, where the collaboration task is completed through $\textbf{Request}^{p_i}$, $\textbf{Reply}^{p_i}$ and $\textbf{Confirm}^{p_i}$ messages. Corresponding to the properties of compact coupled task, we propose an agent scheduling system to prevent long-time demission and dispatch agents to strive to complete task when part of agents failure. The agent scheduling system is triggered by specific conditions, such as the ultimate time $T_u$ is reached or $\textbf{Warning}^{p_i}$ messages are transmitted through communication network, while the online coordination system is running.
+Given the task specification $\varphi^{p_i}$ and FTS $\mathcal{F}^{p_i}$ of each agent, we decouple the compact coupled task specification and construct new complete agent model $\mathcal{C}^{p_i}_n$ through applying Algorithm. The initial motion path $\varrho^{p_i}$ of each agent $p_i$ can be synthesized and we plan in speed matching horizon to reduce the complexity of task collaboration. To guarantee the completeness of collaboration task, an online coordination scheme is adapted to revise the initial motion path of each agent, where the collaboration task is completed through $\textbf{Request}^{p_i}$, $\textbf{Reply}^{p_i}$ and $\textbf{Confirm}^{p_i}$ messages. Corresponding to the properties of compact coupled task, we propose an agent scheduling system to prevent long-time demission and dispatch agents to strive to complete task when part of agents failure. The agent scheduling system is triggered by specific conditions, such as the ultimate time $T_u$ is reached or $\textbf{Warning}^{p_i}$ messages are transmitted through communication network, while the online coordination system is running.
 \section{Case Study}
 Consider the logistics system in a depot, there are three groups of agents assigned three different task specifications. For simplicity, denote the agents by $g_k={p_{i,k},i=1,2,...},\forall k=1,2,3$. The algorithms proposed are implemented and simulated on a laptop (i5-7300HQ, 2.50GHz Duo CPU and 8GB RAM).
 \subsection{Workspace Description}
