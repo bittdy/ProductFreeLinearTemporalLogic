@@ -763,11 +763,14 @@ The algorithm finding out the first request in receding horizon motion plan $\va
   \Return $\varrho^{p_i}_H,\textbf{Request}^{p_i}$;
 \end{algorithm}
 Once there are request messages transmitted among agents, some agents should revise their motion plan to provide assistance. The procedure of determining which agent to respond to the request is quite similar with the algorithm proposed in [add ref], we only present a brief overview here and we refer the readers to [add ref] to grasp more detail. In order to provide collaboration, the collaborative agent needs to revise its motion plan temporarily. Assume current state of agent $p_j$ is $\varrho^{p_j}[l]$ and next accepting state is $\varrho^{p_j}[f]$, original motion plan from $\varrho^{p_j}[l]$ to $\varrho^{p_j}[f]$ is $R^{p_j}_-=\varrho^{p_j}[l:f]$ and the motion plan after revision is denoted by $R^{p_j}_+$, the index of the position in where agent $p_j$ provides collaboration is $m$. We require each agent to calculate the cost of providing assistance in order to decide which agent to collaborate. The $balanced\ cost$ is defined as following:
-\[ \begin{split}
+\begin{equation}
+\label{E1}
+\begin{split}
 BalCost(&R^{p_j}_+,T^{p_i}_e,\mathcal{C}^{p_j}_n)=\\
 &|(\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1])-T^{p_i}_e)|\\
 &+\beta_{p_j} \times (Cost(R^{p_j}_+,\mathcal{C}^{p_j}_n)-Cost(R^{p_j}_-,\mathcal{C}^{p_j}_n))
-\end{split} \]
+\end{split}
+\end{equation}
 where the first part denotes the time gap between the agent which sends a request message arriving the position where needs collaboration and corresponding agent arrive the position where assistance is provided. Simply, the first part denotes the waiting time of multiagent system, which contains both the waiting time of request agent and reply agent. The second part denotes the additional cost of $R^{p_i}_+$ compared with $R^{p_i}_-$, and $\beta_{p_j}$ is a designed parameter as relative weighting. Instead of formulating the agent choice issue as an integer programming problem,[add ref], we transmit the balanced cost of each agent among the group $g_t$, $p_j \in g_t$, since each agent calculates its balanced cost in the same way, there must exist a consensus agent $p_{min}$ whose balanced cost is minimal and $p_{min}$ will be elected to reply to corresponding $\textbf{Request}^{p_i}$.\par
 After $p_{min}$ is elected, we design an attribute of agent named $state^{p_i}$ which turns into $locked$ when agent $p_i$ is providing collaboration, otherwise $state^{p_i}$ is $normal$. Meanwhile, due to the property of compact coupled task, all the request messages that have time overlapping can be replied by a group of heterogeneous agents. So towards each request message $Request^{p_i}$, if there is already a group of agents ${p_i}$ whose $state^{p_i}$ are $locked$, ${p_i}$ automatically become the collaborative agents and the corresponding request message becomes invisible to other agents.\par
 Towards some compact coupled task, such as agents can't across region $r_i$ until some agents reach region $r_j$, only a group of agents is needed to reply request messages from different agents. Hence if two request messages $\textbf{Request}^{p_i}$ and $\textbf{Request}^{p_j}$ have time overlapping and there is a group of agents $\partial$ replying one request messages, then $\partial$ is selected as the reply agents for the other request message $\textbf{Request}'$ and $\textbf{Request}'$ becomes invisible to other agents.\par
@@ -840,31 +843,34 @@ Even if we drive the agents according to above framework, there will still be so
 \subsection{Prevention Of Long-time Demission}
 Suppose there are many agents engaged in a same task and request messages are raised frequently, which will cause the agents responding to the first request message to be stuck in the position, where the collaboration is provided, for a long time according to above framework. To prevent long-time demission, a ultimate time $T_u$ is specified, meaning that collaboration provided by one agent can only be sustained within ultimate time. Next we will elaborate how to elect an alternative to current collaborative agent in a group of homogeneous agents and minimize the overall cost.\par
 The agent will record the time that it has spent to provide assistance once it begins to collaborate, the time is denoted by $T_{p_i}^{\ast}$. When $T_{p_i}^{\ast}>T_u$, agent $p_i$ must return to its own task, if $T_u-T_{p_i}^{\ast}<T_H$, it means agent $p_i$ needs to return within $\varrho^{p_i}_H$, then a succession signal is sent to all the homogeneous agents in group $g_s$. Redefine the $balanced\ cost$ as following:
-\[ \begin{split}
+\begin{equation}
+\label{E2}
+\begin{split}
 BalCost(&R^{p_j}_+,T_u,T_{p_i}^{\ast},\mathcal{C}^{p_j}_n)=\\
 &|(\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1])-(T_u-T_{p_i}^{\ast}))|\\
 &+\beta_{p_j} \times (Cost(R^{p_j}_+,\mathcal{C}^{p_j}_n)-Cost(R^{p_j}_-,\mathcal{C}^{p_j}_n))
-\end{split} \]
-?????????jia gong shi suo yin
-
-where the meaning of notations in [2] are the same as the notations in [3]. The agent $p_j$ that minimizes [2] in group $g_s$, $p_i,p_j \in g_s$, is elected to succeed $p_i$.\par
+\end{split}
+\end{equation}
+where the meaning of notations in (\ref{E2}) are the same as the notations in (\ref{E1}). The agent $p_j$ that minimizes (\ref{E2}) in group $g_s$, $p_i,p_j \in g_s$, is elected to succeed $p_i$.\par
 Suppose the message corresponding to the most recent request is $\textbf{Request}^{p_r}=(\chi^{p_r},\pi_c^{p_r},q_c^{p_r},T^{p_r}_e)$, denote $\sum_{k=l}^{m}T^{p_j}(\varrho^{p_j}[k],\varrho^{p_j}[k+1]$ by $T_{p_j}^{\ast}$, if $T_{p_j}^{\ast}<T^{p_r}_e$, $state^{p_i}$ can be set as $normal$ and $p_i$ can go back to complete its own task, otherwise $p_i$ needs to wait for the arrival of successor. During the period between stopping collaboration and returning to its own task, agent $p_i$ doesn't accept any request messages in case of being elected as collaborative agent again.
 \subsection{Failure Signal Transmission And Agents Dispatching}
 Suppose there are several weak agents that are prone to breakdown, in this section we introduce how to mobilize other agents to inherit the task of weak agents when breakdown occurs to maximize the completion of task. At first, we define a virtual order $\mathcal{O}$ which indicates the importance of each individual task that each agent undertakes, towards agent $p_i$, if its task is more important, or the agents number in $g_j$ where $p_i \in g_j$ is fewer, the $\mathcal{O}_{p_i}$ is larger. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then when $p_i$ is breakdown, $p_j$ needs to revise its motion plan to inherit the task of $p_i$, otherwise $p_j$ still fixes on its own task.\par
 When $p_i$ is broken down, there is a $\textbf{Warning}^{p_i}$ message sent to all the other agents, the format of $\textbf{Warning}^{p_i}$ is as following:
 $$\textbf{Warning}^{p_i} = (p_i,\mathcal{C}^{p_i}_n,\aleph^{p_i})$$
 which means $p_i$ needs to broadcast its grade $p_i$, local complete agent model $\mathcal{C}^{p_i}_n$ and capacity $\aleph^{p_i}$ when it is broken down. After $\textbf{Warning}^{p_i}$ is broadcast, all the agents are qualified for capacity $\aleph^{p_i}$, denoted by $\nu$, will respond to the $\textbf{Warning}^{p_i}$. All the agents in $\nu$ with the same minimal $\mathcal{O}_{p_j}$ become candidates for inheriting the task of $p_i$. In order to elect an agent to respond to the warning message and revise its motion plan, we need to solve following problem:\par
-\emph{Problem 2:} With a little symbol abuse, we denote the states in $\mathcal{C}^{p_i}_n$ by $\tilde{c}_{p_i}$ and assume the motion plan of $p_j$ after revision is $R^{p_j}_+$ and the original one is $R^{p_j}_-$. Given the local complete agent model $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$, decide the grade $\varpi$ of the agent inheriting the task of $p_i$ and construct $R^{\varpi}_+$ to minimize the total cost. \par
-$\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$ can be combined to obtain $union\ agent\ model$. Assume that part of the local FTS $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$ of $p_i$ and $p_j$ are bordered and then the construction procedure of union agent model $\widetilde{\mathcal{U}}_{ij}$ is as following:\par
+\emph{Problem 2:} With a little symbol abuse, we denote the states in $\mathcal{C}^{p_i}_n$ by $\tilde{c}_{p_i}$, the motion plan of $p_j$ after revision by $R^{p_j}_+$ and the original one by $R^{p_j}_-$, respectively. Assume that all the hard constraints, such as $\neg obstacle$ (never across the obstacles), have been specified in every agent, which implies the inheriting agent can discard original task specification temporarily and transfer to inherited task under the guarantee of safety. Given the local complete agent model $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$, decide the grade $\varpi$ of the agent inheriting the task of $p_i$ and construct $R^{\varpi}_+$ to minimize the total cost. \par
+$\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$ can be combined to obtain $union\ agent\ model$. The union agent model $\widetilde{\mathcal{U}}_{ij}$ is defined as following:
+$$\widetilde{\mathcal{U}}_{ij}=(\widetilde{Q}^{ij},\tilde{\delta}^{ij},\widetilde{Q}^{ij}_0,\widetilde{Q}^{ij}_F,\widetilde{W}^{ij},\tilde{\tau}^{ij})$$
+where $\widetilde{Q}^{ij}=Q^{p_i,\ast}\cup Q^{p_j,\ast}$; $\tilde{\delta}^{ij}=\delta^{p_i}\cup \delta^{p_j} \cup (\tilde{c}_{p_i},\tilde{c}_{p_j})$, $\tilde{c}_{p_i}$ is bordered to $\tilde{c}_{p_i}$; $\widetilde{Q}^{ij}_0=Q^{p_i,\ast}_0\cup Q^{p_j,\ast}_0$; $\widetilde{Q}^{ij}_F=Q^{p_i,\ast}_F\cup Q^{p_j,\ast}_F$; $\widetilde{W}^{ij}=W^{p_i,\ast}\cup W^{p_j,\ast}$ and $\tilde{\tau}^{ij}=\tau^{p_i}\cup \tau^{p_j}$.\par
+Assume that part of the local FTS $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$ of $p_i$ and $p_j$ are bordered and then the construction procedure of union agent model $\widetilde{\mathcal{U}}_{ij}$ is as following:\par
 (1)Add all the nodes and edges in $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$ into $\widetilde{\mathcal{U}}_{ij}$.\par
 (2)Find all the position pair $\tilde{s}=(\tilde{\eta}_{p_i},\tilde{\eta}_{p_j})$, where $\tilde{\eta}_{p_i}$ and $\tilde{\eta}_{p_j}$ appertain to $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$, respectively and they are bordered, which means agent can transition from $\tilde{\eta}_{p_i}$ to $\tilde{\eta}_{p_j}$ by one step and vice versa. We call these position pair bordered position pair and denote the set of $\tilde{\eta}_{p_i}$ and $\tilde{\eta}_{p_j}$ by $\hat{\eta}_{p_i}$ and $\hat{\eta}_{p_j}$, respectively.\par
 (3)For all states $\tilde{c}_{p_i}$ and $\tilde{c}_{p_j}$ in $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$, if $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ and $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$ is a bordered position pair and there are no violations of task specifications when transferring from $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ to $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$, then we add an edge $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ into $\widetilde{\mathcal{U}}_{ij}$, where $weight$ denotes the distance between $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ and $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$. If the transition violates the coupled task specifications and $(\tilde{c}_{p_i},\tilde{c}_{p_j})$ is a couple-edge according to \emph{Definition 2}, then add $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ as a couple-edge into $\widetilde{\mathcal{U}}_{ij}$.\par
-After the union agent model is constructed, we decide $\varpi$ and synthesize $R^{\varpi}_+$. Assume $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, then $p_j$ needs to revise its motion plan to inherit the task of $p_i$ when $p_i$ is broken down. Denote the current state of $p_j$ is $\tilde{c}_{p_j}^{\ast}$, $p_j$ needs to interrupt its own task so that the states of B\"{u}chi Automaton can no longer restrict the motion of $p_j$ and each $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ can be the departure point of $R^{\varpi}_+$. It is obvious that the suffix $R^{\varpi,s}_+$ is invariant due to the inheriting of task specification $\varphi_i$, so we can transform the $\emph{Problem 2}$ to the synthesizing of prefix $R^{\varpi,p}_+$ from any $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ to $\tilde{c}_{p_i}$ where $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}}\in Q^{p_i,\ast}_0$. We apply $bidirectional\ Dijkstra$ method to synthesize $R^{\varpi,p}_+$, where all the $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ are set as source nodes and all $\tilde{c}_{p_i}$ satisfying $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in Q^{p_i,\ast}_0$ are set as target nodes and we can obtain the shortest path between two nodes from source nodes and target nodes, ultimately, the shortest path in all the shortest paths is selected as $R^{\varpi,p}_+$. Then $R^{\varpi,p}_+$ is synthesized:(????zhe kuai you wen ti,shi zhao dao initial de ,hai shi zai suffix zhong mei ge jie dian kai shi shuang xiang zhao, ran hou na ge dian zuo wei qie ru dian)
-$$R^{\varpi}_+ = R^{\varpi,p}_+\oplus R^{\varpi,s}_-$$ ???????gei R quan jia shang ji qi ren jiao biao
+After the union agent model is constructed, we decide $\varpi$ and synthesize $R^{\varpi}_+$. Denote the current state of $p_j$ is $\tilde{c}_{p_j}^{\ast}$, $p_j$ needs to interrupt its own task so that the states of B\"{u}chi Automaton can no longer restrict the motion of $p_j$ and each $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ can be the departure point of $R^{\varpi}_+$. It is obvious that the suffix $R^{\varpi,s}_+$ is invariant due to the inheriting of task specification $\varphi_i$, so we can transform the $\emph{Problem 2}$ to the synthesizing of prefix $R^{\varpi,p}_+$ from any $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ to $\tilde{c}_{p_i}$ where $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}}\in Q^{p_i,\ast}_0$. We apply $bidirectional\ Dijkstra$ method to synthesize $R^{\varpi,p}_+$, where all the $\tilde{c}_{p_j}$ satisfying $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ are set as source nodes and all $\tilde{c}_{p_i}$ satisfying $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\in \hat{\eta}_{p_i}$ and $\tilde{c}_{p_i}|_\mathcal{B}\in Q^{p_i,\ast}_0$ are set as target nodes and we can obtain the shortest path between two nodes from source nodes and target nodes, ultimately, the shortest path in all the shortest paths is selected as $R^{\varpi,p}_+$. Then $R^{\varpi,p}_+$ is synthesized:
+$$R^{\varpi}_+ = R^{\varpi,p}_+\oplus R^{\varpi,s}_-$$
 
-Then all the candidates of inheriting the task need to elect the agent with minimal cost to revise its motion plan, namely, they need to solve the minimal problem: min $Cost(R^{\varpi}_+)$, subject to $\sum b^{p_j}=1$.????zhe li ye hai mei shuo ming\par
-When the broken down agent is fixed properly, we can drive the inheriting agent to return to its own task by reversing above method. The entire procedure of constructing the union agent model and each candidate finds out $R^{\varpi}_+???jia jiao biao$ is exhibited by Algorithm 4 and $\emph{Problem 2}$ is solved.
-zhe li yao shuo ming, yao fang qi yuan lai de ren wu,dan shi yi xie ying xing renwu yao bao liu. ran hou qi ta de ren wu yao cheng jie ji cheng de ren wu. huo zhe zai qian mian zai jia ge shuo ming. dui yu zheng ge huan jing nei de ying xing yue shu, suo you ji qi ren de ren wu mo xing zhong dou you.
+Then all the candidates of inheriting the task need to elect the agent with minimal cost to revise its motion plan, so all the agents calculate $Cost(R^{\varpi}_+)$ and transmit it among all the candidates until one of them is elected to inherit the task.\par
+When the broken down agent is fixed properly, we can drive the inheriting agent to return to its own task by reversing above method. The entire procedure of constructing the union agent model and each candidate finds out $R^{\varpi}_+$ is exhibited by Algorithm 4 and $\emph{Problem 2}$ is solved.
 
 \begin{algorithm}
   \caption{the construction of $\widetilde{\mathcal{U}}_{ij}$ and the synthesis of $R^{\varpi}_+$}
@@ -882,34 +888,34 @@ zhe li yao shuo ming, yao fang qi yuan lai de ren wu,dan shi yi xie ying xing re
     }
     \ForEach{$\tilde{c}_{p_i}\in \mathcal{C}^{p_i}_n$}
     {
-        \If{$\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\ is\ borded\ to\ \tilde{c}_{p_i}|_{\mathcal{F}^{p_j}}$}
+        \If{$\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\ is\ bordered\ to\ \tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$}
         {
             add $\tilde{c}_{p_i}$ to $\tilde{\eta}_{p_i}$
 
             \If{$CheckTranB(\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}},L^{p_i}(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}),
              \tilde{c}_{p_j}|_{\mathcal{B}^{p_j}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})\geqslant 0$}
             {
-                $\tilde{c}_{p_j}\in \delta^{p_i}(\tilde{c}_{p_i})$
+                $\tilde{c}_{p_j}\in \tilde{\delta}^{ij}(\tilde{c}_{p_i})$
 
-                $W_{\mathcal{U}_{ij}}(\tilde{c}_{p_i},\tilde{c}_{p_j})=dist(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})$
+                $\widetilde{W}^{ij}(\tilde{c}_{p_i},\tilde{c}_{p_j})=dist(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})$
 
-                $\tau(\tilde{c}_{p_i},\tilde{c}_{p_j}) = None$
+                $\tilde{\tau}^{ij}(\tilde{c}_{p_i},\tilde{c}_{p_j}) = None$
             }
             \Else
             {
                 \If{$L^{p_i}(\tilde{c}_{p_j}|_{\mathcal{F}^{p_i}})\in sym(\varphi_c^{p_j})$}
                 {
-                    $\tilde{c}_{p_j}\in \delta^{p_i}(\tilde{c}_{p_i})$
+                    $\tilde{c}_{p_j}\in \tilde{\delta}^{ij}(\tilde{c}_{p_i})$
 
-                    $W_{\mathcal{U}_{ij}}(\tilde{c}_{p_i},\tilde{c}_{p_j})=dist(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})$
+                    $\widetilde{W}^{ij}(\tilde{c}_{p_i},\tilde{c}_{p_j})=dist(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})$
 
-                    $\tau(\tilde{c}_{p_i},\tilde{c}_{p_j})=L^{p_i}(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}})$
+                    $\tilde{\tau}^{ij}(\tilde{c}_{p_i},\tilde{c}_{p_j})=L^{p_i}(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}})$
                 }
             }
         }
     }
   }
-  $R^{\varpi,p}_+=bidirection_dijkstra(\Omega_{p_j},\tilde{\eta}_{p_i})$
+  $R^{\varpi,p}_+=bidirection\_dijkstra(\Omega_{p_j},\tilde{\eta}_{p_i})$
 
   $R^{\varpi}_+ = R^{\varpi,p}_+ \oplus R^{\varpi,s}_-$
 
@@ -936,10 +942,10 @@ The switches in gray control the door $d$ and when the switch is open, it will c
 \label{first}
 \end{figure}
 \subsection{Task Specification}
-Three different tasks are assigned to three groups of agents. The task of agents working on conveyor belts is specified as ($\square\Diamond t1 \wedge \square\Diamond t2 \wedge \square\Diamond t3 \wedge \square\Diamond t4 \wedge \square\Diamond t5 \wedge \square\Diamond t6 \wedge \square(\neg b)$) and ($\square\Diamond m1 \wedge \square\Diamond m2 \wedge \square\Diamond m3 \wedge \square\Diamond m4 \wedge \square\Diamond m5 \wedge \square\Diamond m6 \wedge \square(\neg b)$) which means that they need to often eventually bie de lun wen zen me biao shu????? visit all the checkpoints and never move across the conveyor belts. The task of agents which need to collect goods and place them in cargo collection point is specified as ???zai kan zhe ge ren wu ($\square\Diamond g \wedge \square(g\Longrightarrow \Diamond r) \wedge \square(\neg b) \wedge \square(\neg d \cup (o \wedge o'))$), which means the goods collection agents need to often eventually kan bie de lun wen zen me biao shu???????? visit $g$ and when they collect goods in $g$, they need go to $r$ to place them. The goods collection agents can never move across the belts and only when the switches are both open can they move across the door $d$. We can see $\square(\neg r \cup (o \wedge o'))$ is the compact coupled task $\varphi_c$ because it indicates that only when two switches are both open can the goods collection agents move across the door.
+Three different tasks are assigned to three groups of agents. The task of agents working on conveyor belts is specified as ($\square\Diamond t1 \wedge \square\Diamond t2 \wedge \square\Diamond t3 \wedge \square\Diamond t4 \wedge \square\Diamond t5 \wedge \square\Diamond t6 \wedge \square(\neg b)$) and ($\square\Diamond m1 \wedge \square\Diamond m2 \wedge \square\Diamond m3 \wedge \square\Diamond m4 \wedge \square\Diamond m5 \wedge \square\Diamond m6 \wedge \square(\neg b)$) which means that they need to always eventually visit all the checkpoints and never move across the conveyor belts. The task of agents which need to collect goods and place them in cargo collection point is specified as ($\square\Diamond g \wedge \square(g\Longrightarrow \Diamond r) \wedge \square(\neg b) \wedge \square(\neg d \cup (o \wedge o'))$), which means the good collection agents need to always eventually visit $g$ and when they collect goods in $g$, they need go to $r$ to place them. The good collection agents can never move across the belts and only when the switches are both open can they move across the door $d$. We can see $\square(\neg r \cup (o \wedge o'))$ is the compact coupled task $\varphi_c$ because it indicates that only when two switches are both open can the good collection agents move across the door.
 \subsection{Simulation Result}
 The motion path of each agent is shown in Fig.\ref{path}, where different colors indicates different states of agents. The agents which are responding to deliver goods are denoted by $g_1$, they will change from red to blue when they send request message. Meanwhile, two agents are elected from $g_2$ and $g_3$ to reply the request message and change from blue to black. We record the position of agents in each time step and synthesize this motion path of agents.\par
-We select two scenes to analyze the online coordination scheme. In Fig.\ref{before}, two agents, denoted by $p_0$ and $p_1$, in $g1$ are passing through the door $d$ to place the goods in goods collection point $r$. Meanwhile, two agents, denoted by $p_2$ and $p_3$, in $g_2$ and $g_3$ are elected to collaborate. $p_0$ and $p_1$ are turned to blue, and $p_2$, $p_3$ are turned to black. There are red solid lines connect $p_0$ and $p_2$, $p_3$, $p_1$ and $p_2$, $p_3$, which indicates they are transmitting message.\par
+We select two scenes to analyze the online coordination scheme. In Fig.\ref{before}, two agents, denoted by $p_0$ and $p_1$, in $g_1$ are passing through the door $d$ to place the goods in good collection point $r$. Meanwhile, two agents, denoted by $p_2$ and $p_3$, in $g_2$ and $g_3$ are elected to collaborate. $p_0$ and $p_1$ are turned to blue, and $p_2$, $p_3$ are turned to black. There are red solid lines connect $p_0$ and $p_2$, $p_3$, $p_1$ and $p_2$, $p_3$, which indicates they are transmitting message.\par
 In Fig.\ref{across}, $p_0$ and $p_1$ have placed the goods in $r$ and they are going back to $g$ to collect goods. $p_0$ has passed through $d$ so it stop the sending of request message, but $p_1$ is still passing through $d$ so it continues to send the request message and $p_2$, $p_3$ continue to reply to it, so there are red solid lines connecting $p_0$ and $p_2$, $p_3$.\par
 \begin{figure}
 \centering
@@ -954,7 +960,7 @@ In Fig.\ref{across}, $p_0$ and $p_1$ have placed the goods in $r$ and they are g
 \subfigure[]{
 \label{across}
 \includegraphics[width=1in]{simulate1/across.png}}
-\caption{(a) shows the motion path of agents, (b) shows the message transmission when two agents are passing through the door and moving to the goods collection point and (c) shows the message transmission when two agents are going back to collect goods after they placed the goods.}
+\caption{(a) shows the motion paths of agents, (b) shows the message transmission when two agents are passing through the door and moving to the good collection point and (c) shows the message transmission when two agents are going back to collect goods after they placed the goods.}
 \label{second}
 \end{figure}
 In order to represent the collaboration of agents more intuitively, we draw the Gantt chart as Fig.\ref{Gantt}. Each horizontal line in Gantt chart demonstrates the change of agent states over time. Same as previous figures, different colors indicates different states of agents. If a section of the horizontal line indicates the agent is sending request messages or replying for the request messages of other agents, which is represented by blue and black, then the indices of agents that is sending request messages or the agent is replying for are identified at the beginning of this section.
@@ -966,11 +972,51 @@ In order to represent the collaboration of agents more intuitively, we draw the 
 \end{figure}
 
 \subsection{Prevention Of Long-time Demission}
-In this section we increase the amount of agents in $g_1$ to yin zheng suan fa 2 de he shi xing
+In this section we increase the amount of agents in $g_1$ to verify the prevention of long-time demission. Fig.\ref{path2} shows the motion paths of agents in simulation 2 and a typical communication scenario during the simulation is presented in Fig.\ref{message}. The Gantt chart of agents in simulation 2 is shown in Fig.\ref{Gantt2}. From Fig.\ref{message} we can see when the replying agents have to return to its own tasks, they will send a succession signal to other agents belonging to the same group and then succession agents are elected to succeed original replying agents. There are yellow solid lines connecting original replying and succession agents and the message transmissions are transferred to the request agents and new replying agents.
+\begin{figure}
+\centering
+\subfigure[motion paths]{
+\label{path2}
+\includegraphics[width=1.2in]{simulate2/path.png}}
+\hspace{0.3in}
+\subfigure[succession signal]{
+\label{message}
+\includegraphics[width=1.2in]{simulate2/message.png}}
+\caption{(a) shows the motion paths of agents in simulation 2. (b) shows a communication scenario when the original replying agents have to return to its own tasks.}
+\label{second}
+\end{figure}
+
+\begin{figure}[h]	
+\centering  	
+\includegraphics[width=1\linewidth]{simulate2/gante_no_grid.png}
+\caption{The Gantt chart of agents in simulation 2. The yellow parts indicates the transmission of succession signal.}
+\label{Gantt2}
+\end{figure}
 \subsection{Agents Scheduling When Failure Occurs}
-In this section we assume
+In this section we assume one good collection agent would breakdown at random time step. The agents working on belts more than the good collection agents and the good collection task is more important than checking the belts, so when one good collection agent breaks down the agent working on belts need to inherit the good collection task. Fig.\ref{path3} shows the motion paths of agents and we can see when one good collection agent broke down, one agent working on belts previously went to inherit the good collection task and the yellow? part is the path of agent inheriting the good collection task. In Fig.\ref{message2}, we show the agent sending warning message and the agent elected to inherit the good collection task through placing a red? solid line between them. The Gantt chart of agents in simulation 3 is indicated in Fig.\ref{Gantt3}, where the green part presents corresponding agent is broken down and the yellow part presents corresponding agent discards its own task and inherits the task of broken agent.
+\begin{figure}
+\centering
+\subfigure[motion paths]{
+\label{path3}
+\includegraphics[width=1.2in]{simulate3/path.png}}
+\hspace{0.3in}
+\subfigure[warning message]{
+\label{message2}
+\includegraphics[width=1.2in]{simulate3/message.png}}
+\caption{(a) shows the motion paths of agents in simulation 3, yellow part is the path of inheriting agent. (b) indicates the warning message transmission when the agent broke down.}
+\label{third}
+\end{figure}
+
+\begin{figure}[h]	
+\centering  	
+\includegraphics[width=1\linewidth]{simulate3/gante_no_grid.png}
+\caption{The Gantt chart of agents in simulation 3, where the dashed is placed to show the yellow part and green part are aligned, which indicates when the good collection agent broken down, one agent working on belts went to inherit its task immediately.}
+\label{Gantt3}
+\end{figure}
+
 \subsection{Computational Complexity}
-In the first simulation, the team has 14 agents and the simulation environment consists of 108 states and 97 edges, the NBA associated with $g_1$ consists of 8 states and 30 transitions, and the NBA associated with the NBA associated with $g_2$ and $g_3$ consists of 7 states and 34 transitions. As a result, the centralized method products all the FTS and NBA of agents in team will have $108^{14}\times 8^6 \times 7^6(9\times 10^{38})$ states. In our decentralized method, each agent only has partial environment which consists of 38, 17, 30 states as shown in Fig.\ref{envir}. Our method relies on local product of FTS and NBA of each agent and synthesize the initial motion path locally so the complete agent model of $g_1$, $g_2$ and $g_3$ consists of 136, 266 and 210 states, respectively and it costs an average of 0.02s to synthesize the initial motion path for each agent.
+In the first simulation, the team has 14 agents and the simulation environment consists of 108 states and 97 edges, the NBA associated with $g_1$ consists of 8 states and 30 transitions, and the NBA associated with the NBA associated with $g_2$ and $g_3$ consists of 7 states and 34 transitions. As a result, the centralized method products all the FTS and NBA of agents in team will have $108^{14}\times 8^6 \times 7^6(9\times 10^{38})$ states. In our decentralized method, each agent only has partial environment which consists of 38, 17, 30 states as shown in Fig.\ref{envir}. Our method relies on local product of FTS and NBA of each agent and synthesize the initial motion path locally so the complete agent model of $g_1$, $g_2$ and $g_3$ consists of 136, 266 and 210 states, respectively and it costs an average of 0.02s to synthesize the initial motion path for each agent. \par
+In the second simulation, the computational complexity of each agent is invariant although we add many good collection agents, which indicates the computational complexity of our decentralized method only associated with the states of local FTS and NBA of each agent, unlike previous centralized method, whose computational complexity increases exponentially accompanied by the increasing of agent number. The number of states of union agent model depends on the two local complete agent model. In the third simulation, the number of the state number of union agent model is 402 and the maximum number is 476.
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
 % or
@@ -994,7 +1040,7 @@ In the first simulation, the team has 14 agents and the simulation environment c
 %% if you want by leaving the argument blank
 %\section{}
 %Appendix two text goes here.
-Through the simulation results we can see the proposed method can handle the decentralized collaboration of multiagent system under compact coupled task specifications. If we convert the specifications of loosely coupled task to a compact coupled task specification, such as converting $water^{a}$[add ref](zai zhe li zhao yi ge ren wu shuo ming) to $\neg water\cup a$, then our method is applicable for loosely coupled tasks.  ????meixiewan
+Through the simulation results we can see the proposed method can handle the decentralized collaboration of multiagent system under compact coupled task specifications. If we convert the specifications of loosely coupled task to a compact coupled task specification, such as converting $water^{a}$[add ref](zai zhe li zhao yi ge ren wu shuo ming) to $\neg water\cup a$, then our method is applicable for loosely coupled tasks. Proposed decentralized method depends on local FTS and NBA of agent so the computational complexity doesn't increase accompanied by the increasing of agent number, which reduces the computational complexity significantly compared to centralized method. In the future, we will continue to find method to further reduce the computational complexity and combine proposed method with existing control algorithms to improve the overall convergence rate of Cyber-physical system.
 
 
 % use section* for acknowledgment
