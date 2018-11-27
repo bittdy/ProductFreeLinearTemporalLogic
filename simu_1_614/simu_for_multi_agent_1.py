@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
-Created on Fri Oct 12 14:02:13 2018
 
-@author: bittdy
 """
 
 #!/usr/bin/env python3
