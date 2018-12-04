@@ -893,8 +893,7 @@ When the broken down agent is fixed properly, we can drive the inheriting agent 
         {
             add $\tilde{c}_{p_i}$ to $\tilde{\eta}_{p_i}$
 
-            \If{$CheckTranB(\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}},L^{p_i}(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}),
-             \tilde{c}_{p_j}|_{\mathcal{B}^{p_j}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})\geqslant 0$}
+            \If{$CheckTranB(\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}},L^{p_i}(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}),\tilde{c}_{p_j}|_{\mathcal{B}^{p_j}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})\geqslant 0$}
             {
                 $\tilde{c}_{p_j}\in \tilde{\delta}^{ij}(\tilde{c}_{p_i})$
 
@@ -946,7 +945,7 @@ The switches in gray control the door $d$ and when the switch is open, it will c
 Three different tasks are assigned to three groups of agents. The task of agents working on conveyor belts is specified as ($\square\Diamond t1 \wedge \square\Diamond t2 \wedge \square\Diamond t3 \wedge \square\Diamond t4 \wedge \square\Diamond t5 \wedge \square\Diamond t6 \wedge \square(\neg b)$) and ($\square\Diamond m1 \wedge \square\Diamond m2 \wedge \square\Diamond m3 \wedge \square\Diamond m4 \wedge \square\Diamond m5 \wedge \square\Diamond m6 \wedge \square(\neg b)$) which means that they need to always eventually visit all the checkpoints and never move across the conveyor belts. The task of agents which need to collect goods and place them in cargo collection point is specified as ($\square\Diamond g \wedge \square(g\Longrightarrow \Diamond r) \wedge \square(\neg b) \wedge \square(\neg d \cup (o \wedge o'))$), which means the good collection agents need to always eventually visit $g$ and when they collect goods in $g$, they need go to $r$ to place them. The good collection agents can never move across the belts and only when the switches are both open can they move across the door $d$. We can see $\square(\neg r \cup (o \wedge o'))$ is the compact coupled task $\varphi_c$ because it indicates that only when two switches are both open can the good collection agents move across the door.
 \subsection{Simulation Result}
 The motion path of each agent is shown in Fig.\ref{path}, where different colors indicates different states of agents. The agents which are responding to deliver goods are denoted by $g_1$, they will change from red to blue when they send request message. Meanwhile, two agents are elected from $g_2$ and $g_3$ to reply the request message and change from blue to black. We record the position of agents in each time step and synthesize this motion path of agents.\par
-We select two scenes to analyze the online collaboration scheme. In Fig.\ref{before}, two agents, denoted by $p_0$ and $p_1$, in $g_1$ are passing through the door $d$ to place the goods in good collection point $r$. Meanwhile, two agents, denoted by $p_2$ and $p_3$, in $g_2$ and $g_3$ are elected to collaborate. $p_0$ and $p_1$ are turned to blue, and $p_2$, $p_3$ are turned to black. There are red solid lines connect $p_0$ and $p_2$, $p_3$, $p_1$ and $p_2$, $p_3$, which indicates they are transmitting message.\par
+We select two scenes to analyze the online collaboration scheme. In Fig.\ref{before}, two agents, denoted by $p_0$ and $p_1$, in $g_1$ are passing through the door $d$ to place the goods in good collection point $r$. Meanwhile, two agents, denoted by $p_2$ and $p_3$, in $g_2$ and $g_3$ are elected to collaborate. $p_0$ and $p_1$ are turned to blue, and $p_2$, $p_3$ are turned to black. There are red solid lines connecting $p_0$ and $p_2$, $p_3$, $p_1$ and $p_2$, $p_3$, which indicates they are transmitting message.\par
 In Fig.\ref{across}, $p_0$ and $p_1$ have placed the goods in $r$ and they are going back to $g$ to collect goods. $p_0$ has passed through $d$ so it stop the sending of request message, but $p_1$ is still passing through $d$ so it continues to send the request message and $p_2$, $p_3$ continue to reply to it, so there are red solid lines connecting $p_0$ and $p_2$, $p_3$.\par
 \begin{figure}
 \centering
@@ -972,48 +971,48 @@ In order to represent the collaboration of agents more intuitively, we draw the 
 \label{Gantt}
 \end{figure}
 
-\subsection{Prevention Of Long-time Demission}
-In this section we increase the amount of agents in $g_1$ to verify the prevention of long-time demission. Fig.\ref{path2} shows the motion paths of agents in simulation 2 and a typical communication scenario during the simulation is presented in Fig.\ref{message}. The Gantt chart of agents in simulation 2 is shown in Fig.\ref{Gantt2}. From Fig.\ref{message} we can see when the replying agents have to return to its own tasks, they will send a succession signal to other agents belonging to the same group and then succession agents are elected to succeed original replying agents. There are yellow solid lines connecting original replying and succession agents and the message transmissions are transferred to the request agents and new replying agents.
-\begin{figure}
-\centering
-\subfigure[motion paths]{
-\label{path2}
-\includegraphics[width=1.2in]{simulate2/path.png}}
-\hspace{0.3in}
-\subfigure[succession signal]{
-\label{message}
-\includegraphics[width=1.2in]{simulate2/message.png}}
-\caption{(a) shows the motion paths of agents in simulation 2. (b) shows a communication scenario when the original replying agents have to return to its own tasks.}
-\label{second}
-\end{figure}
-
-\begin{figure}[h]	
-\centering  	
-\includegraphics[width=1\linewidth]{simulate2/gante_no_grid.png}
-\caption{The Gantt chart of agents in simulation 2. The yellow parts indicates the transmission of succession signal.}
-\label{Gantt2}
-\end{figure}
+%\subsection{Prevention Of Long-time Demission}
+%In this section we increase the amount of agents in $g_1$ to verify the prevention of long-time demission. Fig.\ref{path2} shows the motion paths of agents in simulation 2 and a typical communication scenario during the simulation is presented in Fig.\ref{message}. The Gantt chart of agents in simulation 2 is shown in Fig.\ref{Gantt2}. From Fig.\ref{message} we can see when the replying agents have to return to its own tasks, they will send a succession signal to other agents belonging to the same group and then succession agents are elected to succeed original replying agents. There are yellow solid lines connecting original replying and succession agents and the message transmissions are transferred to the request agents and new replying agents.
+%\begin{figure}
+%\centering
+%\subfigure[motion paths]{
+%\label{path2}
+%\includegraphics[width=1.2in]{simulate2/path.png}}
+%\hspace{0.3in}
+%\subfigure[succession signal]{
+%\label{message}
+%\includegraphics[width=1.2in]{simulate2/message.png}}
+%\caption{(a) shows the motion paths of agents in simulation 2. (b) shows a communication scenario when the original replying agents have to return to its own tasks.}
+%\label{second}
+%\end{figure}
+%
+%\begin{figure}[h]	
+%\centering  	
+%\includegraphics[width=1\linewidth]{simulate2/gante_no_grid.png}
+%\caption{The Gantt chart of agents in simulation 2. The yellow parts indicates the transmission of succession signal.}
+%\label{Gantt2}
+%\end{figure}
 \subsection{Agents Scheduling When Failure Occurs}
 In this section we assume one good collection agent would breakdown at random time step. The agents working on belts more than the good collection agents and the good collection task is more important than checking the belts, so when one good collection agent breaks down the agent working on belts need to inherit the good collection task. Fig.\ref{path3} shows the motion paths of agents and we can see when one good collection agent broke down, one agent working on belts previously went to inherit the good collection task and the yellow? part is the path of agent inheriting the good collection task. In Fig.\ref{message2}, we show the agent sending warning message and the agent elected to inherit the good collection task through placing a red? solid line between them. The Gantt chart of agents in simulation 3 is indicated in Fig.\ref{Gantt3}, where the green part presents corresponding agent is broken down and the yellow part presents corresponding agent discards its own task and inherits the task of broken agent.
 \begin{figure}
 \centering
-\subfigure[motion paths]{
+\subfigure[]{
 \label{path3}
-\includegraphics[width=1.2in]{simulate3/path.png}}
+\includegraphics[width=1.2in]{simulate3/pathonecolor.png}}
 \hspace{0.3in}
-\subfigure[warning message]{
-\label{message2}
-\includegraphics[width=1.2in]{simulate3/message.png}}
-\caption{(a) shows the motion paths of agents in simulation 3, yellow part is the path of inheriting agent. (b) indicates the warning message transmission when the agent broke down.}
+\subfigure[]{
+\label{path4}
+\includegraphics[width=1.2in]{simulate3/pathtwocolor.png}}
+\caption{(a) and (b) show the motion paths of an agent working on belts in simulation 3.}
 \label{third}
 \end{figure}
 
-\begin{figure}[h]	
-\centering  	
-\includegraphics[width=1\linewidth]{simulate3/gante_no_grid.png}
-\caption{The Gantt chart of agents in simulation 3, where the dashed is placed to show the yellow part and green part are aligned, which indicates when the good collection agent broken down, one agent working on belts went to inherit its task immediately.}
-\label{Gantt3}
-\end{figure}
+%\begin{figure}[h]	
+%\centering  	
+%\includegraphics[width=1\linewidth]{simulate3/gante_no_grid.png}
+%\caption{The Gantt chart of agents in simulation 3, where the dashed is placed to show the yellow part and green part are aligned, which indicates when the good collection agent broken down, one agent working on belts went to inherit its task immediately.}
+%\label{Gantt3}
+%\end{figure}
 
 \subsection{Computational Complexity}
 In the first simulation, the team has 14 agents and the simulation environment consists of 108 states and 97 edges, the NBA associated with $g_1$ consists of 8 states and 30 transitions, and the NBA associated with the NBA associated with $g_2$ and $g_3$ consists of 7 states and 34 transitions. As a result, the centralized method products all the FTS and NBA of agents in team will have $108^{14}\times 8^6 \times 7^6(9\times 10^{38})$ states. In our decentralized method, each agent only has partial environment which consists of 38, 17, 30 states as shown in Fig.\ref{envir}. Our method relies on local product of FTS and NBA of each agent and synthesize the initial motion path locally so the complete agent model of $g_1$, $g_2$ and $g_3$ consists of 136, 266 and 210 states, respectively and it costs an average of 0.02s to synthesize the initial motion path for each agent. \par
@@ -1128,8 +1127,6 @@ Biography text here.
 % Can be used to pull up biographies so that the bottom of the last one
 % is flush with the other column.
 %\enlargethispage{-5in}
-
-
 
 % that's all folks
 \end{document}
