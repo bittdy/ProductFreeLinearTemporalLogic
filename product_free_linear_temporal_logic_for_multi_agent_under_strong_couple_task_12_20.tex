@@ -381,7 +381,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{Decentralized Motion Planning for Multi-Agent System with Compact Coupled Tasks \\under LTL Specifications}
+\title{Decentralized Motion Planning for Multi-Agent System with Tight Coupled Tasks \\under LTL Specifications}
 %
 %
 % author names and IEEE memberships
@@ -456,7 +456,7 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-This paper considers the decentralized motion planning under compact coupled task specifications of multi-agent systems. Multi-agent systems consist of heterogeneous groups of homogeneous agents. The assigned tasks are specified as Linear Temporal Logic (LTL) formulas. A decentralized motion planning scheme is proposed to alleviate the massive computational complexity of the centralized multi-agent motion planning, where couple-edges are proposed to eliminate the coupling among compact tasks, and the online collaboration scheme based on the real-time communication is adapted to ensure the satisfaction of task specifications without the central collaboration. However, in some scenarios such as the task swapping and inheriting, this scheme can't synthesize the initial motion paths, then the union agent model is proposed to reduce the computational complexity in these scenarios. The overall scheme is demonstrated by a simulation in a warehouse scenario and 14 agents are assigned compact coupled task specifications.
+This paper considers the decentralized motion planning under tight coupled task specifications of multi-agent systems. Multi-agent systems consist of heterogeneous groups of homogeneous agents. The assigned tasks are specified as Linear Temporal Logic (LTL) formulas. A decentralized motion planning scheme is proposed to alleviate the massive computational complexity of the centralized multi-agent motion planning, where couple-edges are proposed to eliminate the coupling among tight tasks, and the online collaboration scheme based on the real-time communication is adapted to ensure the satisfaction of task specifications without the central collaboration. However, in some scenarios such as the task swapping and inheriting, this scheme can't synthesize the initial motion paths, then the union agent model is proposed to reduce the computational complexity in these scenarios. The overall scheme is demonstrated by a simulation in a warehouse scenario and 14 agents are assigned tight coupled task specifications.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -503,9 +503,9 @@ A key challenge of applying LTL to the motion planning of multi-agent systems is
 
 %Due to the complex environment and tasks, the product automaton of each agent is already very complicated. In order to reduce the computational complexity in application, the motion planning scheme needs to be decentralized.
 
-To alleviate the massive amount of calculation, many researches have been carried out. One side, the horizon of each agent is receded and the goal generator is proposed to preserve the desired temporal properties in each horizon segment [5],[10]. In addition, the reduction of computational complexity through the decomposition of LTL is studied widely. [31] demonstrates an automata-based approach to decompose LTL specifications into sets of independently executable task specifications and the hierarchical decomposition of LTL is introduced in [37]. Recently, a framework using Tableau approach to decompose input LTL task specifications is proposed in [Efficient Dec...]. Compared to the decomposition of LTL specifications, the decentralization of motion planning tends to reduce the computational complexity more efficiently. In [30] the planning procedure is decentralized through a two-phase automata-based solution, where distributed task specifications are employed. Then distributed task specifications are further applied in [14] where the connectivity constraints are imposed on the multi-agent systems. With the preliminary decentralization methods, the reconfiguration of distributed plan is studied in [16] to adapt the decentralization methods to the dynamical environment. Most of previous frameworks depend on the local LTL task specifications and can't handle coupled tasks. The coupled tasks require the collaboration of agents, such as agent A needs the assistance of the agent B to deliver the cargoes. In this regard, [jing chang yin] presents a product-free framework towards the loosely coupled task, which defines the dependencies among motions of different agents. Each agent synthesizes an initial motion path through its local product automaton. However, the compact tasks, such as the agent A can't cross the region a until the agent B arrives at the region b, associate with the motions of two or more agents, the initial motion paths can't be synthesized through the local product automaton. Meanwhile, towards complex compact tasks, the dependencies among motions can't be defined clearly. In addition, the task swapping method in [loose task] may cause the failure of task collaboration due to the requirement of collaboration integrity under the compact coupled tasks.
+To alleviate the massive amount of calculation, many researches have been carried out. One side, the horizon of each agent is receded and the goal generator is proposed to preserve the desired temporal properties in each horizon segment [5],[10]. In addition, the reduction of computational complexity through the decomposition of LTL is studied widely. [31] demonstrates an automata-based approach to decompose LTL specifications into sets of independently executable task specifications and the hierarchical decomposition of LTL is introduced in [37]. Recently, a framework using Tableau approach to decompose input LTL task specifications is proposed in [Efficient Dec...]. Compared to the decomposition of LTL specifications, the decentralization of motion planning tends to reduce the computational complexity more efficiently. In [30] the planning procedure is decentralized through a two-phase automata-based solution, where distributed task specifications are employed. Then distributed task specifications are further applied in [14] where the connectivity constraints are imposed on the multi-agent systems. With the preliminary decentralization methods, the reconfiguration of distributed plan is studied in [16] to adapt the decentralization methods to the dynamical environment. Most of previous frameworks depend on the local LTL task specifications and can't handle coupled tasks. The coupled tasks require the collaboration of agents, such as agent A needs the assistance of the agent B to deliver the cargoes. In this regard, [jing chang yin] presents a product-free framework towards the loosely coupled task, which defines the dependencies among motions of different agents. Each agent synthesizes an initial motion path through its local product automaton. However, the tight tasks, such as the agent A can't cross the region a until the agent B arrives at the region b, associate with the motions of two or more agents, the initial motion paths can't be synthesized through the local product automaton. Meanwhile, towards complex tight tasks, the dependencies among motions can't be defined clearly. In addition, the task swapping method in [loose task] may cause the failure of task collaboration due to the requirement of collaboration integrity under the tight coupled tasks.
 
-To reduce the computational complexity of motion planning under compact coupled tasks specifications, a decentralized motion planning method is proposed in this paper. At first the compact coupled task is decoupled, then the communication model in [loose] is adapted to guarantee the abidance of tasks during the motion paths are executed. In the scenarios that the motion planning is associated with the models of two or more agents, such as the task swapping and inheriting, the union agent model is proposed to reduce the computational complexity. Our contribution can be summarized as follows: (1) A formal definition of compact coupled task specifications is introduced and the decentralized motion planning scheme under compact coupled tasks is proposed to reduce the computational complexity. (2) The union agent model is designed to reduce the computational complexity for the scenarios in which the motion planning is associated with the models of two or more agents.
+To reduce the computational complexity of motion planning under tight coupled tasks specifications, a decentralized motion planning method is proposed in this paper. At first the tight coupled task is decoupled, then the communication model in [loose] is adapted to guarantee the abidance of tasks during the motion paths are executed. In the scenarios that the motion planning is associated with the models of two or more agents, such as the task swapping and inheriting, the union agent model is proposed to reduce the computational complexity. Our contribution can be summarized as follows: (1) A formal definition of tight coupled task specifications is introduced and the decentralized motion planning scheme under tight coupled tasks is proposed to reduce the computational complexity. (2) The union agent model is designed to reduce the computational complexity for the scenarios in which the motion planning is associated with the models of two or more agents.
 
 The remaining of this paper is organized as follows: Some preliminaries are introduced in Sec.\uppercase\expandafter{\romannumeral2}. Sec.\uppercase\expandafter{\romannumeral3} states formally the problem. Sec.\uppercase\expandafter{\romannumeral4} presents the decentralized synthesis of the initial motion path of each agent. The decentralized collaboration of agents is described in Sec.\uppercase\expandafter{\romannumeral5}. The union agent model is demonstrated in Sec.\uppercase\expandafter{\romannumeral6}. Sec.\uppercase\expandafter{\romannumeral7} shows the overall structure of our framework and case studies are shown in Sec.\uppercase\expandafter{\romannumeral8}. Finally, a summary and future work are given in Sec.\uppercase\expandafter{\romannumeral9}.
 % You must have at least 2 lines in the paragraph with the drop letter
@@ -617,54 +617,54 @@ The remaining of this paper is organized as follows: Some preliminaries are intr
 % \fnbelowfloat command of the stfloats package.
 \section{Preliminaries}
 \subsection{Linear Temporal Logic and B\"{u}chi Automaton}
-Atomic propositions (AP) are boolean variables that can be either true or false and the ingredients of linear temporal logic formulas are sets of atomic propositions and several boolean and temporal operators, which are specified according to the following syntax[add ref]: $\varphi\ $$:$$:$$=\top|a|\varphi_1\wedge\varphi_2| \neg \varphi|\bigcirc\varphi|\varphi_1\cup\varphi_2|\Box\varphi|\Diamond\varphi|\Longrightarrow\varphi$, where $\top\ (\emph{True})$, $a\ \in AP$, $\bigcirc$ (\emph{Next}), $\cup$ (\emph{Until}), $\Box (\emph{Always})$,  $\Diamond (\emph{Eventually})$ and $\Longrightarrow (\emph{Implicate})$. We refer the readers to [add ref] to grasp the detailed semantics of LTL. $\cup\ $, $\Longrightarrow$ and $\wedge$ are considered in this paper which generate the compact coupled tasks.
+Atomic propositions (AP) are boolean variables that can be either true or false and the ingredients of linear temporal logic formulas are sets of atomic propositions and several boolean and temporal operators, which are specified according to the following syntax[add ref]: $\varphi\ $$:$$:$$=\top|a|\varphi_1\wedge\varphi_2| \neg \varphi|\bigcirc\varphi|\varphi_1\cup\varphi_2|\Box\varphi|\Diamond\varphi|\Longrightarrow\varphi$, where $\top\ (\emph{True})$, $a\ \in AP$, $\bigcirc$ (\emph{Next}), $\cup$ (\emph{Until}), $\Box (\emph{Always})$,  $\Diamond (\emph{Eventually})$ and $\Longrightarrow (\emph{Implicate})$. We refer the readers to [add ref] to grasp the detailed semantics of LTL. $\cup\ $, $\Longrightarrow$ and $\wedge$ are considered in this paper which generate the tight coupled tasks.
 Each LTL formula $\varphi$ can be translated into a Nondeterministic B\"{u}chi Automaton (NBA) $\mathcal{B}_\varphi$. It is defined as $\mathcal{B}_\varphi=\ (Q,2^{AP},\delta,Q_0,Q_F)$, where $Q$ is the finite set of all the states of $\mathcal{B}_\varphi$, $2^{AP}$ is the set of alphabets, $\delta:\ Q\times 2^{AP}\rightarrow 2^Q$ is the transition relation and $Q_F \subseteq Q$ is the set of accepting states. There are translation algorithms[add ref] to obtain $\mathcal{B}_\varphi$ from the LTL formula $\varphi$.
 \subsection{Finite Transition System}
 The environment of agents is modeled as finite transition systems (FTS) as follows[add ref]:
 $$\mathcal{F}=(\Pi,\rightarrow,\Pi_0,L,\digamma)$$
 where $\rightarrow \subseteq \Pi \times \Pi$ is the transition relation, $\Pi_0 \subseteq \Pi$ is the initial region, $L:\Pi\rightarrow 2^{\digamma}$ is the labeling function which indicates the properties held true in $\Pi$. A path of $\mathcal{F}$ is a sequence of regions $\pi_0 \pi_1 ...\pi_s$ where $(\pi_k,\pi_{k+1})\in \rightarrow$, $\forall k=0,1,...,L-1$.
 
-\textbf{\emph{Remark 1:}} Action models are essentially finite transition systems, therefore the method proposed in this paper is applicable for compact coupled action models at the same time.
+\textbf{\emph{Remark 1:}} Action models are essentially finite transition systems, therefore the method proposed in this paper is applicable for tight coupled action models at the same time.
 \subsection{Product Automaton}
 Given the NBA $\mathcal{B}_\varphi$ and FTS $\mathcal{F}$, the product automaton $\mathcal{C}$ can be constructed as:
 $$\mathcal{C}=\mathcal{B}_\varphi\otimes \mathcal{C}=(Q^{\ast},\delta,Q^{\ast}_0,Q^{\ast}_F,W^{\ast},\tau)$$
 where $Q^{\ast}=\Pi\times Q$, $q^{\ast}=<\pi,q>$, $\forall \pi \in \Pi$, $\forall q \in Q$; $(<\pi_m,q_s>,<\pi_n,q_t>)\in \delta$ if $\pi_m \rightarrow \pi_n$ and $(q_s,L(\pi_m),q_t)\in \delta$; $Q^{\ast}_0=\Pi_0\times Q_0$ is the set of initial states; $Q^{\ast}_F=\Pi\times Q_F$ is the set of accepting states; $W^{\ast}:\delta\times Q^{\ast}\rightarrow \mathbb{R}^{+}$. $W^{\ast}(<\pi_m,q_s>,<\pi_n,q_t>)$ is the distance between $\pi_m$ and $\pi_n$, where $<\pi_n,q_t>\in \delta(<\pi_m,q_s>,L(\pi_m))$. $\tau$ indicates whether $(<\pi_m,q_s>,<\pi_n,q_t>)$ is a couple edge which is going to be introduced next.
 \section{Problem Formulation}
-A multi-agent system organized by $N\geq1$ agents is considered. Each agent has the capabilities of navigating within the workspace and performing various motions. The agent index is denoted by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. Then, all the agents are divided into different subsets according to their local LTL task specifications, which implies that only agents with the same local LTL task specifications can be divided into one subset. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \cup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\cap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$.
-\subsection{Motion Abstraction}
-Each agent only knows a part of the full workspace. The workspace of each agent consists of $L$ partitions, denoted by $\Pi^{p_i}=\{\pi_1,\pi_2,...,\pi_L\}$, which are known by each agent a priori. Besides, there is a set of atomic propositions $\digamma^{p_i}$ describing the properties of the workspace of agent $p_i$.
+A multi-agent system organized by $N\geq1$ agents is considered. The set of agents is indexed by $\mathcal{I}=\{p_i,i=1,2,...,N\}$. The agents with different LTL task specifications are divided into different subsets. Assume there are $M$ subsets after dividing, denoted by $\mathcal{G}=\{g_j,j=1,2,...,M\}$. $\mathcal{G}$ satisfies: $g_s\subseteq \mathcal{I},\ \cup_{g_t\subseteq \mathcal{G}}g_t\ =\ \mathcal{I}$ and $g_s\cap g_t\ =\ \emptyset$, $\forall g_t,g_s \subseteq \mathcal{G}$.
+
+Each agent only knows a part of the entire workspace. The workspace of each agent consists of $L$ partitions, denoted by $\Pi^{p_i}=\{\pi_1,\pi_2,...,\pi_L\}$, which are known by each agent a priori. Besides, there is a set of atomic propositions $\digamma^{p_i}$ describing the properties of the workspace of agent $p_i$.
 \subsection{Communication Model}
 Similar to the communication model in [add ref], the communication network $\mathcal{V}=(\mathcal{N},\mathcal{E}(t))$ at $t>0$, where $\mathcal{N}$ is the set of nodes and $\mathcal{E}(t)\subseteq \mathcal{N} \times \mathcal{N}$ is the set of edges, which has two layers that $\mathcal{E}(t)=\mathcal{E}_1(t)\cup \mathcal{E}_2(t)$. The first layer $\mathcal{E}_1(t)={(p_i,p_j),\forall i,j\in g_t}$ and $\mathcal{E}_2(t)={(p_i,p_j),\forall i\in g_t,\forall j \in g_s, t\neq s}$. The first layer $\mathcal{E}_1(t)$ is static, which indicates that all the agents belong to the same group $g_t$ can always communicate with each other. The second layer $\mathcal{E}_2(t)$ is dynamic, which indicates that it is enabled when there are decentralized collaboration occurs.
 
 
-\subsection{Compact Coupled Task Specification}
-In this paper the compact coupled task specification is considered. Compared to loosely coupled task specifications, compact coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The compact coupled task specification takes an recursive definition as following.
+\subsection{Tight Coupled Task Specification}
+In this paper the tight coupled task specification is considered. Compared to loosely coupled task specifications, tight coupled task specifications relevant to the motions of two or more agents tightly, thus can't be translated to B\"{u}chi Automaton only according to the local agent model and action specification as previous method[add ref]. The tight coupled task specification takes an recursive definition as following.
 \par
-\textbf{\emph{Definition 1:}} Given a LTL formula $\varphi$ contains temporal operators such as $\cup \ $, $\Longrightarrow$ and  $\wedge$, denote the terms around each temporal operators by $t^{left}_i$ and $t^{right}_i$, respectively. if $t^{left}_i$ and $t^{right}_i$ belongs to $AP$ of different agents or one of them is a compact coupled task specification, then $\varphi$ is a compact coupled task specification.
+\textbf{\emph{Definition 1:}} Given a LTL formula $\varphi$ contains temporal operators such as $\cup \ $, $\Longrightarrow$ and  $\wedge$, denote the terms around each temporal operators by $t^{left}_i$ and $t^{right}_i$, respectively. if $t^{left}_i$ and $t^{right}_i$ belongs to $AP$ of different agents or one of them is a tight coupled task specification, then $\varphi$ is a tight coupled task specification.
 \par
-In other words, a compact coupled task specification should combine the motions of different agents through $\cup \ $, $\Longrightarrow \ $, $\wedge$ so that it can't be translated to B\"{u}chi Automaton and synthesize an initial motion plan for each agent. In summary, following problem is considered.
+In other words, a tight coupled task specification should combine the motions of different agents through $\cup \ $, $\Longrightarrow \ $, $\wedge$ so that it can't be translated to B\"{u}chi Automaton and synthesize an initial motion plan for each agent. In summary, following problem is considered.
 \par
-\textbf{\emph{Problem 1:}}  Given the complete agent model $\mathcal{C}^{p_i}$ and a serious of task specifications $\varphi$ which contain compact coupled task specifications, design a decentralized collaboration scheme such that $\varphi$ is fulfilled for all $p_i \ \subseteq \ \mathcal{I}$.
+\textbf{\emph{Problem 1:}}  Given the complete agent model $\mathcal{C}^{p_i}$ and a serious of task specifications $\varphi$ which contain tight coupled task specifications, design a decentralized collaboration scheme such that $\varphi$ is fulfilled for all $p_i \ \subseteq \ \mathcal{I}$.
 
-\textbf{\emph{Remark 2:}} The loosely coupled task specifications can be transformed into compact coupled task specifications. Such as the task specificated as $\Diamond(\mathsf{pick}^2_2 \wedge \Diamond (R_4 \wedge \mathsf{drop^2_2}))$ in [jing chang yin], where $\mathsf{pick}^2_2$ and $\mathsf{drop}^2_2$ need assisting actions $\mathsf{hpick}^2_2$ and $\mathsf{hdrop}^2_2$, respectively, it can be specificated in a compact coupled manner as $\Diamond((\neg \mathsf{pick}^2_2 \cup \mathsf{hpick}^2_2 )\wedge \Diamond (R_4 \wedge (\neg \mathsf{drop^2_2} \cup \mathsf{hdrop}^2_2)))$, then proposed method is applicable to loosely coupled tasks as well.
+\textbf{\emph{Remark 2:}} The loosely coupled task specifications can be transformed into tight coupled task specifications. Such as the task specificated as $\Diamond(\mathsf{pick}^2_2 \wedge \Diamond (R_4 \wedge \mathsf{drop^2_2}))$ in [jing chang yin], where $\mathsf{pick}^2_2$ and $\mathsf{drop}^2_2$ need assisting actions $\mathsf{hpick}^2_2$ and $\mathsf{hdrop}^2_2$, respectively, it can be specificated in a tight coupled manner as $\Diamond((\neg \mathsf{pick}^2_2 \cup \mathsf{hpick}^2_2 )\wedge \Diamond (R_4 \wedge (\neg \mathsf{drop^2_2} \cup \mathsf{hdrop}^2_2)))$, then proposed method is applicable to loosely coupled tasks as well.
 \section{Product-Free Initial Plan Synthesis}
-This section will demonstrate how the compact coupled task specifications are decoupled through a set of special edge called couple-edge. Then the decoupled new complete agent model is used to synthesize an initial motion plan for each agent.
-\subsection{Decoupling the Compact Coupled Task}
-Given the basic compact coupled task such as $\varphi_1 \cup (\varphi_2 \wedge \varphi_3)$ and $\varphi_1 \Longrightarrow \bigcirc(\varphi_2 \wedge \varphi_3)$, the nested compact coupled task can be transform to basic terms through utilizing auxiliary words. For example, $\varphi_1 \cup (\varphi_2 \Longrightarrow \bigcirc \varphi_3)$ can be transformed into $\varphi_1 \cup \kappa$ and $\kappa=\varphi_2 \Longrightarrow \bigcirc \varphi_3$.
+This section will demonstrate how the tight coupled task specifications are decoupled through a set of special edge called couple-edge. Then the decoupled new complete agent model is used to synthesize an initial motion plan for each agent.
+\subsection{Decoupling the Tight Coupled Task}
+Given the basic tight coupled task such as $\varphi_1 \cup (\varphi_2 \wedge \varphi_3)$ and $\varphi_1 \Longrightarrow \bigcirc(\varphi_2 \wedge \varphi_3)$, the nested tight coupled task can be transform to basic terms through utilizing auxiliary words. For example, $\varphi_1 \cup (\varphi_2 \Longrightarrow \bigcirc \varphi_3)$ can be transformed into $\varphi_1 \cup \kappa$ and $\kappa=\varphi_2 \Longrightarrow \bigcirc \varphi_3$.
 \par
-Towards basic compact coupled task specification, compact coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider compact coupled task specification $\neg \varphi_1\cup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Given the local complete agent model $\mathcal{C}^{p_i}$ and denote all the atomic propositions associated with $\varphi$ is denoted by $sym(\varphi)$. Then $sym(\varphi_1) \in Q^{p_i}|_{\mathcal{F}^{p_i}}$, and $sym(\varphi_2) \notin Q^{p_i}|_{\mathcal{F}^{p_i}} $. There exists a subset of $Q^{p_i}$ denoted by $\epsilon$ that $sym(\varphi_1) \in \epsilon |_{\mathcal{F}^{p_i}}$ and $sym(\varphi_1) \notin Q^{p_i} \setminus \epsilon |_{\mathcal{F}^{p_i}}$. Then there is no edge from $Q^{p_i} \setminus \epsilon$ to $\epsilon$ so that an initial motion plan can't be synthesized to fulfill $\varphi$.\par
+Towards basic tight coupled task specification, tight coupling only exists in the task cooperation process and neither the motions nor states of agent directly participate in the construction of complete models of other agents. For example, consider tight coupled task specification $\neg \varphi_1\cup\varphi_2$, according to definition 1, $\varphi_1$ and $\varphi_2$ belongs to different complete agent models. Given the local complete agent model $\mathcal{C}^{p_i}$ and denote all the atomic propositions associated with $\varphi$ is denoted by $sym(\varphi)$. Then $sym(\varphi_1) \in Q^{p_i}|_{\mathcal{F}^{p_i}}$, and $sym(\varphi_2) \notin Q^{p_i}|_{\mathcal{F}^{p_i}} $. There exists a subset of $Q^{p_i}$ denoted by $\epsilon$ that $sym(\varphi_1) \in \epsilon |_{\mathcal{F}^{p_i}}$ and $sym(\varphi_1) \notin Q^{p_i} \setminus \epsilon |_{\mathcal{F}^{p_i}}$. Then there is no edge from $Q^{p_i} \setminus \epsilon$ to $\epsilon$ so that an initial motion plan can't be synthesized to fulfill $\varphi$.\par
 \textbf{\emph{Definition 2:}} Given a complete agent model $\mathcal{C}^{p_i}$, If two nodes $q_i$, $q_j$ satisfy following properties:
 \par
 (1) $q_i \in \epsilon$, $q_j \in Q^{p_i} \setminus \epsilon$ or vice versa.\par
 (2) $\delta(q_i,q_j)\subseteq sym(\varphi_c)$ or $\delta(q_j,q_i)\subseteq sym(\varphi_c)$.
 
-where $\varphi_c$ denote the compact coupled part of task specification $\varphi$.
+where $\varphi_c$ denote the tight coupled part of task specification $\varphi$.
 Each edge which connects $q_i$ and $q_j$ is called the couple-edge.
 At first assume that all the collaborative agents have provided assistance and add all the couple-edge to the local complete agent model, then an initial motion plan for each agent can be synthesized.\par
-Previous local product algorithm[add ref] which combines the FTS and B\"{u}chi Automaton of single agent is adapted to find out all the couple-edges with respect to the compact coupled task specification $\varphi_c$ and all the couple-edges are added into the origin complete agent model. Applying Algorithm 1 a new complete agent model $\mathcal{C}^{p_i}_n$ is constructed for each agent, which contains $\mathcal{C}^{p_i}$ and all the couple-edges.\par
+Previous local product algorithm[add ref] which combines the FTS and B\"{u}chi Automaton of single agent is adapted to find out all the couple-edges with respect to the tight coupled task specification $\varphi_c$ and all the couple-edges are added into the origin complete agent model. Applying Algorithm 1 a new complete agent model $\mathcal{C}^{p_i}_n$ is constructed for each agent, which contains $\mathcal{C}^{p_i}$ and all the couple-edges.\par
 \begin{algorithm}
   \caption{Construct New Complete Agent Model $\mathcal{C}^{p_i}_n$}
-  \KwIn{the local FTS $\mathcal{F}^{p_i}$, the local B\"{u}chi Automaton $\mathcal{B}^{p_i}$ and the compact coupled task specification $\varphi_c$}
+  \KwIn{the local FTS $\mathcal{F}^{p_i}$, the local B\"{u}chi Automaton $\mathcal{B}^{p_i}$ and the tight coupled task specification $\varphi_c$}
   \KwOut{complete agent model $\mathcal{C}^{p_i}_n$}
   \ForEach{$\pi_l\in \Pi^{p_i},q_m\in Q^{p_i}$}
   {
@@ -779,71 +779,71 @@ In previous section, we assume that all the collaborative agents have provided a
 %\end{split}
 %\end{equation}
 %where the first part denotes the time gap between the agent which sends a request message arriving the position where needs collaboration and corresponding agent arrive the position where assistance is provided. Simply, the first part denotes the waiting time of multi-agent system, which contains both the waiting time of request agent and reply agent. The second part denotes the additional cost of $R^{p_i}_+$ compared with $R^{p_i}_-$, and $\beta_{p_j}$ is a designed parameter as relative weighting. Instead of formulating the agent choice issue as an integer programming problem,[add ref], the balanced cost of each agent is transmitted among the group $g_t$, $p_j \in g_t$, since each agent calculates its balanced cost in the same way, there must exist a consensus agent $p_{min}$ whose balanced cost is minimal and $p_{min}$ will be elected to reply to corresponding $\textbf{Request}^{p_i}$.\par
-%After $p_{min}$ is elected, design an attribute of agent named $state^{p_i}$ which turns into $locked$ when agent $p_i$ is providing collaboration, otherwise $state^{p_i}$ is $normal$. Meanwhile, due to the property of compact coupled task, all the request messages that have time overlapping can be replied by a group of heterogeneous agents. So towards each request message $\textbf{Request}^{p_i}$, if there is already a group of agents ${p_i}$ whose $state^{p_i}$ are $locked$, ${p_i}$ automatically become the collaborative agents and the corresponding request message becomes invisible to other agents.\par
-%Towards some compact coupled task, such as agents can't across region $r_i$ until some agents reach region $r_j$, only a group of agents is needed to reply request messages from different agents. Hence if two request messages $\textbf{Request}^{p_i}$ and $\textbf{Request}^{p_j}$ have time overlapping and there is a group of agents $\partial$ replying one request messages, then $\partial$ is selected as the reply agents for the other request message $\textbf{Request}'$ and $\textbf{Request}'$ becomes invisible to other agents.\par
+%After $p_{min}$ is elected, design an attribute of agent named $state^{p_i}$ which turns into $locked$ when agent $p_i$ is providing collaboration, otherwise $state^{p_i}$ is $normal$. Meanwhile, due to the property of tight coupled task, all the request messages that have time overlapping can be replied by a group of heterogeneous agents. So towards each request message $\textbf{Request}^{p_i}$, if there is already a group of agents ${p_i}$ whose $state^{p_i}$ are $locked$, ${p_i}$ automatically become the collaborative agents and the corresponding request message becomes invisible to other agents.\par
+%Towards some tight coupled task, such as agents can't across region $r_i$ until some agents reach region $r_j$, only a group of agents is needed to reply request messages from different agents. Hence if two request messages $\textbf{Request}^{p_i}$ and $\textbf{Request}^{p_j}$ have time overlapping and there is a group of agents $\partial$ replying one request messages, then $\partial$ is selected as the reply agents for the other request message $\textbf{Request}'$ and $\textbf{Request}'$ becomes invisible to other agents.\par
 %$R^{p_i}_+$ can be constructed by the $bidirectional\ Dijkstra$ algorithm which utilizes the function $bidirectional\_dijkstra()$ in $Networkx$, we refer the readers to [add ref] for more details. After the reply agent $p_r$ is elected, when $p_i$ reaches the requested replying position and provides collaboration, there is a reply message sent from the reply agent to request agent, whose format is as following:
 %$$\textbf{Reply}^{p_r}=(p_r,p_i,\xi)$$
 %where $p_r$ denotes the grade of replying agent and $\xi$ denotes the collaboration provided.\par
-%Finally, the purpose and structure of $\textbf{Confirm}^{p_i}$ are adapted to suit the compact coupled task specification. The format of confirm message is as following:
+%Finally, the purpose and structure of $\textbf{Confirm}^{p_i}$ are adapted to suit the tight coupled task specification. The format of confirm message is as following:
 %$$\textbf{Confirm}^{p_i}=(p_i,p_r,\hat{\xi})$$
 %where $p_r$ denotes the grades of all replying agents and $\hat{\xi}$ denotes that $p_i$ has relieved collaboration requirements for action $\hat{\xi}$. It is sent when the agents which send the request message separate themselves from the area where the collaboration is required and enter next state and the confirm messages informs the replying agents to recovery their $state^{p_r}$ from $locked$ to $normal$. Denote all the request, reply and confirm messages which agent $p_i$ received by $\textbf{Request}_{p_i}^{\ast}$, $\textbf{Reply}_{p_i}^{\ast}$, $\textbf{Confirm}_{p_i}^{\ast}$, respectively. The entire algorithm to handle request, reply and confirm messages is as Algorithm 3.
 
-\begin{algorithm}
-  \caption{Handle Reply and Confirm messages}
-  \KwIn{$\textbf{Request}_{p_i}^{\ast}$, $\textbf{Reply}_{p_i}^{\ast}$, $\textbf{Confirm}_{p_i}^{\ast}$, $\partial$, $\mathcal{R}^{p_i}_c$, $\mathcal{C}^{p_i}_n$}
-  \KwOut{$R^{p_j}_+$}
-  $\mathcal{A}^{p_i}_s=\emptyset$
-
-  \If{$\textbf{Request}_{p_i}^{\ast} \neq \emptyset$}
-  {
-    \ForEach{$\textbf{Request}^{r} = (\chi^{r},\pi_c^{r},q_c^r,T^{r}_e) \in \textbf{Request}_{p_i}^{\ast}$}
-    {
-        \If{$\partial \neq \emptyset\ and\ p_i \notin \partial$ }
-        {
-            continue
-        }
-        \ElseIf{$(\partial \neq \emptyset\ and\ p_i \in \partial)$ or $(\partial = \emptyset\ and\ min_{g_s}BalCost = p_i)$}
-        {
-            $(R^{p_i}_+,b^{p_i}_d,t^{p_i}_d)=EvalReq(R^{p_i}_-,(\chi^{p_i},\pi_c^{p_i},q_c^{p_i},T^{p_i}_e),\varrho^{p_i}[l],\mathcal{C}^{p_i}_n)$
-
-            $state^{p_i}=locked$
-
-            add $\chi^{r}$ to $\mathcal{A}^{p_i}_s$
-
-            send $\textbf{Reply}^{p_i}=(p_i,p_r,\xi)$ to $p_r$
-        }
-    }
-  }
-  \If{$\textbf{Reply}_{p_i}^{\ast} \neq \emptyset$}
-  {
-    \ForEach{$\textbf{Reply}^{r} = (p_r,p_i,\xi) \in \textbf{Reply}_{p_i}^{\ast}$}
-    {
-        \If{$\xi \in \mathcal{R}^{p_i}_c$}
-        {
-            delete $\xi$ from $\mathcal{R}^{p_i}_c$
-        }
-        \If{$\mathcal{C}^{p_i} \in Post(\varrho^{p_i}_r)$ }
-        {
-            send $\textbf{Confirm}^{p_i}=(p_i,p_r,\hat{\xi})$ to $p_r$
-        }
-    }
-  }
-  \If{$\textbf{Confirm}_{p_i}^{\ast} \neq \emptyset$}
-  {
-    \ForEach{$\textbf{Confirm}^{r} = (p_i,p_r,\hat{\xi}) \in \textbf{Confirm}_{p_i}^{\ast}$}
-    {
-        \If{$\hat{\xi} \in \mathcal{A}^{p_i}_s$}
-        {
-            delete $\hat{\xi}$ from $\mathcal{A}^{p_i}_s$
-        }
-        \If{$\mathcal{A}^{p_i}_s=\emptyset$}
-        {
-            $state^{p_i}=normal$
-        }
-    }
-  }
-  \Return{$R^{p_j}_+$}
-\end{algorithm}
+%\begin{algorithm}
+%  \caption{Handle Reply and Confirm messages}
+%  \KwIn{$\textbf{Request}_{p_i}^{\ast}$, $\textbf{Reply}_{p_i}^{\ast}$, $\textbf{Confirm}_{p_i}^{\ast}$, $\partial$, $\mathcal{R}^{p_i}_c$, $\mathcal{C}^{p_i}_n$}
+%  \KwOut{$R^{p_j}_+$}
+%  $\mathcal{A}^{p_i}_s=\emptyset$
+%
+%  \If{$\textbf{Request}_{p_i}^{\ast} \neq \emptyset$}
+%  {
+%    \ForEach{$\textbf{Request}^{r} = (\chi^{r},\pi_c^{r},q_c^r,T^{r}_e) \in \textbf{Request}_{p_i}^{\ast}$}
+%    {
+%        \If{$\partial \neq \emptyset\ and\ p_i \notin \partial$ }
+%        {
+%            continue
+%        }
+%        \ElseIf{$(\partial \neq \emptyset\ and\ p_i \in \partial)$ or $(\partial = \emptyset\ and\ min_{g_s}BalCost = p_i)$}
+%        {
+%            $(R^{p_i}_+,b^{p_i}_d,t^{p_i}_d)=EvalReq(R^{p_i}_-,(\chi^{p_i},\pi_c^{p_i},q_c^{p_i},T^{p_i}_e),\varrho^{p_i}[l],\mathcal{C}^{p_i}_n)$
+%
+%            $state^{p_i}=locked$
+%
+%            add $\chi^{r}$ to $\mathcal{A}^{p_i}_s$
+%
+%            send $\textbf{Reply}^{p_i}=(p_i,p_r,\xi)$ to $p_r$
+%        }
+%    }
+%  }
+%  \If{$\textbf{Reply}_{p_i}^{\ast} \neq \emptyset$}
+%  {
+%    \ForEach{$\textbf{Reply}^{r} = (p_r,p_i,\xi) \in \textbf{Reply}_{p_i}^{\ast}$}
+%    {
+%        \If{$\xi \in \mathcal{R}^{p_i}_c$}
+%        {
+%            delete $\xi$ from $\mathcal{R}^{p_i}_c$
+%        }
+%        \If{$\mathcal{C}^{p_i} \in Post(\varrho^{p_i}_r)$ }
+%        {
+%            send $\textbf{Confirm}^{p_i}=(p_i,p_r,\hat{\xi})$ to $p_r$
+%        }
+%    }
+%  }
+%  \If{$\textbf{Confirm}_{p_i}^{\ast} \neq \emptyset$}
+%  {
+%    \ForEach{$\textbf{Confirm}^{r} = (p_i,p_r,\hat{\xi}) \in \textbf{Confirm}_{p_i}^{\ast}$}
+%    {
+%        \If{$\hat{\xi} \in \mathcal{A}^{p_i}_s$}
+%        {
+%            delete $\hat{\xi}$ from $\mathcal{A}^{p_i}_s$
+%        }
+%        \If{$\mathcal{A}^{p_i}_s=\emptyset$}
+%        {
+%            $state^{p_i}=normal$
+%        }
+%    }
+%  }
+%  \Return{$R^{p_j}_+$}
+%\end{algorithm}
 Only if $\mathcal{R}^{p_i}_c$ is empty and $state^{p_i}$ is $normal$, agent $p_i$ can continue to execute its motion plan, otherwise $p_i$ needs to wait for the completion of collaboration.
 \section{Task Inheriting Under Union Agent Model}
 %Even if we drive the agents according to above framework, there will still be some issues. This section we consider these issues and construct a agent scheduling system to further revise the motion plan of agents.
@@ -934,7 +934,7 @@ When the broken down agent is fixed properly, the inheriting agent is driven to 
 \end{algorithm}
 
 \section{Overall Structure}
-Given the task specification $\varphi^{p_i}$ and FTS $\mathcal{F}^{p_i}$ of each agent, decouple the compact coupled task specification and construct new complete agent model $\mathcal{C}^{p_i}_n$ through applying Algorithm. The initial motion path $\varrho^{p_i}$ of each agent $p_i$ can be synthesized and the task collaboration is planned in speed matching horizon to reduce the complexity. To guarantee the completeness of collaboration task, an online collaboration scheme is adapted to revise the initial motion path of each agent, where the collaboration task is completed through $\textbf{Request}^{p_i}$, $\textbf{Reply}^{p_i}$ and $\textbf{Confirm}^{p_i}$ messages. In the scenarios that the local motion planning is invalid such as task inheriting, the union agent model is proposed to dispatch agents to strive to complete task when part of agents failure and reduce the computational complexity. The task inheriting is triggered by specific conditions, such as $\textbf{Warning}^{p_i}$ messages are transmitted through communication network, while the online collaboration system is running.
+Given the task specification $\varphi^{p_i}$ and FTS $\mathcal{F}^{p_i}$ of each agent, decouple the tight coupled task specification and construct new complete agent model $\mathcal{C}^{p_i}_n$ through applying Algorithm. The initial motion path $\varrho^{p_i}$ of each agent $p_i$ can be synthesized and the task collaboration is planned in speed matching horizon to reduce the complexity. To guarantee the completeness of collaboration task, an online collaboration scheme is adapted to revise the initial motion path of each agent, where the collaboration task is completed through $\textbf{Request}^{p_i}$, $\textbf{Reply}^{p_i}$ and $\textbf{Confirm}^{p_i}$ messages. In the scenarios that the local motion planning is invalid such as task inheriting, the union agent model is proposed to dispatch agents to strive to complete task when part of agents failure and reduce the computational complexity. The task inheriting is triggered by specific conditions, such as $\textbf{Warning}^{p_i}$ messages are transmitted through communication network, while the online collaboration system is running.
 \section{Case Study}
 Consider the logistics system in a depot, there are three groups of agents assigned three different task specifications. For simplicity, denote the agents by $g_k={p_{i,k},i=1,2,...},\forall k=1,2,3$. The algorithms proposed are implemented and simulated on a laptop (i5-7300HQ, 2.50GHz Duo CPU and 8GB RAM).
 \subsection{Workspace Description}
@@ -953,7 +953,7 @@ The switches in gray control the door $d$ and when the switch is open, it will c
 \label{first}
 \end{figure}
 \subsection{Task Specification}
-Three different tasks are assigned to three groups of agents. The task of agents working on conveyor belts is specified as ($\square\Diamond t1 \wedge \square\Diamond t2 \wedge \square\Diamond t3 \wedge \square\Diamond t4 \wedge \square\Diamond t5 \wedge \square\Diamond t6 \wedge \square(\neg b)$) and ($\square\Diamond m1 \wedge \square\Diamond m2 \wedge \square\Diamond m3 \wedge \square\Diamond m4 \wedge \square\Diamond m5 \wedge \square\Diamond m6 \wedge \square(\neg b)$) which means that they need to always eventually visit all the checkpoints and never move across the conveyor belts. The task of agents which need to collect goods and place them in cargo collection point is specified as ($\square\Diamond g \wedge \square(g\Longrightarrow \Diamond r) \wedge \square(\neg b) \wedge \square(\neg d \cup (o \wedge o'))$), which means the good collection agents need to always eventually visit $g$ and when they collect goods in $g$, they need go to $r$ to place them. The good collection agents can never move across the belts and only when the switches are both open can they move across the door $d$. $\square(\neg r \cup (o \wedge o'))$ is the compact coupled task $\varphi_c$ because it indicates that only when two switches are both open can the good collection agents move across the door.
+Three different tasks are assigned to three groups of agents. The task of agents working on conveyor belts is specified as ($\square\Diamond t1 \wedge \square\Diamond t2 \wedge \square\Diamond t3 \wedge \square\Diamond t4 \wedge \square\Diamond t5 \wedge \square\Diamond t6 \wedge \square(\neg b)$) and ($\square\Diamond m1 \wedge \square\Diamond m2 \wedge \square\Diamond m3 \wedge \square\Diamond m4 \wedge \square\Diamond m5 \wedge \square\Diamond m6 \wedge \square(\neg b)$) which means that they need to always eventually visit all the checkpoints and never move across the conveyor belts. The task of agents which need to collect goods and place them in cargo collection point is specified as ($\square\Diamond g \wedge \square(g\Longrightarrow \Diamond r) \wedge \square(\neg b) \wedge \square(\neg d \cup (o \wedge o'))$), which means the good collection agents need to always eventually visit $g$ and when they collect goods in $g$, they need go to $r$ to place them. The good collection agents can never move across the belts and only when the switches are both open can they move across the door $d$. $\square(\neg r \cup (o \wedge o'))$ is the tight coupled task $\varphi_c$ because it indicates that only when two switches are both open can the good collection agents move across the door.
 \subsection{Simulation Result}
 The motion path of each agent is shown in Fig.\ref{path}, where different colors indicates different states of agents. The agents which are responding to deliver goods are denoted by $g_1$, they will change from red to blue when they send request message. Meanwhile, two agents are elected from $g_2$ and $g_3$ to reply the request message and change from blue to black. Record the position of agents in each time step and synthesize this motion path of agents.\par
 Select two scenes to analyze the online collaboration scheme. In Fig.\ref{before}, two agents, denoted by $p_0$ and $p_1$, in $g_1$ are passing through the door $d$ to place the goods in good collection point $r$. Meanwhile, two agents, denoted by $p_2$ and $p_3$, in $g_2$ and $g_3$ are elected to collaborate. $p_0$ and $p_1$ are turned to blue, and $p_2$, $p_3$ are turned to black. There are red solid lines connecting $p_0$ and $p_2$, $p_3$, $p_1$ and $p_2$, $p_3$, which indicates they are transmitting message.\par
@@ -1051,7 +1051,7 @@ Adjust the number of agents and the motion plan is synthesized within the same t
 %% if you want by leaving the argument blank
 %\section{}
 %Appendix two text goes here.
-The simulation results demonstrate that proposed method can handle the decentralized collaboration of multi-agent system under compact coupled task specifications. Proposed decentralized method depends on local FTS and NBA of agent so the computational complexity doesn't increase accompanied by the increasing of agent number, which reduces the computational complexity significantly compared to centralized method. In the future, we will continue to find method to further reduce the computational complexity and combine proposed method with existing control algorithms to improve the overall convergence rate of cyber-physical system.
+The simulation results demonstrate that proposed method can handle the decentralized collaboration of multi-agent system under tight coupled task specifications. Proposed decentralized method depends on local FTS and NBA of agent so the computational complexity doesn't increase accompanied by the increasing of agent number, which reduces the computational complexity significantly compared to centralized method. In the future, we will continue to find method to further reduce the computational complexity and combine proposed method with existing control algorithms to improve the overall convergence rate of cyber-physical system.
 
 
 % use section* for acknowledgment
