@@ -458,7 +458,7 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-This paper considers the decentralized motion planning under tight coupled task specifications of multi-agent systems. Multi-agent systems consist of heterogeneous groups of homogeneous agents. The assigned tasks are specified as Linear Temporal Logic (LTL) formulas. A decentralized motion planning scheme is proposed to alleviate the massive computational complexity of the centralized multi-agent motion planning, where couple-edges are proposed to eliminate the coupling among tight tasks, and the online collaboration scheme based on the real-time communication is adapted to ensure the satisfaction of task specifications without the central collaboration. However, in some scenarios such as the task swapping and inheriting, this scheme can't synthesize the initial motion paths, then the union agent model is proposed to reduce the computational complexity in these scenarios. The overall scheme is demonstrated by a simulation in a warehouse scenario and 14 agents are assigned tight coupled task specifications.
+This paper considers the decentralized motion planning under tight coupled task specifications of multi-agent systems. Multi-agent systems consist of heterogeneous groups of homogeneous agents. The assigned tasks are specified as Linear Temporal Logic (LTL) formulas. A decentralized motion planning scheme is proposed to alleviate the massive computational complexity of the centralized multi-agent motion planning, where couple-edges are proposed to eliminate the coupling among tight tasks, and the online collaboration scheme based on the real-time communication is employed to ensure the satisfaction of task specifications without the central collaboration. However, in some scenarios such as the task swapping and inheriting, this scheme can't synthesize the initial motion paths, then the union agent model is proposed to reduce the computational complexity in these scenarios. The overall scheme is demonstrated by a simulation in a warehouse scenario and 14 agents are assigned tight coupled task specifications.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -499,7 +499,7 @@ multi-agent system, linear temporal logics (LTLs), decentralized motion planning
 %
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{emporal} logic based motion planning has gained attention significantly over the last decade. The temporal logic, such as linear temporal logic (LTL) has usage as offering formal languages which specify the tasks in a high level. The formal languages are cast in terms of graph models \cite{GASTIN2001Fast}, and graph search algorithms are applied to find the discrete motion paths, which are implemented through the low-level physical systems.\par
+\IEEEPARstart{T}{emporal} logic based motion planning has gained attention significantly over the last decade. The temporal logic, such as the linear temporal logic (LTL) has usage as offering formal languages which specify the tasks in a high level. The formal languages are cast in terms of graph models \cite{GASTIN2001Fast}, and graph search algorithms are applied to find the discrete motion paths, which are implemented through the low-level physical systems.\par
 LTL has been employed by multi-agent systems to plan the motion paths under complex task specifications. In \cite{Chen2013A} and \cite{chen2012formal}, the essential LTL is employed by a multi-agent system to collaborate in the Robotic Urban-Like Environment(RULE), which establishes the scheme of the application of LTL in the static workspace. With respect to the dynamic workspace, agents need to revise their motion paths, \cite{guo2013revising} and \cite{guo2015multi} propose a motion path revision method based on knowledge transferring and real time DijksTA algorithm. If the LTL specifications were infeasible, \cite{guo2013reconfiguration} relaxes the infeasible specifications and synthesizes the motion paths that fulfill the infeasible specifications most. \par
 A key challenge of applying LTL to the motion planning of multi-agent systems is the massive computational complexity, which is caused by the production operation. In centralized motion planning method, each agent first needs to synthesize its local product automaton, whose complexity exponential increases with the number of states. Then all the agents need to synthesize the final agent model through the production of all the local product automata.
 
@@ -865,13 +865,13 @@ In some special scenarios such as task inheriting and task swapping between diff
 
 Define a virtual order $\mathcal{O}$ which indicates the importance of the individual task that each agent undertakes. If $\mathcal{O}_{p_i}\succ \mathcal{O}_{p_j}$, when $p_i$ is breakdown, $p_j$ should revise its motion path to inherit the task of $p_i$, otherwise $p_j$ should fix on its own task.\par
 When $p_i$ is broken down, a $\textbf{Warning}^{p_i}$ message is sent to other agents, the format of $\textbf{Warning}^{p_i}$ is as follows:
-$$\textbf{Warning}^{p_i} = (p_i,\varphi^{p_i},\aleph^{p_i})$$
-which means that $p_i$ needs to broadcast its grade $p_i$, local task specification $\varphi^{p_i}$ and capacity $\aleph^{p_i}$. Then all the agents qualified for capacity $\aleph^{p_i}$, denoted by $\nu$, will respond to the $\textbf{Warning}^{p_i}$ and the agents with the same minimal $\mathcal{O}_{p_j}$ become candidates for inheriting the task of $p_i$. In order to elect an agent to respond to the warning message and revise its motion path, following problem needs to be solved:\par
+$$\textbf{Warning}^{p_i} = (p_i,\mathcal{C}^{p_i}_n,\aleph^{p_i})$$
+which means that $p_i$ needs to broadcast its grade $p_i$, local new product automaton $\mathcal{C}^{p_i}_n$ and capacity $\aleph^{p_i}$. Then all the agents qualified for capacity $\aleph^{p_i}$, denoted by $\nu$, will respond to the $\textbf{Warning}^{p_i}$ and the agents with the same minimal $\mathcal{O}_{p_j}$ become candidates for inheriting the task of $p_i$. In order to elect an agent to respond to the warning message and revise its motion path, following problem needs to be solved:\par
 \textbf{\emph{Problem 2:}} With a little symbol abuse, denote the states in $\mathcal{C}^{p_i}_n$ by $\tilde{c}_{p_i}$, the motion path of $p_j$ after revision by $R^{p_j}_+$ and the original one by $R^{p_j}_-$, respectively. Given $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$, decide the grade $\varpi$ of the agent inheriting the task of $p_i$ and construct $R^{\varpi}_+$ to minimize the total cost. \par
-$\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$ can be combined to obtain $union\ agent\ model$. The union agent model $\widetilde{\mathcal{U}}_{ij}$ is defined as follows:
+$\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$ can be combined to obtain the union agent model $\widetilde{\mathcal{U}}_{ij}$, which is defined as follows:
 $$\widetilde{\mathcal{U}}_{ij}=(\widetilde{Q}^{ij},\tilde{\delta}^{ij},\widetilde{Q}^{ij}_0,\widetilde{Q}^{ij}_F,\widetilde{W}^{ij},\tilde{\tau}^{ij})$$
-where $\widetilde{Q}^{ij}=Q^{p_i,\ast}\cup Q^{p_j,\ast}$; $\tilde{\delta}^{ij}=\delta^{p_i}\cup \delta^{p_j} \cup (\tilde{c}_{p_i},\tilde{c}_{p_j})$, $\tilde{c}_{p_i}$ is bordered to $\tilde{c}_{p_i}$; $\widetilde{Q}^{ij}_0=Q^{p_i,\ast}_0\cup Q^{p_j,\ast}_0$; $\widetilde{Q}^{ij}_F=Q^{p_i,\ast}_F\cup Q^{p_j,\ast}_F$; $\widetilde{W}^{ij}=W^{p_i,\ast}\cup W^{p_j,\ast}$ and $\tilde{\tau}^{ij}=\tau^{p_i}\cup \tau^{p_j}$.\par
-Assume that part of the local FTS $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$are bordered and then the construction procedure of union agent model $\widetilde{\mathcal{U}}_{ij}$ is as follows:\par
+where $\widetilde{Q}^{ij}=Q^{p_i,\ast}\cup Q^{p_j,\ast}$; $\tilde{\delta}^{ij}=\delta^{p_i}\cup \delta^{p_j} \cup (\tilde{c}_{p_i},\tilde{c}_{p_j})$, $\tilde{c}_{p_i}$ is bordered to $\tilde{c}_{p_i}$; $\widetilde{Q}^{ij}_0=Q^{p_j,\ast}_0|_{\mathcal{F}^{p_j}}\times Q^{p_i,\ast}_0|_{\mathcal{B}^{p_i}} $; $\widetilde{Q}^{ij}_F=Q^{p_i,\ast}_F$; $\widetilde{W}^{ij}=W^{p_i,\ast}\cup W^{p_j,\ast}$ and $\tilde{\tau}^{ij}=\tau^{p_i}\cup \tau^{p_j}$.\par
+Assume that part of the local FTS $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$are bordered and then the construction of $\widetilde{\mathcal{U}}_{ij}$ is as follows:\par
 (1)Add all the nodes and edges of $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$ into $\widetilde{\mathcal{U}}_{ij}$.\par
 (2)Find all the position pairs $\tilde{s}=(\tilde{\eta}_{p_i},\tilde{\eta}_{p_j})$, where $\tilde{\eta}_{p_i}$ and $\tilde{\eta}_{p_j}$ appertain to $\mathcal{F}^{p_i}$ and $\mathcal{F}^{p_j}$, respectively and they are bordered, which means agent can devolve from $\tilde{\eta}_{p_i}$ to $\tilde{\eta}_{p_j}$ directly. These position pairs are called bordered position pairs and denote the set of $\tilde{\eta}_{p_i}$ and $\tilde{\eta}_{p_j}$ by $\hat{\eta}_{p_i}$ and $\hat{\eta}_{p_j}$, respectively.\par
 (3)For all states $\tilde{c}_{p_i}$ and $\tilde{c}_{p_j}$ in $\mathcal{C}^{p_i}_n$ and $\mathcal{C}^{p_j}_n$, if $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ and $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$ is a bordered position pair and there are no violations of task specifications when transferring from $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ to $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$, then an edge $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ is added into $\widetilde{\mathcal{U}}_{ij}$, where $weight$ denotes the distance between $\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}$ and $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$. If the transition violates the coupled task specifications and $(\tilde{c}_{p_i},\tilde{c}_{p_j})$ is a couple-edge according to \emph{Definition 2}, then add $(\tilde{c}_{p_i},\tilde{c}_{p_j},weight)$ as a couple-edge.\par
@@ -881,19 +881,31 @@ After the union agent model is constructed, $\varpi$ is identified and $R^{\varp
 
 %It is obvious that the suffix $R^{\varpi,s}_+$ is the same as $R^{\varpi,s}_-$, so the $\emph{Problem 2}$ can be transformed to the synthesis of $R^{\varpi,p}_+$ from any $\tilde{c}_{p_j}$ satisfying  $\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$ to $\tilde{c}_{p_i}$ where $\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}}\in Q^{p_i,\ast}_F|_{\mathcal{B}^{p_i}}$. Apply $DijksTargets$ method [add ref] to synthesize $R^{\varpi,p}_+$, where all the $\tilde{c}_{p_j}$ are set as source nodes and all $\tilde{c}_{p_i}$ are set as target nodes. Ultimately, $R^{\varpi}_+$ is synthesized:
 %$$R^{\varpi}_+ = R^{\varpi,p}_+\oplus R^{\varpi,s}_-$$
-Then all the $R^{p_j}_+$ are synthesized and the candidate with minimal $Cost(R^{\varpi}_+)$ is elected to inherit the task of $p_i$.\par
+Then all the motion paths are synthesized and the candidate with minimal $Cost(R^{\varpi}_+)$ is elected to inherit the task of $p_i$.\par
 When $p_i$ is fixed properly, the agent inheriting the task of $p_i$ is driven to return to its own task by reversing above method. The entire procedure of constructing $\widetilde{\mathcal{U}}_{ij}$ and each candidate finds out $R^{\varpi}_+$ is exhibited by Algorithm 4 and $\emph{Problem 2}$ is solved.
 
 \begin{algorithm}
   \caption{the construction of $\widetilde{\mathcal{U}}_{ij}$ and the synthesis of $R^{\varpi}_+$}
   \KwIn{$\mathcal{C}^{p_i}_n$, $\mathcal{C}^{p_j}_n$ and $\tilde{c}_{p_j}^{\ast}$}
   \KwOut{$\widetilde{\mathcal{U}}_{ij}\ and\  R^{\varpi}_+$}
-  $\widetilde{\mathcal{U}}_{ij}=\mathcal{C}^{p_i}_n\cup \mathcal{C}^{p_j}_n$
-
-  $\tilde{\eta}_{p_i}=\emptyset,\Omega_{p_j}=\emptyset$
+  
+ % $\widetilde{Q}^{ij}=Q^{p_i,\ast}\cup Q^{p_j,\ast}$
+%
+%  $\tilde{\delta}^{ij}=\delta^{p_i}\cup \delta^{p_j}$
+%
+%  $\widetilde{Q}^{ij}_0=Q^{p_j,\ast}_0|_{\mathcal{F}^{p_j}}\times Q^{p_i,\ast}_0|_{\mathcal{B}^{p_i}}$
+%
+%  $\widetilde{Q}^{ij}_F=Q^{p_i,\ast}_F$
+%
+%  $\widetilde{W}^{ij}=W^{p_i,\ast}\cup W^{p_j,\ast}$
+%
+%  $\tilde{\tau}^{ij}=\tau^{p_i}\cup \tau^{p_j}$
+  
+  $\Omega_{p_j}=\emptyset$
 
   \ForEach{$\tilde{c}_{p_j}\in \mathcal{C}^{p_j}_n$}
   {
+
     \If{$\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}=\tilde{c}_{p_j}^{\ast}|_{\mathcal{F}^{p_j}}$}
     {
         add $\tilde{c}_{p_j}$ to $\Omega_{p_j}$
@@ -902,9 +914,7 @@ When $p_i$ is fixed properly, the agent inheriting the task of $p_i$ is driven t
     {
         \If{$\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}\ is\ bordered\ to\ \tilde{c}_{p_j}|_{\mathcal{F}^{p_j}}$}
         {
-            add $\tilde{c}_{p_i}$ to $\tilde{\eta}_{p_i}$
-
-            \If{$CheckTranB(\tilde{c}_{p_i}|_{\mathcal{B}^{p_i}},L^{p_i}(\tilde{c}_{p_i}|_{\mathcal{F}^{p_i}}),\tilde{c}_{p_j}|_{\mathcal{B}^{p_j}},\tilde{c}_{p_j}|_{\mathcal{F}^{p_j}})\geqslant 0$}
+            \If{$(\tilde{c}_{p_i},\tilde{c}_{p_j})$ is a couple-edge}
             {
                 $\tilde{c}_{p_j}\in \tilde{\delta}^{ij}(\tilde{c}_{p_i})$
 
@@ -926,7 +936,7 @@ When $p_i$ is fixed properly, the agent inheriting the task of $p_i$ is driven t
         }
     }
   }
-  $R^{\varpi}_+=DijksTargets(\Omega_{p_j},\tilde{\eta}_{p_i})$
+  $R^{\varpi}_+=DijksTargets(\Omega_{p_j},\widetilde{Q}^{ij}_F)$
 
 
   \Return{$\widetilde{\mathcal{U}}_{ij}\ and\  R^{\varpi}_+$}
