@@ -14,4 +14,4 @@
 
 1.Receding horizon: find the nearest request.  
 2.Solve optimization problem to find which agent to reply corresponding request(How about multi-request).  
-3.After the confirm of agent, what to do next?
+3.After the confirm of agent, what to do next???
